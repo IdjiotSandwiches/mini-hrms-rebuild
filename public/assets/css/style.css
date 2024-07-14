@@ -1,0 +1,9 @@
+* {
+    font-family: 'poppins';
+    /* font-family: 'arial'; */
+}
+
+.toast {
+    width: 20rem !important;
+    top: 4rem;
+}
