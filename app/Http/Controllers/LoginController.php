@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
@@ -22,11 +24,30 @@ class LoginController extends Controller
 
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
-            return to_route('attendance.take-attendance.index');
+            return redirect()
+                ->intended(route('attendance.take-attendance-page'))
+                ->with([
+                    'status' => 'success',
+                    'message' => 'Logged In'
+                ]);
         }
 
-        return back()->withErrors([
-            'email' => 'Error',
-        ])->onlyInput('email');
+        return back()
+            ->withErrors([
+                'email' => ' ',
+                'password' => ' ',
+            ])
+            ->with([
+                'status' => 'error',
+                'message' => 'E-mail or password invalid'
+            ]);
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('landing-page');
     }
 }

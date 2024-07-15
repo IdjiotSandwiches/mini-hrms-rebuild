@@ -3,4 +3,9 @@
 
 @section('content')
 
+    <script type="module">
+        @if (Session::has('status'))
+            toastr.{{ Session::get('status') }}('{{ Session::get('message') }}')
+        @endif
+    </script>
 @endsection
