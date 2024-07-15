@@ -2,7 +2,7 @@
     @if (auth()->user())
         <a class="text-3xl font-semibold" href="">hrms.</a>
         <section class="profile flex items-center gap-5">
-            <h1>Welcome, <span class="text-blue-400">XXX</span></h1>
+            <h1>Welcome, <span class="text-blue-400">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span></h1>
             <div class="h-8 w-8 rounded-full bg-blue-400"></div>
         </section>
     @else
@@ -15,21 +15,23 @@
 </nav>
 
 @if (auth()->user())
-    <nav-item class="nav-dropdown z-20 absolute hidden bg-white right-0 mt-20 mr-28 w-56 border-2 rounded-md divide-y-2">
+    <nav-item class="nav-dropdown z-20 absolute hidden bg-white right-0 mt-20 mr-28 w-64 border-2 rounded-md divide-y-2">
         <div class="py-2 px-4">
             <p class="text-md">{{ auth()->user()->username }}</p>
-            <p class="text-sm">{{ auth()->user()->email }}</p>
+            <p class="text-xs">{{ auth()->user()->email }}</p>
         </div>
-        <div class="select-none">
-            <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
-                <a href="" class="text-sm">Profile</a>
-            </div>
-            <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
-                <a href="" class="text-sm">Attendance</a>
-            </div>
+        <div class="select-none grid">
+            <a href="" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+                Profile
+            </a>
+            <a href="{{ route('attendance.take-attendance-page') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+                Attendance
+            </a>
         </div>
-        <div class="select-none py-2 px-4 hover:bg-gray-100 transition-colors">
-            <a href="{{ route('logout') }}" class="text-sm">Logout</a>
+        <div class="select-none grid">
+            <a href="{{ route('logout') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+                Logout
+            </a>
         </div>
     </nav-item>
 @endif
@@ -40,13 +42,14 @@
             $('.nav-dropdown').slideToggle('hidden');
             event.stopPropagation();
         });
-    });
-    $(document).on('click', function(event) {
-        let trigger = $('.nav-dropdown');
-        let navItem = $(event.target).closest('nav-item');
 
-        if(trigger[0] !== navItem[0]){
-            trigger.slideUp('fast');
-        }
+        $(document).on('click', function(event) {
+            let trigger = $('.nav-dropdown');
+            let navItem = $(event.target).closest('nav-item');
+
+            if(trigger[0] !== navItem[0]){
+                trigger.slideUp('fast');
+            }
+        });
     });
 </script>
