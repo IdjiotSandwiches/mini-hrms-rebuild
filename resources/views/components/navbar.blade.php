@@ -6,42 +6,47 @@
             <div class="h-8 w-8 rounded-full bg-blue-400"></div>
         </section>
     @else
-        <a class="text-3xl font-semibold" href="/">hrms.</a>
+        <a class="text-3xl font-semibold" href="{{ route('landing-page') }}">hrms.</a>
         <nav-button class="flex gap-2">
-            @include('components.navbar-item', with(['name' => 'Login', 'route' => route('login-page'), 'path' => ['/', 'login']]))
-            @include('components.navbar-item', with(['name' => 'Register', 'route' => route('register-page'), 'path' => 'register']))
+            @include('components.navbar-item', with(['name' => 'Login', 'path' => ['login', 'landing-page']]))
+            @include('components.navbar-item', with(['name' => 'Register', 'path' => ['register']]))
         </nav-button>
     @endif
 </nav>
 
-<nav-item class="nav-dropdown z-20 absolute hidden bg-white right-0 mt-20 mr-28 w-56 border-2 rounded-md divide-y-2">
-    <div class="py-2 px-4">
-        <p class="text-md">User</p>
-        <p class="text-sm">user@email.com</p>
-    </div>
-    <div class="select-none">
-        <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
-            <a href="" class="text-sm">Profile</a>
+@if (auth()->user())
+    <nav-item class="nav-dropdown z-20 absolute hidden bg-white right-0 mt-20 mr-28 w-56 border-2 rounded-md divide-y-2">
+        <div class="py-2 px-4">
+            <p class="text-md">{{ auth()->user()->username }}</p>
+            <p class="text-sm">{{ auth()->user()->email }}</p>
         </div>
-        <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
-            <a href="" class="text-sm">Attendance</a>
+        <div class="select-none">
+            <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
+                <a href="" class="text-sm">Profile</a>
+            </div>
+            <div class="py-2 px-4 hover:bg-gray-100 transition-colors">
+                <a href="" class="text-sm">Attendance</a>
+            </div>
         </div>
-    </div>
-    <div class="select-none py-2 px-4 hover:bg-gray-100 transition-colors">
-        <a href="" class="text-sm">Logout</a>
-    </div>
-</nav-item>
+        <div class="select-none py-2 px-4 hover:bg-gray-100 transition-colors">
+            <a href="{{ route('logout') }}" class="text-sm">Logout</a>
+        </div>
+    </nav-item>
+@endif
 
 <script type="module">
     $(document).ready(function() {
-        $('.profile').click(function() {
+        $('.profile').click(function(event) {
             $('.nav-dropdown').slideToggle('hidden');
+            event.stopPropagation();
         });
     });
-    $(document).on('click', function(event){
-        let $trigger = $('.profile');
-        if($trigger !== event.target && !$trigger.has(event.target).length){
-            $('.nav-dropdown').slideUp('fast');
+    $(document).on('click', function(event) {
+        let trigger = $('.nav-dropdown');
+        let navItem = $(event.target).closest('nav-item');
+
+        if(trigger[0] !== navItem[0]){
+            trigger.slideUp('fast');
         }
     });
 </script>

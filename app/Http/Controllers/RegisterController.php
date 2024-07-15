@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
 
 class RegisterController extends Controller
 {
@@ -40,6 +38,9 @@ class RegisterController extends Controller
 
         $user->username = $username;
         $user->save();
-        return redirect()->route('login-page')->with('status', 'Account successfully created');
+        return redirect()->route('login')->with([
+            'status' => 'success',
+            'message' => 'Account successfully created',
+        ]);
     }
 }
