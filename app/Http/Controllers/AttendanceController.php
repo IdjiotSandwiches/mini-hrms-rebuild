@@ -49,9 +49,9 @@ class AttendanceController extends Controller
 
     public function checkIn(Request $request)
     {
-        if ($this->isCheckedIn()) {
+        if ($this->getAttendance()->exists()) {
             return back()->withErrors([
-                'alreadyCheckIn' => 'You have already checked in today.'
+                'attendanceError' => 'You have already checked in today.'
             ]);
         }
 
@@ -70,13 +70,36 @@ class AttendanceController extends Controller
 
     public function isCheckedIn()
     {
-        if ($this->getAttendance()->exists()) return true;
-
-        return false;
+        $attendance = $this->getAttendance();
+        if (!$attendance->exists()) return false;
+        else {
+            if (!$attendance->first()->check_out) return true;
+            else if ($attendance->first()->check_out) return false;
+        }
     }
 
     public function checkOut()
     {
+        $checkInTime = $this->getAttendance()
+            ->first()
+            ->check_in;
 
+        $currentTime = $this->getCurrentTime();
+        $diffTime = $currentTime->diffInMinutes($checkInTime);
+
+        if ($diffTime < 60) {
+            return back()->withErrors([
+                'attendanceError' => 'You need at least 1 hour to check out.'
+            ]);
+        }
+
+        $this->getAttendance()
+            ->first()
+            ->update(['check_out' => $currentTime]);
+
+        return back()->with([
+            'status' => 'success',
+            'message' => 'Checked Out',
+        ]);
     }
 }

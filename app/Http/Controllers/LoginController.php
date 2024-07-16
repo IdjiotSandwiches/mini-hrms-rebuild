@@ -22,6 +22,7 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        // Logic ny dibalik
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
             return redirect()

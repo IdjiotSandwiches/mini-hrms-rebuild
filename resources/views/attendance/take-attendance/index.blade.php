@@ -7,12 +7,14 @@
         <div class="flex gap-2">
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md"><p id="current-hours"></p></div>
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md"><p id="current-minutes"></p></div>
+            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md"><p id="current-seconds"></p></div>
         </div>
-        @error('alreadyCheckIn')
+        @error('attendanceError')
             <p class="text-red-500">{{ $message }}</p>
         @enderror
         @if ($isCheckedIn)
-            <form action="{{ route('attendance.check-out') }}" method="PUT">
+            <form action="{{ route('attendance.check-out') }}" method="POST">
+                @method('PUT')
                 @csrf
                 <button class="py-2 px-20 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Check Out</button>
             </form>
@@ -33,9 +35,11 @@
             let currentDay = `${now.toLocaleString('default', {weekday: 'long'})}, ${now.getDate()} ${now.toLocaleString('default', {month: 'long'})} ${now.getFullYear()}`;
             let currentHours = now.getHours().toString().padStart(2, '0');
             let currentMinutes = now.getMinutes().toString().padStart(2, '0');
+            let currentSeconds = now.getSeconds().toString().padStart(2, '0');
             $('#current-day').text(currentDay);
             $('#current-hours').text(currentHours);
             $('#current-minutes').text(currentMinutes);
+            $('#current-seconds').text(currentSeconds);
             setTimeout(getCurrentTime, 1000);
         }
 
