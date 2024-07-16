@@ -15,7 +15,7 @@
 </nav>
 
 @if (auth()->user())
-    <nav-item class="nav-dropdown z-20 absolute hidden bg-white right-0 mt-20 mr-28 w-64 border-2 rounded-md divide-y-2">
+    <nav-item class="nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-28 w-64 border-2 rounded-md divide-y-2">
         <div class="py-2 px-4">
             <p class="text-md">{{ auth()->user()->username }}</p>
             <p class="text-xs">{{ auth()->user()->email }}</p>
