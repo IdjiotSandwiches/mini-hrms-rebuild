@@ -11,7 +11,7 @@
         @error('alreadyCheckIn')
             <p class="text-red-500">{{ $message }}</p>
         @enderror
-        @if (Session::get('checkedIn'))
+        @if ($isCheckedIn)
             <form action="{{ route('attendance.check-out') }}" method="PUT">
                 @csrf
                 <button class="py-2 px-20 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Check Out</button>

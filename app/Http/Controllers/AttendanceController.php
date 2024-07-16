@@ -10,9 +10,31 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
+    public function getCurrentTime()
+    {
+        $factoryTime = new Factory([
+            'timezone' => 'Asia/Jakarta'
+        ]);
+
+        return $factoryTime->make(Carbon::now());
+    }
+
+    private function getUser()
+    {
+        return auth()->user();
+    }
+
+    private function getAttendance()
+    {
+        return Attendance::where('user_id', $this->getUser()->user_id)
+        ->whereDate('date', $this->getCurrentTime()->toDateString());
+    }
+
     public function takeAttendancePage()
     {
-        return view('attendance.take-attendance.index');
+        return view('attendance.take-attendance.index', [
+            'isCheckedIn' => $this->isCheckedIn()
+        ]);
     }
 
     public function inputSchedulePage()
@@ -27,32 +49,30 @@ class AttendanceController extends Controller
 
     public function checkIn(Request $request)
     {
-        $user = auth()->user();
-
-        $factoryTime = new Factory([
-            'timezone' => 'Asia/Jakarta'
-        ]);
-        $currentTime = $factoryTime->make(Carbon::now());
-
-        if (Attendance::where('user_id', $user->user_id)
-            ->whereDate('date', $currentTime->toDateString())
-            ->exists()) {
-                return back()->withErrors([
-                    'alreadyCheckIn' => 'You have already checked in today.'
-                ]);
-            }
+        if ($this->isCheckedIn()) {
+            return back()->withErrors([
+                'alreadyCheckIn' => 'You have already checked in today.'
+            ]);
+        }
 
         $attendance = new Attendance();
-        $attendance->user_id = $user->user_id;
-        $attendance->check_in = $currentTime;
-        $attendance->date = $currentTime->toDateString();
+        $attendance->user_id = $this->getUser()->user_id;
+        $attendance->check_in = $this->getCurrentTime();
+        $attendance->date = $this->getCurrentTime()->toDateString();
         $attendance->save();
 
         return back()->with([
             'status' => 'success',
             'message' => 'Checked In',
-            'checkedIn' => true,
         ]);
+    }
+
+
+    public function isCheckedIn()
+    {
+        if ($this->getAttendance()->exists()) return true;
+
+        return false;
     }
 
     public function checkOut()
