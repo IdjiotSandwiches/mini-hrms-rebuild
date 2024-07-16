@@ -36,6 +36,9 @@ Route::middleware(['auth:web'])->group(function () {
         ->controller(AttendanceController::class)
         ->group(function () {
             Route::get('/take-attendance', 'takeAttendancePage')->name('take-attendance-page');
+            Route::post('/check-in', 'checkIn')->name('check-in');
+            Route::put('/take-attendance', 'checkOut')->name('check-out');
+
             Route::get('/input-schedule', 'inputSchedulePage')->name('input-schedule-page');
             Route::get('/report', 'reportPage')->name('report-page');
     });

@@ -2,10 +2,46 @@
 @section('title', 'Attendance - Take Attendance')
 
 @section('content')
-
+    <attendance-section class="py-10 flex flex-col gap-6 justify-center items-center">
+        <p id="current-day" class="text-center text-5xl font-semibold"></p>
+        <div class="flex gap-2">
+            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md"><p id="current-hours"></p></div>
+            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md"><p id="current-minutes"></p></div>
+        </div>
+        @error('alreadyCheckIn')
+            <p class="text-red-500">{{ $message }}</p>
+        @enderror
+        @if (Session::get('checkedIn'))
+            <form action="{{ route('attendance.check-out') }}" method="PUT">
+                @csrf
+                <button class="py-2 px-20 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Check Out</button>
+            </form>
+        @else
+            <form action="{{ route('attendance.check-in') }}" method="POST">
+                @csrf
+                <button class="py-2 px-20 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Check In</button>
+            </form>
+        @endif
+    </attendance-section>
     <script type="module">
         @if (Session::has('status'))
             toastr.{{ Session::get('status') }}('{{ Session::get('message') }}')
         @endif
+
+        function getCurrentTime() {
+            let now = new Date();
+            let currentDay = `${now.toLocaleString('default', {weekday: 'long'})}, ${now.getDate()} ${now.toLocaleString('default', {month: 'long'})} ${now.getFullYear()}`;
+            let currentHours = now.getHours().toString().padStart(2, '0');
+            let currentMinutes = now.getMinutes().toString().padStart(2, '0');
+            $('#current-day').text(currentDay);
+            $('#current-hours').text(currentHours);
+            $('#current-minutes').text(currentMinutes);
+            setTimeout(getCurrentTime, 1000);
+        }
+
+        $(document).ready(function() {
+            getCurrentTime();
+        });
     </script>
 @endsection
+
