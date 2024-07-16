@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-
     public function takeAttendancePage()
     {
         return view('attendance.take-attendance.index');
@@ -49,9 +48,10 @@ class AttendanceController extends Controller
         $attendance->date = $currentTime->toDateString();
         $attendance->save();
 
-        return redirect()->route('attendance.take-attendance-page')->with([
+        return back()->with([
             'status' => 'success',
             'message' => 'Checked In',
+            'checkedIn' => true,
         ]);
     }
 
