@@ -15,7 +15,7 @@ class TakeAttendanceController extends Controller
         $this->takeAttendanceService = new TakeAttendanceService();
     }
 
-    public function takeAttendancePage()
+    public function index()
     {
         return view('attendance.take-attendance.index', [
             'isCheckedIn' => $this->takeAttendanceService->isCheckedIn()
