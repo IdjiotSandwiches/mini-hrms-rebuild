@@ -22,25 +22,23 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // Logic ny dibalik
-        if (Auth::attempt($validated)) {
-            $request->session()->regenerate();
-            return redirect()
-                ->intended(route('attendance.take-attendance-page'))
+        if (!Auth::attempt($validated)) {
+            return back()->withErrors([
+                    'email' => ' ',
+                    'password' => ' ',
+                ])
                 ->with([
-                    'status' => 'success',
-                    'message' => 'Logged In'
+                    'status' => 'error',
+                    'message' => 'E-mail or password invalid'
                 ]);
         }
 
-        return back()
-            ->withErrors([
-                'email' => ' ',
-                'password' => ' ',
-            ])
+        $request->session()->regenerate();
+        return redirect()
+            ->intended(route('attendance.take-attendance-page'))
             ->with([
-                'status' => 'error',
-                'message' => 'E-mail or password invalid'
+                'status' => 'success',
+                'message' => 'Logged In'
             ]);
     }
 
