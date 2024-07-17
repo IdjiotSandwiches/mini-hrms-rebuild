@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TakeAttendanceController extends Controller
 {
-
     private $takeAttendanceService;
 
     public function __construct() {
