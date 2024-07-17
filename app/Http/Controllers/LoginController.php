@@ -23,9 +23,7 @@ class LoginController extends Controller
         ]);
 
         if (!Auth::attempt($validated)) {
-            $request->session()->regenerate();
-            return back()
-                ->withErrors([
+            return back()->withErrors([
                     'email' => ' ',
                     'password' => ' ',
                 ])
@@ -35,6 +33,7 @@ class LoginController extends Controller
                 ]);
             }
 
+        $request->session()->regenerate();
         return redirect()
             ->intended(route('attendance.take-attendance-page'))
             ->with([
