@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('day', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
             $table->time('start_time');
             $table->time('end_time');
+            $table->unsignedBigInteger('work_time');
             $table->timestamps();
         });
     }

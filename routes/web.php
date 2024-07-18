@@ -43,6 +43,7 @@ Route::middleware(['auth:web'])->group(function () {
 
             Route::controller(InputScheduleController::class)->group(function () {
                 Route::get('/input-schedule', 'index')->name('input-schedule-page');
+                Route::post('/input-schedule', 'inputSchedule')->name('input-schedule');
             });
 
             Route::controller(ReportController::class)->group(function () {

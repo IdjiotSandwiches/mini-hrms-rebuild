@@ -2,7 +2,7 @@
 @section('title', 'Attendance - Input Schedule')
 
 @php
-    $dayWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday', 'Sunday'];
+    $dayWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 @endphp
 
 @section('content')
@@ -64,22 +64,78 @@
                 </tbody>
             </table>
         </div>
-        <form action="" class="flex gap-4 justify-end items-center">
-            @csrf
+        <p id="submit-error" class="text-red-500 text-center hidden"></p>
+        <form class="flex gap-4 justify-end items-center">
             <p class="text-lg">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
-            <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Submit</button>
+            <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Submit</button>
         </form>
     </schedule-section>
 
     <script type="module">
+        @if (Session::has('status'))
+            toastr.{{ Session::get('status') }}('{{ Session::get('message') }}');
+        @endif
+
         let modal = $('.schedule-modal');
+        let totalWorkHours = 0;
         let id = null;
-        let totalWorkHours = 20;
+        let schedule = {
+            Monday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Tuesday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Wednesday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Thursday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Friday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Saturday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+            Sunday: {
+                start: '00:00:00',
+                end: '00:00:00',
+                workTime: 0,
+            },
+        }
 
         function hourInputError(text){
-            $('#error').text(text);
-            $('#error').removeClass('hidden');
-            $('.time-input').addClass('border-red-500');
+            $('#error').on('error', function() {
+                $(this).text(text);
+                $(this).removeClass('hidden');
+                $('.time-input').addClass('border-red-500');
+            })
+            $('#error').trigger('error');
+        }
+
+        function ajaxRequest() {
+            const url = "{{ route('attendance.input-schedule') }}";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    schedule: schedule,
+                    _token: '{{ csrf_token() }}'
+                }
+            });
         }
 
         $(document).ready(function() {
@@ -99,7 +155,7 @@
 
                 if(!fromHour || !toHour) {
                     hourInputError('You must input the schedule.');
-                    return
+                    return;
                 }
 
                 if(end.diff(start) <= 0) {
@@ -113,31 +169,60 @@
                 }
 
                 if(start.isBefore(dayjs('08:00:00', 'HH:mm:ss')) || end.isAfter(dayjs('19:00:00', 'HH:mm:ss'))) {
-                    hourInputError('Invalid work hours.')
+                    hourInputError('Invalid work hours.');
                     return;
                 }
 
+                let workTime = 0;
                 if(start.isBefore(breakEnd) && end.isAfter(breakStart)) {
                     let overtimeStart = start.isBefore(breakStart) ? breakStart : start;
                     let overtimeEnd = end.isAfter(breakEnd) ? breakEnd : end;
-                    let timeDiff = (end.diff(start) - overtimeEnd.diff(overtimeStart)) / 1000;
-
-                    let hour = Math.floor(timeDiff / 3600);
-                    let minute = Math.floor((timeDiff % 3600) / 60);
-                    let second = Math.round(timeDiff % 60);
-
-                    $(`#${id} > td:nth-child(2)`).text(`${fromHour} - ${toHour} (${hour}hr ${minute}m ${second}s)`);
+                    workTime = (end.diff(start) - overtimeEnd.diff(overtimeStart)) / 1000;
                 }
+                else {
+                    workTime = end.diff(start) / 1000;
+                }
+
+                let hour = Math.floor(workTime / 3600);
+                let minute = Math.floor((workTime % 3600) / 60);
+                let second = Math.round(workTime % 60);
+
+                $(`#${id} > td:nth-child(2)`).text(`${fromHour} - ${toHour} (${hour}hr ${minute}m ${second}s)`);
+
+                schedule[id].start = fromHour;
+                schedule[id].end = toHour;
+                schedule[id].workTime =workTime;
+
+                totalWorkHours = 0;
+                for(const [key, value] of Object.entries(schedule)) {
+                    totalWorkHours += value.workTime;
+                }
+
+                totalWorkHours = Math.floor(totalWorkHours / 3600);
+                $('#work-hours').text(`${totalWorkHours} Hours`);
+                totalWorkHours >= 20 ? $('#work-hours').removeClass('text-red-500') : '';
+                totalWorkHours >= 20 ? $('#work-hours').addClass('text-blue-500') : '';
+
+                $('#error').addClass('hidden');
+                $('.time-input').val('');
 
                 modal.toggle();
             });
 
-            // Besok oprek yang ini
-            // $('#work-hours').text(`${totalWorkHours} Hours`);
-            // totalWorkHours >= 20 ? $('#work-hours').addClass('text-blue-500') : '';
-
             $('.close-btn').click(function() {
                 modal.toggle();
+            });
+
+            $('#submit').click(function(e) {
+                if(totalWorkHours < 20) {
+                    $('#submit-error').text('You must work at least 20 hours a week');
+                    $('#submit-error').removeClass('hidden');
+                    e.preventDefault();
+                    return;
+                }
+
+                $('#submit-error').addClass('hidden');
+                ajaxRequest();
             });
 
             modal.on('click', function(event) {
