@@ -89,7 +89,7 @@
                 <p class="text-lg">Work Hours: <span id="work-hours" class="text-blue-500">{{ str($totalWorkHour) . ' Hours' }}</span></p>
             @else
                 <p class="text-lg">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
-                <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Submit</button>
+                <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Save Schedule</button>
             @endif
         </form>
     </schedule-section>
