@@ -44,12 +44,9 @@
             <table class="w-full table text-center text-gray-500">
                 <thead class="bg-blue-500 text-white">
                     <tr class="font-semibold">
-                        @if ($isScheduleSubmitted)
-                            <td class="px-4 py-3">Day</td>
-                            <td class="px-4 py-3 bg-blue-600">Time</td>
-                        @else
-                            <td class="px-4 py-3">Day</td>
-                            <td class="px-4 py-3 bg-blue-600">Time</td>
+                        <td class="px-4 py-3">Day</td>
+                        <td class="px-4 py-3 bg-blue-600">Time</td>
+                        @if (!$isScheduleSubmitted)
                             <td class="px-4 py-3">Action</td>
                         @endif
                     </tr>

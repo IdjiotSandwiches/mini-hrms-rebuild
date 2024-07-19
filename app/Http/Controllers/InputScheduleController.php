@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Schedule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Attendance\InputScheduleService;
 
 class InputScheduleController extends Controller
 {
+    private $inputScheduleService;
+
+    public function __construct()
+    {
+        $this->inputScheduleService = new InputScheduleService();
+    }
+
     public function index()
     {
+        $isScheduleSubmitted = $this->inputScheduleService
+            ->isScheduleSubmitted();
+        $schedule = $this->inputScheduleService
+            ->getSchedule()
+            ->get() ?? null;
+        $totalWorkHour = $this->inputScheduleService
+            ->calculateTotalWorkHour() ?? null;
+
         return view('attendance.input-schedule.index', [
-            'isScheduleSubmitted' => $this->isScheduleSubmitted(),
-            'schedule' => $this->getSchedule() ?? null,
-            'totalWorkHour' => $this->calculateTotalWorkHour() ?? null,
+            'isScheduleSubmitted' => $isScheduleSubmitted,
+            'schedule' => $schedule,
+            'totalWorkHour' => $totalWorkHour,
         ]);
-    }
-
-    public function isScheduleSubmitted()
-    {
-        return !$this->getSchedule()->isEmpty();
-    }
-
-    public function getSchedule()
-    {
-        return Schedule::all();
-    }
-
-    public function calculateTotalWorkHour()
-    {
-        $schedule = $this->getSchedule();
-        $totalWorkHour = $schedule->sum('work_time');
-        $totalWorkHour = floor($totalWorkHour / 3600);
-        return $totalWorkHour;
     }
 
     public function inputSchedule(Request $request)
@@ -44,56 +39,6 @@ class InputScheduleController extends Controller
             'schedule' => 'required|array'
         ]);
 
-        try {
-            DB::beginTransaction();
-
-            $totalWorkTime = 0;
-            foreach($validated['schedule'] as $day => $value) {
-                $start = Carbon::createFromTimeString($value['start']);
-                $end = Carbon::createFromTimeString($value['end']);
-
-                $breakStart = Carbon::createFromTimeString('12:00:00');
-                $breakEnd = Carbon::createFromTimeString('13:00:00');
-                $totalTime = $end->diffInSeconds($start);
-
-                if ($start->isBefore($breakEnd) && $end->isAfter($breakStart)) {
-                    $overtimeStart = $start->isBefore($breakStart) ? $breakStart : $start;
-                    $overtimeEnd = $end->isAfter($breakEnd) ? $breakEnd : $end;
-                    $overtime = $overtimeEnd->diffInSeconds($overtimeStart);
-                    $totalTime -= $overtime;
-                }
-
-                $totalWorkTime += $totalTime;
-
-                $schedule = new Schedule();
-                $schedule->user_id = auth()->user()->user_id;
-                $schedule->day = $day;
-                $schedule->start_time = $start;
-                $schedule->end_time = $end;
-                $schedule->work_time = $value['start'] == '00:00:00' && $value['end'] == '00:00:00' ? 0 : $totalTime;
-                $schedule->save();
-            }
-
-            if ($totalWorkTime < 20) {
-                DB::rollBack();
-                return back()->with([
-                    'status' => 'error',
-                    'message' => 'You must work at least 20 hours a week.',
-                ]);
-            }
-
-            DB::commit();
-            return back()->with([
-                'status' => 'success',
-                'message' => 'Schedule has submitted successfully.'
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return back()->with([
-                'status' => 'error',
-                'message' => 'Invalid operation.'
-            ]);
-        }
+        $this->inputScheduleService->processSchedule($validated);
     }
 }

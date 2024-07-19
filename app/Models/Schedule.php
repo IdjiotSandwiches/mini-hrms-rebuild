@@ -15,6 +15,7 @@ class Schedule extends Model
         'day',
         'start_time',
         'end_time',
+        'work_time',
     ];
 
     public function user()
