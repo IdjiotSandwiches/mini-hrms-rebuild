@@ -6,18 +6,16 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Attendance extends Model
+class Schedule extends Model
 {
-    protected $primaryKey = 'attendance_id';
+    protected $primaryKey = 'schedule_id';
 
     protected $fillable = [
         'user_id',
-        'check_in',
-        'check_out',
-        'early',
-        'late',
-        'absence',
-        'date',
+        'day',
+        'start_time',
+        'end_time',
+        'work_time',
     ];
 
     public function user()

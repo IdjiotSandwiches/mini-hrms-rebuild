@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
-            $table->id('attendance_id');
+        Schema::create('schedules', function (Blueprint $table) {
+            $table->id('schedule_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->dateTime('check_in');
-            $table->dateTime('check_out')->nullable();
-            $table->boolean('early')->nullable();
-            $table->boolean('late')->nullable();
-            $table->boolean('absence')->nullable();
-            $table->date('date');
+            $table->enum('day', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->unsignedBigInteger('work_time');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('schedules');
     }
 };

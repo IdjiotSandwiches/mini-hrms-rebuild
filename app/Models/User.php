@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Schedule;
 use App\Models\Attendance;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -22,5 +23,10 @@ class User extends Authenticatable
     public function attendance()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class);
     }
 }

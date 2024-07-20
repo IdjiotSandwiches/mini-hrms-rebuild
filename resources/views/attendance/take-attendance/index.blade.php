@@ -2,7 +2,7 @@
 @section('title', 'Attendance - Take Attendance')
 
 @section('content')
-    <attendance-section class="py-10 flex flex-col gap-6 justify-center items-center">
+    <attendance-section class="py-10 flex flex-col gap-6 justify-center items-center select-none">
         <p id="current-day" class="text-center text-5xl font-semibold"></p>
         <div class="flex gap-2">
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-hours"></div>
