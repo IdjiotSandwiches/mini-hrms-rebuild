@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
-    // private $currentTime;
-
-    // public function __construct()
-    // {
-    //     $this->currentTime = $this->convertTime();
-    // }
 
     public function getAttendance()
     {
