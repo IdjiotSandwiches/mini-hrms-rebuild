@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
-
     public function getAttendance()
     {
         return Attendance::where('user_id', $this->getUser()->user_id)

@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class InputScheduleService extends BaseService
 {
-    private $currentTime;
-
-    public function __construct()
-    {
-        $this->currentTime = $this->getCurrentTime();
-    }
-
     public function isScheduleSubmitted()
     {
         return $this->getSchedule()->exists();
@@ -36,11 +29,11 @@ class InputScheduleService extends BaseService
 
     public function inputTimeValidation($value)
     {
-        $start = Carbon::createFromTimeString($value['start']);
-        $end = Carbon::createFromTimeString($value['end']);
+        $start = $this->convertTime($value['start']);
+        $end = $this->convertTime($value['end']);
 
-        $breakStart = Carbon::createFromTimeString('12:00:00');
-        $breakEnd = Carbon::createFromTimeString('13:00:00');
+        $breakStart = $this->convertTime('12:00:00');
+        $breakEnd = $this->convertTime('13:00:00');
         $totalTime = $end->diffInSeconds($start);
 
         if ($start->isBefore($breakEnd) && $end->isAfter($breakStart)) {
