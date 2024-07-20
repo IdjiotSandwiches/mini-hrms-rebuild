@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
-    public function getAttendance()
+    public function getTodayAttendance()
     {
         return Attendance::where('user_id', $this->getUser()->user_id)
             ->whereDate('date', $this->convertTime(Carbon::now())
@@ -44,7 +44,7 @@ class TakeAttendanceService extends BaseService
 
     public function isCheckedIn()
     {
-        $attendance = $this->getAttendance();
+        $attendance = $this->getTodayAttendance();
         if (!$attendance->exists()) return false;
         else {
             if (!$attendance->first()->check_out) return true;
@@ -98,7 +98,7 @@ class TakeAttendanceService extends BaseService
         try {
             DB::beginTransaction();
 
-            $checkInTime = $this->getAttendance()
+            $checkInTime = $this->getTodayAttendance()
                 ->first()
                 ->check_in;
 
