@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
-    // private $currentTime;
-
-    // public function __construct()
-    // {
-    //     $this->currentTime = $this->convertTime();
-    // }
-
     public function getAttendance()
     {
         return Attendance::where('user_id', $this->getUser()->user_id)
