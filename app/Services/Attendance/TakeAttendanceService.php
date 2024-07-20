@@ -3,47 +3,42 @@
 namespace App\Services\Attendance;
 
 use Carbon\Carbon;
-use Carbon\Factory;
-use App\Models\Schedule;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
-    private $currentTime;
+    // private $currentTime;
 
-    public function __construct()
-    {
-        $this->currentTime = $this->getCurrentTime();
-    }
+    // public function __construct()
+    // {
+    //     $this->currentTime = $this->convertTime();
+    // }
 
     public function getAttendance()
     {
         return Attendance::where('user_id', $this->getUser()->user_id)
-            ->whereDate('date', $this->currentTime->toDateString());
+            ->whereDate('date', $this->convertTime(Carbon::now())
+                ->toDateString());
     }
 
     public function isLate($currentTime)
     {
         $schedule = $this->getSchedule()->get();
         $currentTimeDay = $currentTime->dayOfWeekIso - 1;
-        $startTime = Carbon::createFromTimeString($schedule[$currentTimeDay]->start_time);
+        $startTime = $this->convertTime($schedule[$currentTimeDay]->start_time);
 
-        if ($currentTime->gt($startTime)) return true;
-
-        return false;
+        return $currentTime->gt($startTime);
     }
 
     public function isEarly($currentTime)
     {
         $schedule = $this->getSchedule()->get();
         $currentTimeDay = $currentTime->dayOfWeekIso - 1;
-        $endTime = Carbon::createFromTimeString($schedule[$currentTimeDay]->end_time);
+        $endTime = $this->convertTime($schedule[$currentTimeDay]->end_time);
 
-        if ($currentTime->lt($endTime)) return true;
-
-        return false;
+        return $currentTime->lt($endTime);
     }
 
     public function isWork($currentTime)
@@ -51,9 +46,7 @@ class TakeAttendanceService extends BaseService
         $schedule = $this->getSchedule()->get();
         $currentTimeDay = $currentTime->dayOfWeekIso - 1;
 
-        if ($schedule[$currentTimeDay]->work_time) return true;
-
-        return false;
+        return $schedule[$currentTimeDay]->work_time;
     }
 
     public function isCheckedIn()
@@ -66,17 +59,12 @@ class TakeAttendanceService extends BaseService
         }
     }
 
-    public function isAbsence()
-    {
-
-    }
-
     public function checkInValidation()
     {
         try {
             DB::beginTransaction();
 
-            $currentTime = $this->getCurrentTime();
+            $currentTime = $this->convertTime(Carbon::now());
 
             if (!$this->isWork($currentTime)) {
                 DB::rollBack();
@@ -91,8 +79,8 @@ class TakeAttendanceService extends BaseService
             Attendance::updateOrCreate(
                 ['user_id' => $this->getUser()->user_id],
                 [
-                    'check_in' => $this->getCurrentTime(),
-                    'date' => $this->getCurrentTime()
+                    'check_in' => $this->convertTime(Carbon::now()),
+                    'date' => $this->convertTime(Carbon::now())
                         ->toDateString(),
                     'late' => $isLate,
                 ]
@@ -121,7 +109,7 @@ class TakeAttendanceService extends BaseService
                 ->first()
                 ->check_in;
 
-            $currentTime = $this->getCurrentTime();
+            $currentTime = $this->convertTime(Carbon::now());
             $diffTime = $currentTime->diffInMinutes($checkInTime);
 
             if ($diffTime < 60) {
@@ -137,8 +125,7 @@ class TakeAttendanceService extends BaseService
                 [
                     'user_id' => $this->getUser()
                         ->user_id,
-                    'date' => $this->getCurrentTime()
-                        ->toDateString(),
+                    'date' => $currentTime->toDateString(),
                 ],
                 [
                     'check_out' => $currentTime,

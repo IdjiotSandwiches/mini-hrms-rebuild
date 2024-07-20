@@ -13,13 +13,13 @@ class BaseService
         return auth()->user();
     }
 
-    public function getCurrentTime()
+    public function convertTime($time)
     {
         $factoryTime = new Factory([
             'timezone' => 'Asia/Jakarta'
         ]);
 
-        return $factoryTime->make(Carbon::now());
+        return $factoryTime->make($time);
     }
 
     public function getSchedule()
