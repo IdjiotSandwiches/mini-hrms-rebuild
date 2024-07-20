@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Carbon\Factory;
+use App\Models\Schedule;
 
 class BaseService
 {
@@ -19,6 +20,11 @@ class BaseService
         ]);
 
         return $factoryTime->make(Carbon::now());
+    }
+
+    public function getSchedule()
+    {
+        return Schedule::where('user_id', $this->getUser()->user_id);
     }
 }
 

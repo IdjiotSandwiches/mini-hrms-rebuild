@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attendance;
 use App\Services\Attendance\TakeAttendanceService;
 use Illuminate\Http\Request;
 
@@ -23,6 +22,14 @@ class TakeAttendanceController extends Controller
 
     public function checkIn(Request $request)
     {
+        if (!$this->takeAttendanceService
+            ->getSchedule()
+            ->exists()) {
+                return back()->withErrors([
+                    'attendanceError' => 'Input schedule first.'
+                ]);
+        }
+
         if ($this->takeAttendanceService
             ->getAttendance()
             ->exists()) {
@@ -31,48 +38,11 @@ class TakeAttendanceController extends Controller
                 ]);
         }
 
-        $attendance = new Attendance();
-        $attendance->user_id = $this->takeAttendanceService
-            ->getUser()
-            ->user_id;
-        $attendance->check_in = $this->takeAttendanceService
-            ->getCurrentTime();
-        $attendance->date = $this->takeAttendanceService
-            ->getCurrentTime()
-            ->toDateString();
-        $attendance->save();
-
-        return back()->with([
-            'status' => 'success',
-            'message' => 'Checked In',
-        ]);
+        return $this->takeAttendanceService->checkInValidation();
     }
 
     public function checkOut()
     {
-        $checkInTime = $this->takeAttendanceService
-            ->getAttendance()
-            ->first()
-            ->check_in;
-
-        $currentTime = $this->takeAttendanceService
-            ->getCurrentTime();
-        $diffTime = $currentTime->diffInMinutes($checkInTime);
-
-        if ($diffTime < 60) {
-            return back()->withErrors([
-                'attendanceError' => 'You need at least 1 hour to check out.'
-            ]);
-        }
-
-        $this->takeAttendanceService
-            ->getAttendance()
-            ->first()
-            ->update(['check_out' => $currentTime]);
-
-        return back()->with([
-            'status' => 'success',
-            'message' => 'Checked Out',
-        ]);
+        return $this->takeAttendanceService->checkOutValidation();
     }
 }

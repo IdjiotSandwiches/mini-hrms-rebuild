@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->dateTime('check_in');
             $table->dateTime('check_out')->nullable();
-            $table->boolean('early');
-            $table->boolean('late');
-            $table->boolean('absence');
+            $table->boolean('early')->nullable();
+            $table->boolean('late')->nullable();
+            $table->boolean('absence')->nullable();
             $table->date('date');
             $table->timestamps();
         });
