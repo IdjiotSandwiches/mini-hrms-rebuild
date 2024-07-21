@@ -14,8 +14,8 @@
         <content-section class="grid grid-cols-[20%_minmax(20%,_1fr)] gap-10 py-10">
             <!-- Sidebar -->
             <aside class="grid gap-2 h-fit">
-                @include('components.sidebar-item', with(['item_title' => 'Edit Profile']))
-                @include('components.sidebar-item', with(['item_title' => 'Change Password']))
+                @include('components.sidebar-item', with(['item_title' => 'Edit Profile', 'path' => 'profile.edit-profile-page']))
+                @include('components.sidebar-item', with(['item_title' => 'Change Password', 'path' => 'profile.change-password-page']))
             </aside>
             <section>
                 <div class="border-gray-200 border-b-2 pb-5">

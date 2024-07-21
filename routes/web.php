@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\EditProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -54,7 +56,13 @@ Route::middleware(['auth:web'])->group(function () {
     Route::prefix('profile')
         ->as('profile.')
         ->group(function () {
+            Route::controller(EditProfileController::class)->group(function () {
+                Route::get('/edit-profile', 'index')->name('edit-profile-page');
+            });
 
+            Route::controller(ChangePasswordController::class)->group(function () {
+                Route::get('/change-password', 'index')->name('change-password-page');
+            });
         });
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
