@@ -51,5 +51,11 @@ Route::middleware(['auth:web'])->group(function () {
             });
     });
 
+    Route::prefix('profile')
+        ->as('profile.')
+        ->group(function () {
+
+        });
+
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
