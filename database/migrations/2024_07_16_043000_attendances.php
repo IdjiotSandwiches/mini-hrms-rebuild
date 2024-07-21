@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('attendance_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->dateTime('check_in');
-            $table->dateTime('check_out')->nullable();
+            $table->time('check_in');
+            $table->time('check_out')->nullable();
             $table->boolean('early')->nullable();
             $table->boolean('late')->nullable();
             $table->boolean('absence')->nullable();
