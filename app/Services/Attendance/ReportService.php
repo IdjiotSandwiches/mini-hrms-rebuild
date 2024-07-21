@@ -21,12 +21,12 @@ class ReportService extends BaseService
     public function getWeeklyReport()
     {
         $currentTime = $this->convertTime(Carbon::now());
-        $lastWeek = $currentTime->copy()
-            ->subWeek()
+        $startOfWeek = $currentTime->copy()
+            ->startOfWeek()
             ->toDateString();
 
         $attendances = $this->getAttendance()
-            ->whereBetween('date', [$lastWeek, $currentTime->toDateString()]);
+            ->whereBetween('date', [$startOfWeek, $currentTime->toDateString()]);
 
         return $this->getReport($attendances, 'weekly');
     }
@@ -34,12 +34,9 @@ class ReportService extends BaseService
     public function getMonthlyReport()
     {
         $currentTime = $this->convertTime(Carbon::now());
-        $lastMonth = $currentTime->copy()
-            ->subMonth()
-            ->toDateString();
 
         $attendances = $this->getAttendance()
-            ->whereBetween('date', [$lastMonth, $currentTime->toDateString()]);
+            ->whereMonth('date', $currentTime->month);
 
         return $this->getReport($attendances, 'monthly');
     }
