@@ -20,8 +20,8 @@ class AttendanceSeeder extends Seeder
         while ($currentDate->lte($endDate)) {
             DB::table('attendances')->insert([
                 'user_id' => 1,
-                'check_in' => $currentDate->setTime(8, 0, 0),
-                'check_out' => $currentDate->setTime(18, 0, 0),
+                'check_in' => '08:00:00',
+                'check_out' => '18:00:00',
                 'early' => false,
                 'late' => false,
                 'absence' => false,

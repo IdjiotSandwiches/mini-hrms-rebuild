@@ -96,7 +96,7 @@ class ReportService extends BaseService
     public function convertWorkTime($attendance)
     {
         return $attendance->check_out ? gmdate('H:i:s',
-                $this->calculateWorkTime($attendance->check_in,
-                $attendance->check_out)->totalTime) : '-';
+                $this->calculateWorkTime($this->convertTime($attendance->check_in),
+                $this->convertTime($attendance->check_out))->totalTime) : '-';
     }
 }
