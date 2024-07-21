@@ -2,7 +2,6 @@
 
 namespace App\Services\Attendance;
 
-use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -27,25 +26,6 @@ class InputScheduleService extends BaseService
         return $totalWorkHour;
     }
 
-    public function inputTimeValidation($value)
-    {
-        $start = $this->convertTime($value['start']);
-        $end = $this->convertTime($value['end']);
-
-        $breakStart = $this->convertTime('12:00:00');
-        $breakEnd = $this->convertTime('13:00:00');
-        $totalTime = $end->diffInSeconds($start);
-
-        if ($start->isBefore($breakEnd) && $end->isAfter($breakStart)) {
-            $overtimeStart = $start->isBefore($breakStart) ? $breakStart : $start;
-            $overtimeEnd = $end->isAfter($breakEnd) ? $breakEnd : $end;
-            $overtime = $overtimeEnd->diffInSeconds($overtimeStart);
-            $totalTime -= $overtime;
-        }
-
-        return (object) compact('start', 'end', 'totalTime');
-    }
-
     public function processSchedule($validated)
     {
         try {
@@ -53,7 +33,7 @@ class InputScheduleService extends BaseService
 
             $totalWorkTime = 0;
             foreach($validated['schedule'] as $day => $value) {
-                $validatedTime = $this->inputTimeValidation($value);
+                $validatedTime = $this->calculateWorkTime($value['start'], $value['end']);
 
                 $totalWorkTime += $validatedTime->totalTime;
 
