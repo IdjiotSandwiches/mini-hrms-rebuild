@@ -2,35 +2,36 @@
 @section('title', 'Attendance - Report')
 
 @section('content')
-    <weekly-table class="py-10 gap-4 flex flex-col">
-        <div class="w-full relative overflow-x-auto rounded-md">
-            <table class="w-full table text-center text-gray-500">
-                <thead class="bg-blue-500 text-white">
-                    <tr class="font-semibold">
-                        <td class="px-4 py-3">No.</td>
-                        <td class="px-4 py-3 bg-blue-600">Date</td>
-                        <td class="px-4 py-3">Check In Time</td>
-                        <td class="px-4 py-3 bg-blue-600">Check Out Time</td>
-                        <td class="px-4 py-3">Early</td>
-                        <td class="px-4 py-3 bg-blue-600">Late</td>
-                        <td class="px-4 py-3">Absence</td>
-                        <td class="px-4 py-3 bg-blue-600">Work Duration</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b-2 border-gray-200">
-                        <td class="px-4 py-3">1</td>
-                        <td class="px-4 py-3 bg-gray-100">Wednesday, 31 September 2020</td>
-                        <td class="px-4 py-3">00:00:00</td>
-                        <td class="px-4 py-3 bg-gray-100">00:00:00</td>
-                        <td class="px-4 py-3">Yes</td>
-                        <td class="px-4 py-3 bg-gray-100">Yes</td>
-                        <td class="px-4 py-3">Yes</td>
-                        <td class="px-4 py-3 bg-gray-100">00:00:00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </weekly-table>
+    <report-section class="flex flex-col gap-8 py-10">
+        <current-date>
+            <h1 class="text-lg font-medium">Current Date</h1>
+            <p class="text-gray-500">Today is <span id="current-day"></span>.
+                <span id="current-hours"></span>:<span id="current-minutes"></span>:<span id="current-seconds"></span>
+            </p>
+        </current-date>
+        <weekly-table class="gap-4 flex flex-col">
+            <div>
+                <h1 class="text-lg font-medium">Weekly Report</h1>
+                <p class="text-gray-500">This is your work report for the last 7 days.</p>
+            </div>
+            @include('attendance.report.components.report-table', with(['attendances' => $weeklyAttendances]))
+            <p class="font-medium">Total Weekly Work Hours:
+                <span class="@if ($weeklyWorkHours < 20) text-red-500 @else text-blue-500 @endif">{{ $weeklyWorkHours }} Hours</span>
+            </p>
+        </weekly-table>
+        <monthly-table class="gap-4 flex flex-col">
+            <div>
+                <h1 class="text-lg font-medium">Monthly Report</h1>
+                <p class="text-gray-500">This is your work report for the last 30 days.</p>
+            </div>
+            @include('attendance.report.components.report-table', with(['attendances' => $monthlyAttendances]))
+            <p class="font-medium">Total Monthly Work Hours:
+                <span class="@if ($monthlyWorkHours < 80) text-red-500 @else text-blue-500 @endif">{{ $monthlyWorkHours }} Hours</span>
+            </p>
+            {{ $monthlyAttendances->links('pagination::tailwind') }}
+        </monthly-table>
+    </report-section>
+
+    @include('components.common-js')
 
 @endsection

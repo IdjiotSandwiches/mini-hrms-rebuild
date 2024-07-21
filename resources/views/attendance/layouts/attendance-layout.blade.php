@@ -21,7 +21,7 @@
             <section>
                 <div class="border-gray-200 border-b-2 pb-5">
                     <h2 class="text-xl font-semibold">{{ $title }}</h2>
-                    <p>{{ $desc }}</p>
+                    <p class="text-gray-500">{{ $desc }}</p>
                 </div>
                 @yield('content')
             </section>

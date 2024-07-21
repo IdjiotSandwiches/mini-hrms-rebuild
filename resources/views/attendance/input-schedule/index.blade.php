@@ -41,7 +41,7 @@
 
     <schedule-section class="py-10 gap-4 flex flex-col">
         <div class="w-full relative overflow-x-auto rounded-md">
-            <table class="w-full table text-center text-gray-500">
+            <table class="w-full table-auto text-center text-gray-500">
                 <thead class="bg-blue-500 text-white">
                     <tr class="font-semibold">
                         <td class="px-4 py-3">Day</td>
@@ -83,9 +83,9 @@
         <form class="flex gap-4 justify-end items-center">
             @csrf
             @if ($isScheduleSubmitted)
-                <p class="text-lg">Work Hours: <span id="work-hours" class="text-blue-500">{{ str($totalWorkHour) . ' Hours' }}</span></p>
+                <p class="text-lg font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ str($totalWorkHour) . ' Hours' }}</span></p>
             @else
-                <p class="text-lg">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
+                <p class="text-lg font-medium">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
                 <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Save Schedule</button>
             @endif
         </form>

@@ -15,11 +15,16 @@ class ReportController extends Controller
 
     public function index()
     {
-        return view('attendance.report.index');
-    }
+        $weeklyAttendances = $this->reportService
+            ->getWeeklyReport();
+        $monthlyAttendances = $this->reportService
+            ->getMonthlyReport();
 
-    public function getWeeklyReport()
-    {
-
+        return view('attendance.report.index', [
+            'weeklyAttendances' => $weeklyAttendances->attendances,
+            'weeklyWorkHours' => $weeklyAttendances->workHours,
+            'monthlyAttendances' => $monthlyAttendances->attendances,
+            'monthlyWorkHours' => $monthlyAttendances->workHours,
+        ]);
     }
 }

@@ -31,5 +31,24 @@ class BaseService
     {
         return Attendance::where('user_id', $this->getUser()->user_id);
     }
+
+    public function calculateWorkTime($start, $end)
+    {
+        $start = $this->convertTime($start);
+        $end = $this->convertTime($end);
+
+        $breakStart = $this->convertTime('12:00:00');
+        $breakEnd = $this->convertTime('13:00:00');
+        $totalTime = $end->diffInSeconds($start);
+
+        if ($start->isBefore($breakEnd) && $end->isAfter($breakStart)) {
+            $overtimeStart = $start->isBefore($breakStart) ? $breakStart : $start;
+            $overtimeEnd = $end->isAfter($breakEnd) ? $breakEnd : $end;
+            $overtime = $overtimeEnd->diffInSeconds($overtimeStart);
+            $totalTime -= $overtime;
+        }
+
+        return (object) compact('start', 'end', 'totalTime');
+    }
 }
 
