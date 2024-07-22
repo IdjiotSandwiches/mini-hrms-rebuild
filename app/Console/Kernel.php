@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('schedule:absences')->dailyAt('01:00');
+        $schedule->command('schedule:absences')
+            ->timezone('Asia/Jakarta')
+            ->dailyAt('20:00');
     }
 
     /**
