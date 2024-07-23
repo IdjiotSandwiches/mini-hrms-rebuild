@@ -67,11 +67,10 @@ class ChangePasswordService extends BaseService
                         ]);
             }
 
-            User::where('user_id', auth()->user()->user_id)
-                ->update([
-                    'password' => Hash::make($validated['update_password']),
-                    'last_password_change' => $this->convertTime(Carbon::now()),
-                ]);
+            $user = $this->getUser();
+            $user->password = Hash::make($validated['update_password']);
+            $user->last_password_change = $this->convertTime(Carbon::now());
+            $user->save();
 
             DB::commit();
             return redirect()
