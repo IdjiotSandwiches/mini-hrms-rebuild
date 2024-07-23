@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
+            $table->timestamp('last_password_change')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Profile;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,32 @@ use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordService extends BaseService
 {
+    public function isUpdateTime()
+    {
+        $userLastUpdate = $this->getUser()
+            ->last_password_change;
+
+        if (!$userLastUpdate) return true;
+
+        $userLastUpdate = $this->convertTime($userLastUpdate);
+        $currentTime = $this->convertTime(Carbon::now());
+
+        if ($userLastUpdate->diffInSeconds($currentTime) >= 86400) return true;
+        return false;
+    }
+
+    public function timerCountdown()
+    {
+        $userLastUpdate = $this->getUser()
+            ->last_password_change;
+
+        $userLastUpdate = $this->convertTime($userLastUpdate);
+        $currentTime = $this->convertTime(Carbon::now());
+
+        $countdown = 86400 - $userLastUpdate->diffInSeconds($currentTime);
+        return $countdown;
+    }
+
     public function changePasswordValidation($validated)
     {
         try {
@@ -43,6 +70,7 @@ class ChangePasswordService extends BaseService
             User::where('user_id', auth()->user()->user_id)
                 ->update([
                     'password' => Hash::make($validated['update_password']),
+                    'last_password_change' => $this->convertTime(Carbon::now()),
                 ]);
 
             DB::commit();
