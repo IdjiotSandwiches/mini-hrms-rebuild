@@ -2,7 +2,11 @@
 @section('title', 'Profile - Change Password')
 
 @section('content')
-    @if ($isUpdateTime)
+    @if (!$isUpdateTime)
+        <timer-section class="py-10 flex flex-col">
+            <h1 class="text-lg">You can change your password in: <span id="countdown" class="text-red-500 font-medium"></span></h1>
+        </timer-section>
+    @else
         <password-section>
             <form action="{{ route('profile.change-password') }}" method="POST" class="flex flex-col pt-10 gap-4">
                 @csrf
@@ -36,10 +40,6 @@
                 </div>
             </form>
         </password-section>
-    @else
-        <timer-section class="py-10 flex flex-col">
-            <h1 class="text-lg">You can change your password in: <span id="countdown" class="text-red-500 font-medium"></span></h1>
-        </timer-section>
     @endif
 
     <script type="module">
