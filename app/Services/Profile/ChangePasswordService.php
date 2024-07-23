@@ -32,40 +32,26 @@ class ChangePasswordService extends BaseService
             if (!$this->isUpdateTime())
             {
                 DB::rollBack();
-                return back()->withErrors([
-                        'update_password' => ' ',
-                        'confirm_password' => ' ',
-                    ])
-                    ->with([
-                        'status' => 'error',
-                        'message' => 'You need to wait at least 24 hours to change password again.'
-                    ]);
+                return back()->with([
+                    'status' => 'error',
+                    'message' => 'You need to wait at least 24 hours to change password again.'
+                ]);
             }
 
             if (!Hash::check($validated['confirm_password'], $this->getUser()
                 ->getAuthPassword())) {
                     DB::rollBack();
                     return back()->withErrors([
-                            'update_password' => ' ',
-                            'confirm_password' => ' ',
-                        ])
-                        ->with([
-                            'status' => 'error',
-                            'message' => 'The password confirmation does not match.'
-                        ]);
+                        'confirm_password' => 'The password confirmation does not match.',
+                    ]);
             }
 
             if (Hash::check($validated['update_password'], $this->getUser()
                 ->getAuthPassword())) {
                     DB::rollBack();
                     return back()->withErrors([
-                            'update_password' => ' ',
-                            'confirm_password' => ' ',
-                        ])
-                        ->with([
-                            'status' => 'error',
-                            'message' => 'New password cannot be same as current password.'
-                        ]);
+                        'update_password' => 'New password cannot be same as current password.',
+                    ]);
             }
 
             $user = $this->getUser();
