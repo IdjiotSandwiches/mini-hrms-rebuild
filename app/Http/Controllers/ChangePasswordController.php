@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Services\Profile\ChangePasswordService;
 
 class ChangePasswordController extends Controller
 {
+    private $changePasswordService;
+
+    public function __construct()
+    {
+        $this->changePasswordService = new ChangePasswordService();
+    }
+
     public function index()
     {
         return view('profile.change-password.index');
@@ -21,52 +26,8 @@ class ChangePasswordController extends Controller
             'confirm_password' => 'required',
         ]);
 
-        try {
-            DB::beginTransaction();
+        return $this->changePasswordService
+            ->changePasswordValidation($validated);
 
-            if (!Hash::check($validated['confirm_password'], auth()->user()->getAuthPassword())) {
-                DB::rollBack();
-                return back()->withErrors([
-                        'update_password' => ' ',
-                        'confirm_password' => ' ',
-                    ])
-                    ->with([
-                        'status' => 'error',
-                        'message' => 'The password confirmation does not match.'
-                    ]);
-            }
-
-            if (Hash::check($validated['update_password'], auth()->user()->getAuthPassword())) {
-                DB::rollBack();
-                return back()->withErrors([
-                        'update_password' => ' ',
-                        'confirm_password' => ' ',
-                    ])
-                    ->with([
-                        'status' => 'error',
-                        'message' => 'New password cannot be same as current password.'
-                    ]);
-            }
-
-            User::where('user_id', auth()->user()->user_id)
-                ->update([
-                    'password' => Hash::make($validated['update_password']),
-                ]);
-
-            DB::commit();
-            return redirect()
-                ->intended(route('profile.edit-profile-page'))
-                ->with([
-                    'status' => 'success',
-                    'message' => 'Password has been changed successfully.',
-                ]);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with([
-                'status' => 'error',
-                'message' => 'Invalid operation.'
-            ]);
-        }
     }
 }
