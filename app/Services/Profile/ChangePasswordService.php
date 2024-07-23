@@ -24,22 +24,23 @@ class ChangePasswordService extends BaseService
         return false;
     }
 
-    public function timerCountdown()
-    {
-        $userLastUpdate = $this->getUser()
-            ->last_password_change;
-
-        $userLastUpdate = $this->convertTime($userLastUpdate);
-        $currentTime = $this->convertTime(Carbon::now());
-
-        $countdown = 86400 - $userLastUpdate->diffInSeconds($currentTime);
-        return $countdown;
-    }
-
     public function changePasswordValidation($validated)
     {
         try {
             DB::beginTransaction();
+
+            if (!$this->isUpdateTime())
+            {
+                DB::rollBack();
+                return back()->withErrors([
+                        'update_password' => ' ',
+                        'confirm_password' => ' ',
+                    ])
+                    ->with([
+                        'status' => 'error',
+                        'message' => 'You need to wait at least 24 hours to change password again.'
+                    ]);
+            }
 
             if (!Hash::check($validated['confirm_password'], $this->getUser()
                 ->getAuthPassword())) {

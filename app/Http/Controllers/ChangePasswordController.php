@@ -16,16 +16,7 @@ class ChangePasswordController extends Controller
 
     public function index()
     {
-        $isUpdateTime = $this->changePasswordService
-            ->isUpdateTime();
-        $countdown = $isUpdateTime ? 0 :
-            $this->changePasswordService
-                ->timerCountdown();
-
-        return view('profile.change-password.index', with([
-            'isUpdateTime' => $isUpdateTime,
-            'countdown' => $countdown,
-        ]));
+        return view('profile.change-password.index');
     }
 
     public function changePassword(Request $request)
