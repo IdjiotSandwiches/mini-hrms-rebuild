@@ -22,9 +22,14 @@ class EditProfileController extends Controller
     public function editProfile(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => 'string',
-            'last_name' => 'string',
+            'avatar' => 'image|extensions:jpg,jpeg,png|nullable',
+            'first_name' => 'string|nullable',
+            'last_name' => 'string|nullable',
         ]);
-        dd($validated);
+
+        $validated['avatar'] = $request->hasFile('avatar') ?
+            $request->file('avatar')->store('avatars') : null;
+
+        return $this->editProfileService->updateProfile($validated);
     }
 }
