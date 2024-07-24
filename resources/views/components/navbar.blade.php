@@ -1,9 +1,9 @@
 <nav class="bg-white fixed z-10 w-full flex justify-between items-center border-gray-200 border-b-[0.5px] px-28 h-16 select-none">
     @if (auth()->user())
         <a class="text-3xl font-semibold" href="">hrms.</a>
-        <section class="profile flex items-center gap-5">
+        <section class="profile flex items-center gap-4">
             <h1>Welcome, <span class="text-blue-400">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span></h1>
-            <div class="h-8 w-8 rounded-full bg-blue-400"></div>
+            <img src="{{ asset(auth()->user()->avatar) }}" class="h-10 w-10 rounded-full bg-blue-400"/>
         </section>
     @else
         <a class="text-3xl font-semibold" href="{{ route('landing-page') }}">hrms.</a>
