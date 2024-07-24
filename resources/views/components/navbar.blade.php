@@ -3,7 +3,7 @@
         <a class="text-3xl font-semibold" href="">hrms.</a>
         <section class="profile flex items-center gap-4">
             <h1>Welcome, <span class="text-blue-400">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span></h1>
-            <img src="{{ asset(auth()->user()->avatar) }}" class="h-10 w-10 rounded-full bg-blue-400"/>
+            <img src="{{ asset(auth()->user()->avatar) }}" class="h-10 w-10 rounded-full"/>
         </section>
     @else
         <a class="text-3xl font-semibold" href="{{ route('landing-page') }}">hrms.</a>
