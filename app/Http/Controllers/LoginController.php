@@ -23,19 +23,14 @@ class LoginController extends Controller
         ]);
 
         if (!Auth::attempt($validated)) {
-            return back()->withErrors([
-                    'email' => ' ',
-                    'password' => ' ',
-                ])
-                ->with([
-                    'status' => 'error',
-                    'message' => 'E-mail or password invalid'
-                ]);
-            }
+            return back()->with([
+                'status' => 'error',
+                'message' => 'E-mail or password invalid'
+            ]);
+        }
 
         $request->session()->regenerate();
-        return redirect()
-            ->intended(route('attendance.take-attendance-page'))
+        return redirect()->intended(route('attendance.take-attendance-page'))
             ->with([
                 'status' => 'success',
                 'message' => 'Logged In'

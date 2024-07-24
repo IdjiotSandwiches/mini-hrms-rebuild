@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Services\RegisterService;
 
 class RegisterController extends Controller
 {
+    private $registerService;
+
+    public function __construct()
+    {
+        $this->registerService = new RegisterService();
+    }
+
     public function index()
     {
         return view('register');
@@ -23,24 +29,6 @@ class RegisterController extends Controller
             'password_confirmation' => 'required',
         ]);
 
-        $user = new User();
-        $user->email = $validated['email'];
-        $user->first_name = ucwords($validated['first_name']);
-        $user->last_name = ucwords($validated['last_name']);
-        $user->password = Hash::make($validated['password']);
-
-        $username = strtolower($validated['first_name']) . strtolower($validated['last_name']);
-        $suffix = 0;
-        while(User::where('username', $username)->exists()) {
-            $suffix++;
-            $username .= $suffix;
-        }
-
-        $user->username = $username;
-        $user->save();
-        return redirect()->route('login')->with([
-            'status' => 'success',
-            'message' => 'Account successfully created',
-        ]);
+        return $this->registerService->registerUser($validated);
     }
 }

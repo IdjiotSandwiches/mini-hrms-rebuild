@@ -9,7 +9,7 @@
                 border-red-500 text-red-500
             @enderror">
             <label for="email" class="text-xs font-medium">E-mail</label>
-            <input type="email" name="email" id="email" class="focus:outline-none text-gray-900 py-1">
+            <input type="email" name="email" id="email" class="focus:outline-none text-gray-900 py-1" value="{{ old('email') }}">
             @error('email')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror

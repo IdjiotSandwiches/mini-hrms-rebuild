@@ -39,6 +39,6 @@ class InputScheduleController extends Controller
             'schedule' => 'required|array'
         ]);
 
-        $this->inputScheduleService->processSchedule($validated);
+        return $this->inputScheduleService->processSchedule($validated);
     }
 }
