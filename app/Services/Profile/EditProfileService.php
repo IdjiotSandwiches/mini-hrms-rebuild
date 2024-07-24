@@ -7,6 +7,24 @@ use Illuminate\Support\Facades\DB;
 
 class EditProfileService extends BaseService
 {
+    public function getUserInformation()
+    {
+        $user = $this->getUser();
+        $username = $user->username;
+        $email = $user->email;
+        $firstName = $user->first_name;
+        $lastName = $user->last_name;
+        $avatar = $user->avatar;
+
+        return (object) compact(
+            'username',
+            'email',
+            'firstName',
+            'lastName',
+            'avatar',
+        );
+    }
+
     public function updateProfile($validated)
     {
         try {

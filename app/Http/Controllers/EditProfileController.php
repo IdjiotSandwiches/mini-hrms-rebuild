@@ -16,7 +16,12 @@ class EditProfileController extends Controller
 
     public function index()
     {
-        return view('profile.edit-profile.index');
+        $userInformation = $this->editProfileService
+            ->getUserInformation();
+
+        return view('profile.edit-profile.index', with([
+            'userInformation' => $userInformation,
+        ]));
     }
 
     public function editProfile(Request $request)
