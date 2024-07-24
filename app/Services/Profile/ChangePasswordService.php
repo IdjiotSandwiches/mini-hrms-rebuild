@@ -24,6 +24,25 @@ class ChangePasswordService extends BaseService
         return false;
     }
 
+    public function countdownTimer()
+    {
+        $userLastUpdate = $this->getUser()
+            ->last_password_change;
+
+        $userLastUpdate = $this->convertTime($userLastUpdate);
+        $currentTime = $this->convertTime(Carbon::now());
+
+        $countdown = 86400 - $userLastUpdate->diffInSeconds($currentTime);
+        $hours = floor($countdown / 3600);
+        $minutes = floor($countdown / 60) % 60;
+        $seconds = $countdown % 60;
+
+        if ($hours)  return str($hours) . ' hours';
+        elseif ($minutes) return str($minutes) . ' minutes';
+
+        return str($seconds) . ' seconds';
+    }
+
     public function changePasswordValidation($validated)
     {
         try {
@@ -31,10 +50,11 @@ class ChangePasswordService extends BaseService
 
             if (!$this->isUpdateTime())
             {
+                $countdownTimer = $this->countdownTimer();
                 DB::rollBack();
                 return back()->with([
                     'status' => 'error',
-                    'message' => 'You need to wait at least 24 hours to change password again.'
+                    'message' => 'You need to wait ' . str($countdownTimer) . ' to change password again.'
                 ]);
             }
 
