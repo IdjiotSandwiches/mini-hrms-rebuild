@@ -41,7 +41,7 @@ class EditProfileService extends BaseService
                 }
 
             $user = $this->getUser();
-            $user->avatar = $validated['avatar'] ?: $user->avatar;
+            $user->avatar = 'storage/' . $validated['avatar'];
             $user->first_name = $validated['first_name'] ?: $user->first_name;
             $user->last_name = $validated['last_name'] ?: $user->last_name;
             $user->save();
