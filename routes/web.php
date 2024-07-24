@@ -58,6 +58,7 @@ Route::middleware(['auth:web'])->group(function () {
         ->group(function () {
             Route::controller(EditProfileController::class)->group(function () {
                 Route::get('/edit-profile', 'index')->name('edit-profile-page');
+                Route::put('/edit-profile', 'editProfile')->name('edit-profile');
             });
 
             Route::controller(ChangePasswordController::class)->group(function () {

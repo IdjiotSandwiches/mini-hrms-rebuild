@@ -18,7 +18,7 @@ class ChangePasswordController extends Controller
     {
         return view('profile.change-password.index');
     }
-
+  
     public function changePassword(Request $request)
     {
         $validated = $request->validate([

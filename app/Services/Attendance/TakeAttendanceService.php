@@ -69,20 +69,18 @@ class TakeAttendanceService extends BaseService
 
             $isLate = $this->isLate($currentTime);
 
-            Attendance::updateOrCreate(
-                ['user_id' => $this->getUser()->user_id],
-                [
-                    'check_in' => $this->convertTime(Carbon::now()),
-                    'date' => $this->convertTime(Carbon::now())
-                        ->toDateString(),
-                    'late' => $isLate,
-                ]
-            );
+            $attendance = new Attendance();
+            $attendance->user_id = $this->getUser()->user_id;
+            $attendance->check_in = $this->convertTime(Carbon::now());
+            $attendance->date = $this->convertTime(Carbon::now())
+                ->toDateString();
+            $attendance->late = $isLate;
+            $attendance->save();
 
             DB::commit();
             return back()->with([
                 'status' => 'success',
-                'message' => 'Checked In',
+                'message' => 'Checked In.',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
