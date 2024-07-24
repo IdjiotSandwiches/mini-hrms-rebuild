@@ -21,7 +21,7 @@
             <p class="text-xs">{{ auth()->user()->email }}</p>
         </div>
         <div class="select-none grid">
-            <a href="" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+            <a href="{{ route('profile.edit-profile-page') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
                 Profile
             </a>
             <a href="{{ route('attendance.take-attendance-page') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
