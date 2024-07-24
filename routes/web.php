@@ -63,6 +63,7 @@ Route::middleware(['auth:web'])->group(function () {
 
             Route::controller(ChangePasswordController::class)->group(function () {
                 Route::get('/change-password', 'index')->name('change-password-page');
+                Route::put('/change-password', 'changePassword')->name('change-password');
             });
         });
 
