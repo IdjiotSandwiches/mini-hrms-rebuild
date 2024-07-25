@@ -1,8 +1,14 @@
-<nav class="bg-white fixed z-10 w-full flex justify-between items-center border-gray-200 border-b-[0.5px] px-28 h-16 select-none">
+<nav class="
+    bg-white fixed z-10 w-full flex justify-between items-center border-gray-200 border-b-[0.5px] px-10 h-16 select-none
+    md:px-28
+">
     @if (auth()->user())
         <a class="text-3xl font-semibold" href="">hrms.</a>
         <section class="profile flex items-center gap-4">
-            <h1>Welcome, <span class="text-blue-400">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span></h1>
+            <h1 class="
+                hidden
+                sm:block
+            ">Welcome, <span class="text-blue-400">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span></h1>
             <img src="{{ asset(auth()->user()->avatar) }}" class="h-10 w-10 rounded-full"/>
         </section>
     @else
@@ -15,7 +21,10 @@
 </nav>
 
 @if (auth()->user())
-    <nav-item class="nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-28 w-64 border-2 rounded-md divide-y-2">
+    <nav-item class="
+        nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-10 w-64 border-2 rounded-md divide-y-2
+        md:mr-28
+    ">
         <div class="py-2 px-4">
             <p class="text-md">{{ auth()->user()->username }}</p>
             <p class="text-xs">{{ auth()->user()->email }}</p>
