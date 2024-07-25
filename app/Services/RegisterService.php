@@ -18,6 +18,7 @@ class RegisterService extends BaseService
             $user->first_name = ucwords($validated['first_name']);
             $user->last_name = ucwords($validated['last_name']);
             $user->password = Hash::make($validated['password']);
+            $user->avatar = 'storage/avatars/default.png';
 
             $username = strtolower($validated['first_name']) . strtolower($validated['last_name']);
             $suffix = 0;

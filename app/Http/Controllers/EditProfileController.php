@@ -32,8 +32,12 @@ class EditProfileController extends Controller
             'last_name' => 'string|nullable',
         ]);
 
-        $validated['avatar'] = $request->hasFile('avatar') ?
-            $request->file('avatar')->store('avatars') : 'avatars/default.png';
+        if ($request->hasFile('avatar')) {
+            $validated['avatar'] = 'storage/' . $request->file('avatar')->store('avatars');
+        }
+        else {
+            $validated['avatar'] = null;
+        }
 
         return $this->editProfileService->updateProfile($validated);
     }
