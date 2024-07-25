@@ -2,9 +2,19 @@
 @section('title', 'Home')
 
 @section('content')
-    <form action="{{ route('attemptRegister') }}" method="POST" class="grid gap-5 w-1/3">
+    <form action="{{ route('attemptRegister') }}" method="POST" class="
+        flex flex-col gap-5 w-full px-10
+        sm:grid sm:px-10
+        md:px-28
+        lg:w-1/2 lg:px-0
+        xl:w-1/2
+        2xl:w-1/3
+    ">
         @csrf
-        <email-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
+        <email-form class="
+            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
+            sm:grid
+
             @error('email')
                 border-red-500 text-red-500
             @enderror">
@@ -14,8 +24,14 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </email-form>
-        <fullname-form class="grid grid-cols-2 gap-5">
-            <first-name class="grid border-2 rounded-md px-2 py-1 text-gray-400
+        <fullname-form class="
+            sm:grid sm:grid-cols-2
+            flex flex-col gap-5
+        ">
+            <first-name class="
+                flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
+                sm:grid
+
                 @error('first_name')
                     border-red-500 text-red-500
                 @enderror">
@@ -25,7 +41,10 @@
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </first-name>
-            <last-name class="grid border-2 rounded-md px-2 py-1 text-gray-400
+            <last-name class="
+                flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
+                sm:grid
+
                 @error('last_name')
                     border-red-500 text-red-500
                 @enderror">
@@ -36,7 +55,10 @@
                 @enderror
             </last-name>
         </fullname-form>
-        <password-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
+        <password-form class="
+            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
+            sm:grid
+
             @error('password')
                 border-red-500 text-red-500
             @enderror">
@@ -46,7 +68,10 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </password-form>
-        <password-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
+        <password-form class="
+            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
+            sm:grid
+
             @error('password_confirmation')
                 border-red-500 text-red-500
             @enderror">

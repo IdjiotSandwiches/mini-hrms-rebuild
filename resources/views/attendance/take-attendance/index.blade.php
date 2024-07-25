@@ -3,11 +3,19 @@
 
 @section('content')
     <attendance-section class="py-10 flex flex-col gap-6 justify-center items-center select-none">
-        <p id="current-day" class="text-center text-5xl font-semibold"></p>
-        <div class="flex gap-2">
+        <p id="current-day" class="
+            md:text-4xl
+            lg:text-5xl
+            text-3xl text-center font-semibold
+        "></p>
+        <div class="
+            sm:grid sm:grid-cols-2
+            lg:grid-cols-3
+            flex flex-col gap-2
+        ">
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-hours"></div>
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-minutes"></div>
-            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-seconds"></div>
+            <div class="hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-seconds"></div>
         </div>
         @error('attendanceError')
             <p class="text-red-500">{{ $message }}</p>
