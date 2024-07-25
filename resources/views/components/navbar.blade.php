@@ -13,7 +13,10 @@
         </section>
     @else
         <a class="text-3xl font-semibold" href="{{ route('landing-page') }}">hrms.</a>
-        <nav-button class="flex gap-2">
+        <nav-button class="
+            md:flex md:gap-2
+            hidden
+        ">
             @include('components.navbar-item', with(['name' => 'Login', 'path' => ['login', 'landing-page']]))
             @include('components.navbar-item', with(['name' => 'Register', 'path' => ['register']]))
         </nav-button>

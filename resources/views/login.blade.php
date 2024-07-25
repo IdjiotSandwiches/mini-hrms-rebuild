@@ -2,7 +2,14 @@
 @section('title', 'Login')
 
 @section('content')
-    <form action="{{ route('attemptLogin') }}" method="POST" class="grid gap-5 w-1/3">
+    <form action="{{ route('attemptLogin') }}" method="POST" class="
+        flex flex-col gap-5 w-full px-10
+        sm:grid sm:px-10
+        md:px-28
+        lg:w-1/2 lg:px-0
+        xl:w-1/2
+        2xl:w-1/3
+    ">
         @csrf
         <email-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
             @error('email')
