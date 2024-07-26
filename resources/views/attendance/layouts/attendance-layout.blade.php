@@ -1,10 +1,11 @@
 @props(['title', 'desc'])
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="">
 @include('layouts.head')
 <body>
     @include('components.navbar')
+    @include('components.toggle-darkmode')
     <section class="
         px-10 py-6 pt-20 min-h-screen
         md:px-28
@@ -34,5 +35,7 @@
             </section>
         </content-section>
     </section>
+
+    @include('components.common-js')
 </body>
 </html>

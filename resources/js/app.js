@@ -12,3 +12,10 @@ window.dayjs = dayjs.extend(customParseFormat);
 toastr.options = {
     'closeButton': true,
 }
+
+(function() {
+    let isDarkMode = localStorage.getItem('isDarkMode');
+    if (isDarkMode === 'true') {
+        document.documentElement.classList.add('dark');
+    }
+})();
