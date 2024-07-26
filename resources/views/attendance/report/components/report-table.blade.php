@@ -1,6 +1,6 @@
 @props(['attendances'])
 <div class="w-full relative overflow-x-auto rounded-md">
-    <table class="w-full table-auto text-center text-gray-500">
+    <table class="w-full table-auto text-center text-gray-500 dark:text-white">
         <thead class="bg-blue-500 text-white">
             <tr class="font-semibold">
                 <td class="px-4 py-3">No.</td>
@@ -23,14 +23,14 @@
             @endif
             @foreach ($attendances as $key => $value)
                 <tr class="border-b-2 border-gray-200">
-                    <td class="px-4 py-3">{{ $key + $attendances->firstItem() }}</td>
-                    <td class="px-4 py-3 bg-gray-100">{{ $value->date }}</td>
-                    <td class="px-4 py-3">{{ $value->checkIn }}</td>
-                    <td class="px-4 py-3 bg-gray-100">{{ $value->checkOut }}</td>
-                    <td class="px-4 py-3">{{ $value->early }}</td>
-                    <td class="px-4 py-3 bg-gray-100">{{ $value->late }}</td>
-                    <td class="px-4 py-3">{{ $value->absence }}</td>
-                    <td class="px-4 py-3 bg-gray-100">{{ $value->workTime }}</td>
+                    <td class="px-4 py-3 dark:bg-gray-400">{{ $key + $attendances->firstItem() }}</td>
+                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ $value->date }}</td>
+                    <td class="px-4 py-3 dark:bg-gray-400">{{ $value->checkIn }}</td>
+                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ $value->checkOut }}</td>
+                    <td class="px-4 py-3 dark:bg-gray-400">{{ $value->early }}</td>
+                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ $value->late }}</td>
+                    <td class="px-4 py-3 dark:bg-gray-400">{{ $value->absence }}</td>
+                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ $value->workTime }}</td>
                 </tr>
             @endforeach
         </tbody>

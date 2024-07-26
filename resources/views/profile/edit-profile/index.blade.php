@@ -2,7 +2,7 @@
 @section('title', 'Profile - Edit Profile')
 
 @section('content')
-    <profile-section>
+    <profile-section class="text-black dark:text-white">
         <form action="{{ route('profile.edit-profile') }}" method="POST" class="flex flex-col gap-4 py-10" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -20,33 +20,45 @@
                     </div>
                     <img src="{{ asset($userInformation->avatar) }}" alt="" class="rounded-full w-40 h-40" id="avatar-preview">
                 </div>
-                <p class="text-gray-500">This is your public display avatar.</p>
+                <p class="text-gray-500 dark:text-gray-300">This is your public display avatar.</p>
                 @error('avatar')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </avatar-input>
             <username-input class="grid gap-2">
                 <label for="username" class="font-medium">Username</label>
-                <input type="text" name="username" id="username" class="py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white text-gray-500" value="{{ $userInformation->username }}" disabled>
-                <p class="text-gray-500">This is your public display username.</p>
+                <input type="text" name="username" id="username" class="
+                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-gray-200 text-gray-500
+                    dark:disabled:bg-gray-500 dark:placeholder:text-gray-300 dark:text-gray-200
+                " value="{{ $userInformation->username }}" disabled>
+                <p class="text-gray-500 dark:text-gray-300">This is your public display username.</p>
             </username-input>
             <email-input class="grid gap-2">
                 <label for="email" class="font-medium">Email</label>
-                <input type="email" name="email" id="email" class="py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white text-gray-500" value="{{ $userInformation->email }}" disabled>
-                <p class="text-gray-500">This is your public display email.</p>
+                <input type="email" name="email" id="email" class="
+                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-gray-200 text-gray-500
+                    dark:disabled:bg-gray-500 dark:placeholder:text-gray-300 dark:text-gray-200
+                " value="{{ $userInformation->email }}" disabled>
+                <p class="text-gray-500 dark:text-gray-300">This is your public display email.</p>
             </email-input>
             <name-input class="grid gap-2">
                 <label for="first-name" class="font-medium">First Name</label>
-                <input type="text" name="first_name" id="first-name" class="py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white text-black focus:outline-blue-500" placeholder="{{ $userInformation->firstName }}">
-                <p class="text-gray-500">This is your birth first name.</p>
+                <input type="text" name="first_name" id="first-name" class="
+                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white focus:outline-blue-500
+                    dark:bg-gray-500 dark:placeholder:text-gray-300
+                " placeholder="{{ $userInformation->firstName }}">
+                <p class="text-gray-500 dark:text-gray-300">This is your birth first name.</p>
                 @error('first_name')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </name-input>
             <name-input class="grid gap-2">
                 <label for="last-name" class="font-medium">Last Name</label>
-                <input type="text" name="last_name" id="last-name" class="py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white text-black focus:outline-blue-500" placeholder="{{ $userInformation->lastName }}">
-                <p class="text-gray-500">This is your birth last name.</p>
+                <input type="text" name="last_name" id="last-name" class="
+                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white focus:outline-blue-500
+                    dark:bg-gray-500 dark:placeholder:text-gray-300
+                " placeholder="{{ $userInformation->lastName }}">
+                <p class="text-gray-500 dark:text-gray-300">This is your birth last name.</p>
                 @error('last_name')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror

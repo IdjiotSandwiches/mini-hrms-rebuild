@@ -8,11 +8,14 @@
 @section('content')
     <schedule-modal class="schedule-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
         <div class="flex justify-center items-center h-full">
-            <div class="modal grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none">
+            <div class="
+                modal grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
+                dark:bg-gray-800
+            ">
                 <header class="flex justify-between items-start">
                     <h1 id="day" class="text-2xl font-medium">Day</h1>
                     <button class="close-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 30 30">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 30 30" class="dark:fill-white">
                             <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"></path>
                         </svg>
                     </button>
@@ -22,11 +25,17 @@
                         <div class="grid grid-cols-2 gap-10 justify-between">
                             <div class="flex flex-col gap-2">
                                 <label for="from-hour">From Hour</label>
-                                <input type="time" name="from-hour" id="from-hour" step="2" class="time-input border-black border-2 rounded-md px-2 py-1">
+                                <input type="time" name="from-hour" id="from-hour" step="2" class="
+                                    time-input border-black border-2 rounded-md px-2 py-1
+                                    dark:bg-gray-500 dark:border-white
+                                ">
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label for="to-hour">To Hour</label>
-                                <input type="time" name="to-hour" id="to-hour" step="2" class="time-input border-black border-2 rounded-md px-2 py-1">
+                                <input type="time" name="to-hour" id="to-hour" step="2" class="
+                                    time-input border-black border-2 rounded-md px-2 py-1
+                                    dark:bg-gray-500 dark:border-white
+                                ">
                             </div>
                         </div>
                         <p id="error" class="text-red-500 hidden"></p>
@@ -39,7 +48,10 @@
         </div>
     </schedule-modal>
 
-    <schedule-section class="py-10 gap-4 flex flex-col">
+    <schedule-section class="
+        py-10 gap-4 flex flex-col
+        dark:text-white
+    ">
         <div class="w-full relative overflow-x-auto rounded-md">
             <table class="w-full table-auto text-center text-gray-500">
                 <thead class="bg-blue-500 text-white">
@@ -54,23 +66,35 @@
                 <tbody>
                     @if ($isScheduleSubmitted)
                         @foreach ($schedule as $eachSchedule)
-                            <tr class="border-b-2 border-gray-200">
-                                <td class="px-4 py-3">{{ $eachSchedule->day }}</td>
+                            <tr class="border-b-2 border-gray-200 dark:text-white">
+                                <td class="px-4 py-3 dark:bg-gray-400">{{ $eachSchedule->day }}</td>
                                 @if ($eachSchedule->start_time == '00:00:00' && $eachSchedule->end_time == '00:00:00')
-                                    <td class="px-4 py-3 bg-gray-100">No work schedule</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">No work schedule</td>
                                 @else
-                                    <td class="px-4 py-3 bg-gray-100">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
                                 @endif
                             </tr>
                         @endforeach
                     @else
                         @foreach ($dayWeek as $day)
-                            <tr class="border-b-2 border-gray-200" id="{{ $day }}">
-                                <td class="px-4 py-3">{{ $day }}</td>
-                                <td class="px-4 py-3 bg-gray-100">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
-                                <td class="flex justify-center px-4 py-3">
-                                    <svg width="30" height="30" viewBox="0 0 49 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="action">
-                                        <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z" fill="#2563EB"/>
+                            <tr class="
+                                border-b-2 border-gray-200
+                                dark:text-white
+                            " id="{{ $day }}">
+                                <td class="
+                                    px-4 py-3
+                                    dark:bg-gray-400
+                                ">{{ $day }}</td>
+                                <td class="
+                                    px-4 py-3 bg-gray-100
+                                    dark:bg-gray-600
+                                ">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
+                                <td class="
+                                    flex justify-center px-4 py-3
+                                    dark:bg-gray-400
+                                ">
+                                    <svg width="30" height="30" viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500">
+                                        <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
                                     </svg>
                                 </td>
                             </tr>

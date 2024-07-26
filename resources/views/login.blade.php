@@ -16,7 +16,10 @@
                 border-red-500 text-red-500
             @enderror">
             <label for="email" class="text-xs font-medium">E-mail</label>
-            <input type="email" name="email" id="email" class="focus:outline-none text-gray-900 py-1" value="{{ old('email') }}">
+            <input type="email" name="email" id="email" class="
+                focus:outline-none text-gray-900 py-1
+                dark:bg-gray-900 dark:text-white
+            " value="{{ old('email') }}">
             @error('email')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
@@ -26,7 +29,10 @@
                 border-red-500 text-red-500
             @enderror">
             <label for="password" class="text-xs font-medium">Password</label>
-            <input type="password" name="password" id="password" autocomplete="off" class="focus:outline-none text-gray-900 py-1">
+            <input type="password" name="password" id="password" autocomplete="off" class="
+                focus:outline-none text-gray-900 py-1
+                dark:bg-gray-900 dark:text-white
+            ">
             @error('password')
                 <p class="text-red-500">{{ $message }}</p>
             @enderror

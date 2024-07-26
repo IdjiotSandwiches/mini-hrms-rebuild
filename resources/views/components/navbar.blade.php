@@ -1,9 +1,13 @@
 <nav class="
     bg-white fixed z-10 w-full flex justify-between items-center border-gray-200 border-b-[0.5px] px-10 h-16 select-none
     md:px-28
+    dark:bg-gray-800 dark:text-white
 ">
     @if (auth()->user())
-        <a class="text-3xl font-semibold" href="">hrms.</a>
+        <a class="
+            text-3xl font-semibold
+            dark:text-white
+        " href="">hrms.</a>
         <section class="profile flex items-center gap-4">
             <h1 class="
                 hidden
@@ -27,21 +31,31 @@
     <nav-item class="
         nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-10 w-64 border-2 rounded-md divide-y-2
         md:mr-28
+        dark:bg-gray-800 dark:text-white
     ">
         <div class="py-2 px-4">
             <p class="text-md">{{ auth()->user()->username }}</p>
             <p class="text-xs">{{ auth()->user()->email }}</p>
         </div>
         <div class="select-none grid">
-            <a href="{{ route('profile.edit-profile-page') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+            <a href="{{ route('profile.edit-profile-page') }}" class="
+                py-2 px-4 hover:bg-gray-100 transition-colors text-sm
+                dark:hover:bg-gray-600
+            ">
                 Profile
             </a>
-            <a href="{{ route('attendance.take-attendance-page') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+            <a href="{{ route('attendance.take-attendance-page') }}" class="
+                py-2 px-4 hover:bg-gray-100 transition-colors text-sm
+                dark:hover:bg-gray-600
+            ">
                 Attendance
             </a>
         </div>
         <div class="select-none grid">
-            <a href="{{ route('logout') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm">
+            <a href="{{ route('logout') }}" class="
+                py-2 px-4 hover:bg-gray-100 transition-colors text-sm
+                dark:hover:bg-gray-600
+            ">
                 Logout
             </a>
         </div>

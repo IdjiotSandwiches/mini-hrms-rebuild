@@ -4,5 +4,5 @@
 {{ request()->routeIs($path) ?
     'bg-blue-600 hover:bg-blue-500 text-white'
     :
-    'hover:bg-[#F1F5F9] hover:text-black'
+    'hover:bg-[#F1F5F9] dark:hover:bg-gray-500 hover:text-black dark:hover:text-white'
 }}">{{ $name }}</a>
