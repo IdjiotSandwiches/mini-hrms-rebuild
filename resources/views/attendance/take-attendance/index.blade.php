@@ -13,9 +13,18 @@
             lg:grid-cols-3
             flex flex-col gap-2
         ">
-            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-hours"></div>
-            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-minutes"></div>
-            <div class="hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md" id="current-seconds"></div>
+            <div class="
+                flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
+                dark:bg-gray-600
+            " id="current-hours"></div>
+            <div class="
+                flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
+                dark:bg-gray-600
+            " id="current-minutes"></div>
+            <div class="
+                hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
+                dark:bg-gray-600
+            " id="current-seconds"></div>
         </div>
         @error('attendanceError')
             <p class="text-red-500">{{ $message }}</p>

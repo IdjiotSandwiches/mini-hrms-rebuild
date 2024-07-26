@@ -2,13 +2,16 @@
 @section('title', 'Profile - Change Password')
 
 @section('content')
-    <password-section>
+    <password-section class="text-black dark:text-white">
         <form action="{{ route('profile.change-password') }}" method="POST" class="flex flex-col pt-10 gap-4">
             @csrf
             @method('PUT')
             <password-input class="grid gap-2">
                 <label for="update-password" class="font-medium">Password</label>
-                <input type="password" name="update_password" id="update-password" class="px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500 text-gray-500
+                <input type="password" name="update_password" id="update-password" class="
+                    px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500
+                    dark:bg-gray-500
+
                     @error('update_password')
                         border-red-500
                     @enderror
@@ -20,7 +23,10 @@
             <confirm-password class="grid gap-2">
                 <password-input class="grid gap-2">
                     <label for="confirm-password" class="font-medium">Confirm Password</label>
-                    <input type="password" name="confirm_password" id="confirm-password" class="px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500 text-gray-500
+                    <input type="password" name="confirm_password" id="confirm-password" class="
+                        px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500
+                        dark:bg-gray-500
+
                         @error('confirm_password')
                             border-red-500
                         @enderror

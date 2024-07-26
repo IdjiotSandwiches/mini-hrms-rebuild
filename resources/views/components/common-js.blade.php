@@ -12,6 +12,10 @@
         setTimeout(getCurrentTime, 1000);
     }
 
+    function toggleDarkMode() {
+        $('html').toggleClass('dark');
+    }
+
     $(document).ready(function() {
         getCurrentTime();
     });

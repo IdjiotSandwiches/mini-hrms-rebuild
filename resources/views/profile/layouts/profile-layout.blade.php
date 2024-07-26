@@ -1,13 +1,14 @@
 @props(['title', 'desc'])
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 @include('layouts.head')
 <body>
     @include('components.navbar')
     <section class="
         px-10 py-6 pt-20 min-h-screen
         md:px-28
+        dark:bg-gray-900 dark:text-white
     ">
         <!-- Title -->
         <div class="border-gray-200 border-b-2 py-5">
