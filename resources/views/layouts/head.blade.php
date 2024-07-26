@@ -6,6 +6,15 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <script>
+        (function() {
+            let isDarkMode = localStorage.getItem('isDarkMode');
+            if (isDarkMode === 'true') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
