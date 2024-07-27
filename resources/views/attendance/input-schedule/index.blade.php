@@ -6,11 +6,14 @@
 @endphp
 
 @section('content')
-    <schedule-modal class="schedule-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
+    <schedule-modal class="
+        schedule-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
+        dark:bg-opacity-0
+    ">
         <div class="flex justify-center items-center h-full">
             <div class="
                 modal grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
-                dark:bg-gray-800
+                dark:bg-[#121212] dark:border-2
             ">
                 <header class="flex justify-between items-start">
                     <h1 id="day" class="text-2xl font-medium">Day</h1>
@@ -48,11 +51,14 @@
         </div>
     </schedule-modal>
 
-    <confirm-modal class="confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
+    <confirm-modal class="
+        confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
+        dark:bg-opacity-0
+    ">
         <div class="flex justify-center items-center h-full">
             <div class="
                 grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
-                dark:bg-gray-800
+                dark:bg-[#121212] dark:border-2
             ">
                 <div class="flex flex-col gap-5 items-center">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-red-500 h-32 w-32">
@@ -118,7 +124,7 @@
                                     dark:bg-gray-700
                                 ">
                                     <div class="flex justify-center items-center">
-                                        <svg viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500 dark:hover:fill-white h-8 w-8">
+                                        <svg viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500 transition-colors dark:hover:fill-white h-8 w-8">
                                             <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
                                         </svg>
                                     </div>
@@ -283,12 +289,12 @@
             });
 
             $('#submit').click(function(e) {
-                if(totalWorkHours < 20) {
-                    $('#submit-error').text('You must work at least 20 hours a week');
-                    $('#submit-error').removeClass('hidden');
-                    e.preventDefault();
-                    return;
-                }
+                // if(totalWorkHours < 20) {
+                //     $('#submit-error').text('You must work at least 20 hours a week');
+                //     $('#submit-error').removeClass('hidden');
+                //     e.preventDefault();
+                //     return;
+                // }
 
                 $('#submit-error').addClass('hidden');
                 $('.confirm-modal').toggle();
