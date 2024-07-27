@@ -7,13 +7,17 @@
 
 @section('content')
     <schedule-modal class="
-        schedule-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
+        schedule-modal z-30 fixed hidden bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
         dark:bg-opacity-0
     ">
-        <div class="flex justify-center items-center h-full">
+        <div class="
+            flex justify-center items-center h-full px-10
+            md:px-28
+        ">
             <div class="
-                modal grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
+                modal grid bg-white px-8 py-6 w-full rounded-md gap-8 select-none
                 dark:bg-[#121212] dark:border-2
+                xl:w-1/2
             ">
                 <header class="flex justify-between items-start">
                     <h1 id="day" class="text-2xl font-medium">Day</h1>
@@ -25,20 +29,31 @@
                 </header>
                 <div class="grid gap-8">
                     <schedule-form>
-                        <div class="grid grid-cols-2 gap-10 justify-between">
+                        <div class="
+                            flex flex-col
+                            sm:grid sm:grid-cols-2 gap-10 justify-between
+                        ">
                             <div class="flex flex-col gap-2">
                                 <label for="from-hour">From Hour</label>
-                                <input type="time" name="from-hour" id="from-hour" step="2" class="
-                                    time-input border-black border-2 rounded-md px-2 py-1
-                                    dark:bg-gray-500 dark:border-white
-                                ">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="from-hour" name="from-hour" step="2" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label for="to-hour">To Hour</label>
-                                <input type="time" name="to-hour" id="to-hour" step="2" class="
-                                    time-input border-black border-2 rounded-md px-2 py-1
-                                    dark:bg-gray-500 dark:border-white
-                                ">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="to-hour" name="to-hour" step="2" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
                             </div>
                         </div>
                         <p id="error" class="text-red-500 hidden"></p>
@@ -52,13 +67,17 @@
     </schedule-modal>
 
     <confirm-modal class="
-        confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
+        confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0 text-center
         dark:bg-opacity-0
     ">
-        <div class="flex justify-center items-center h-full">
+        <div class="
+            flex justify-center items-center h-full px-10
+            md:px-28
+        ">
             <div class="
-                grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
+                grid bg-white px-8 py-6 w-full rounded-md gap-8 select-none
                 dark:bg-[#121212] dark:border-2
+                lg:w-1/2
             ">
                 <div class="flex flex-col gap-5 items-center">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-red-500 h-32 w-32">
