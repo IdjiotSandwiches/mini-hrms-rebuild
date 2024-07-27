@@ -17,7 +17,7 @@
             @enderror">
             <label for="email" class="text-xs font-medium">E-mail</label>
             <input type="email" name="email" id="email" class="
-                focus:outline-none text-gray-900 py-1
+                focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
                 dark:bg-[#121212] dark:text-white
             " value="{{ old('email') }}">
             @error('email')
@@ -30,7 +30,7 @@
             @enderror">
             <label for="password" class="text-xs font-medium">Password</label>
             <input type="password" name="password" id="password" autocomplete="off" class="
-                focus:outline-none text-gray-900 py-1
+                focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
                 dark:bg-[#121212] dark:text-white
             ">
             @error('password')
