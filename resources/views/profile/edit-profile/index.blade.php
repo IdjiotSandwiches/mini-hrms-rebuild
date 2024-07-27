@@ -29,7 +29,7 @@
                 <label for="username" class="font-medium">Username</label>
                 <input type="text" name="username" id="username" class="
                     py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-gray-200 text-gray-500
-                    dark:disabled:bg-gray-500 dark:placeholder:text-gray-300 dark:text-gray-200
+                    dark:disabled:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300
                 " value="{{ $userInformation->username }}" disabled>
                 <p class="text-gray-500 dark:text-gray-300">This is your public display username.</p>
             </username-input>
@@ -37,15 +37,15 @@
                 <label for="email" class="font-medium">Email</label>
                 <input type="email" name="email" id="email" class="
                     py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-gray-200 text-gray-500
-                    dark:disabled:bg-gray-500 dark:placeholder:text-gray-300 dark:text-gray-200
+                    dark:disabled:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-300
                 " value="{{ $userInformation->email }}" disabled>
                 <p class="text-gray-500 dark:text-gray-300">This is your public display email.</p>
             </email-input>
             <name-input class="grid gap-2">
                 <label for="first-name" class="font-medium">First Name</label>
                 <input type="text" name="first_name" id="first-name" class="
-                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white focus:outline-blue-500
-                    dark:bg-gray-500 dark:placeholder:text-gray-300
+                    px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
+                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
                 " placeholder="{{ $userInformation->firstName }}">
                 <p class="text-gray-500 dark:text-gray-300">This is your birth first name.</p>
                 @error('first_name')
@@ -55,8 +55,8 @@
             <name-input class="grid gap-2">
                 <label for="last-name" class="font-medium">Last Name</label>
                 <input type="text" name="last_name" id="last-name" class="
-                    py-1 px-2 border-2 border-gray-200 rounded-md disabled:bg-white focus:outline-blue-500
-                    dark:bg-gray-500 dark:placeholder:text-gray-300
+                    px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
+                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
                 " placeholder="{{ $userInformation->lastName }}">
                 <p class="text-gray-500 dark:text-gray-300">This is your birth last name.</p>
                 @error('last_name')

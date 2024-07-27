@@ -6,11 +6,18 @@
 @endphp
 
 @section('content')
-    <schedule-modal class="schedule-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
-        <div class="flex justify-center items-center h-full">
+    <schedule-modal class="
+        schedule-modal z-30 fixed hidden bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
+        dark:bg-opacity-0
+    ">
+        <div class="
+            flex justify-center items-center h-full px-10
+            md:px-28
+        ">
             <div class="
-                modal grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
-                dark:bg-gray-800
+                modal grid bg-white px-8 py-6 w-full rounded-md gap-8 select-none
+                dark:bg-[#121212] dark:border-2
+                xl:w-1/2
             ">
                 <header class="flex justify-between items-start">
                     <h1 id="day" class="text-2xl font-medium">Day</h1>
@@ -22,20 +29,31 @@
                 </header>
                 <div class="grid gap-8">
                     <schedule-form>
-                        <div class="grid grid-cols-2 gap-10 justify-between">
+                        <div class="
+                            flex flex-col
+                            sm:grid sm:grid-cols-2 gap-10 justify-between
+                        ">
                             <div class="flex flex-col gap-2">
                                 <label for="from-hour">From Hour</label>
-                                <input type="time" name="from-hour" id="from-hour" step="2" class="
-                                    time-input border-black border-2 rounded-md px-2 py-1
-                                    dark:bg-gray-500 dark:border-white
-                                ">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="from-hour" name="from-hour" step="2" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label for="to-hour">To Hour</label>
-                                <input type="time" name="to-hour" id="to-hour" step="2" class="
-                                    time-input border-black border-2 rounded-md px-2 py-1
-                                    dark:bg-gray-500 dark:border-white
-                                ">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <input type="time" id="to-hour" name="to-hour" step="2" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
                             </div>
                         </div>
                         <p id="error" class="text-red-500 hidden"></p>
@@ -48,11 +66,18 @@
         </div>
     </schedule-modal>
 
-    <confirm-modal class="confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
-        <div class="flex justify-center items-center h-full">
+    <confirm-modal class="
+        confirm-modal hidden z-30 fixed bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0 text-center
+        dark:bg-opacity-0
+    ">
+        <div class="
+            flex justify-center items-center h-full px-10
+            md:px-28
+        ">
             <div class="
-                grid bg-white px-8 py-6 w-1/3 rounded-md gap-8 select-none
-                dark:bg-gray-800
+                grid bg-white px-8 py-6 w-full rounded-md gap-8 select-none
+                dark:bg-[#121212] dark:border-2
+                lg:w-1/2
             ">
                 <div class="flex flex-col gap-5 items-center">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-red-500 h-32 w-32">
@@ -91,11 +116,11 @@
                     @if ($isScheduleSubmitted)
                         @foreach ($schedule as $eachSchedule)
                             <tr class="border-b-2 border-gray-200 dark:text-white">
-                                <td class="px-4 py-3 dark:bg-gray-400">{{ $eachSchedule->day }}</td>
+                                <td class="px-4 py-3 dark:bg-gray-700">{{ $eachSchedule->day }}</td>
                                 @if ($eachSchedule->start_time == '00:00:00' && $eachSchedule->end_time == '00:00:00')
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">No work schedule</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">No work schedule</td>
                                 @else
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
                                 @endif
                             </tr>
                         @endforeach
@@ -107,19 +132,21 @@
                             " id="{{ $day }}">
                                 <td class="
                                     px-4 py-3
-                                    dark:bg-gray-400
+                                    dark:bg-gray-700
                                 ">{{ $day }}</td>
                                 <td class="
                                     px-4 py-3 bg-gray-100
-                                    dark:bg-gray-600
+                                    dark:bg-gray-800
                                 ">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
                                 <td class="
-                                    flex justify-center px-4 py-3
-                                    dark:bg-gray-400
+                                    px-4 py-3
+                                    dark:bg-gray-700
                                 ">
-                                    <svg width="30" height="30" viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500">
-                                        <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
-                                    </svg>
+                                    <div class="flex justify-center items-center">
+                                        <svg viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500 transition-colors dark:hover:fill-white h-8 w-8">
+                                            <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
+                                        </svg>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -281,12 +308,12 @@
             });
 
             $('#submit').click(function(e) {
-                if(totalWorkHours < 20) {
-                    $('#submit-error').text('You must work at least 20 hours a week');
-                    $('#submit-error').removeClass('hidden');
-                    e.preventDefault();
-                    return;
-                }
+                // if(totalWorkHours < 20) {
+                //     $('#submit-error').text('You must work at least 20 hours a week');
+                //     $('#submit-error').removeClass('hidden');
+                //     e.preventDefault();
+                //     return;
+                // }
 
                 $('#submit-error').addClass('hidden');
                 $('.confirm-modal').toggle();

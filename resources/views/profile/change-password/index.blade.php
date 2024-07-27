@@ -9,8 +9,8 @@
             <password-input class="grid gap-2">
                 <label for="update-password" class="font-medium">Password</label>
                 <input type="password" name="update_password" id="update-password" class="
-                    px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500
-                    dark:bg-gray-500
+                    px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
+                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 
                     @error('update_password')
                         border-red-500
@@ -24,8 +24,8 @@
                 <password-input class="grid gap-2">
                     <label for="confirm-password" class="font-medium">Confirm Password</label>
                     <input type="password" name="confirm_password" id="confirm-password" class="
-                        px-2 py-1 border-2 border-gray-200 rounded-md focus:outline-blue-500
-                        dark:bg-gray-500
+                        px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
+                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 
                         @error('confirm_password')
                             border-red-500
