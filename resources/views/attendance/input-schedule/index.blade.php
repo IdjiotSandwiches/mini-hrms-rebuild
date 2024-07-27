@@ -91,11 +91,11 @@
                     @if ($isScheduleSubmitted)
                         @foreach ($schedule as $eachSchedule)
                             <tr class="border-b-2 border-gray-200 dark:text-white">
-                                <td class="px-4 py-3 dark:bg-gray-400">{{ $eachSchedule->day }}</td>
+                                <td class="px-4 py-3 dark:bg-gray-700">{{ $eachSchedule->day }}</td>
                                 @if ($eachSchedule->start_time == '00:00:00' && $eachSchedule->end_time == '00:00:00')
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">No work schedule</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">No work schedule</td>
                                 @else
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-600">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
+                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
                                 @endif
                             </tr>
                         @endforeach
@@ -107,19 +107,21 @@
                             " id="{{ $day }}">
                                 <td class="
                                     px-4 py-3
-                                    dark:bg-gray-400
+                                    dark:bg-gray-700
                                 ">{{ $day }}</td>
                                 <td class="
                                     px-4 py-3 bg-gray-100
-                                    dark:bg-gray-600
+                                    dark:bg-gray-800
                                 ">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
                                 <td class="
-                                    flex justify-center px-4 py-3
-                                    dark:bg-gray-400
+                                    px-4 py-3
+                                    dark:bg-gray-700
                                 ">
-                                    <svg width="30" height="30" viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500">
-                                        <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
-                                    </svg>
+                                    <div class="flex justify-center items-center">
+                                        <svg viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500 dark:hover:fill-white h-8 w-8">
+                                            <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
+                                        </svg>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

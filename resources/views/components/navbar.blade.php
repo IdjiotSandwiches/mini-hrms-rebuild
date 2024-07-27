@@ -1,7 +1,7 @@
 <nav class="
     bg-white fixed z-10 w-full flex justify-between items-center border-gray-200 border-b-[0.5px] px-10 h-16 select-none
     md:px-28
-    dark:bg-gray-800 dark:text-white
+    dark:bg-[#121212] dark:text-white
 ">
     @if (auth()->user())
         <a class="
@@ -31,7 +31,7 @@
     <nav-item class="
         nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-10 w-64 border-2 rounded-md divide-y-2
         md:mr-28
-        dark:bg-gray-800 dark:text-white
+        dark:bg-[#121212] dark:text-white
     ">
         <div class="py-2 px-4">
             <p class="text-md">{{ auth()->user()->username }}</p>

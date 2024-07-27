@@ -21,7 +21,7 @@
             <label for="email" class="text-xs font-medium">E-mail</label>
             <input type="email" name="email" id="email" class="
                 focus:outline-none text-gray-900 py-1
-                dark:bg-gray-900 dark:text-white
+                dark:bg-[#121212] dark:text-white
             " value="{{ old('email') }}">
             @error('email')
                 <p class="text-red-500">{{ $message }}</p>
@@ -41,7 +41,7 @@
                 <label for="first-name" class=" text-xs font-medium">First Name</label>
                 <input type="text" name="first_name" id="first-name" autocomplete="off" class="
                     focus:outline-none text-gray-900 py-1
-                    dark:bg-gray-900 dark:text-white
+                    dark:bg-[#121212] dark:text-white
                 " value="{{ old('first_name') }}">
                 @error('first_name')
                     <p class="text-red-500">{{ $message }}</p>
@@ -57,7 +57,7 @@
                 <label for="last-name" class="text-xs font-medium">Last Name</label>
                 <input type="text" name="last_name" id="last-name" autocomplete="off" class="
                     focus:outline-none text-gray-900 py-1
-                    dark:bg-gray-900 dark:text-white
+                    dark:bg-[#121212] dark:text-white
                 " value="{{ old('last_name') }}">
                 @error('last_name')
                     <p class="text-red-500">{{ $message }}</p>
@@ -74,7 +74,7 @@
             <label for="password" class="text-xs font-medium">Password</label>
             <input type="password" name="password" id="password" autocomplete="off" class="
                 focus:outline-none text-gray-900 py-1
-                dark:bg-gray-900 dark:text-white
+                dark:bg-[#121212] dark:text-white
             ">
             @error('password')
                 <p class="text-red-500">{{ $message }}</p>
@@ -90,7 +90,7 @@
             <label for="password" class="text-xs font-medium">Confirm Password</label>
             <input type="password" name="password_confirmation" id="password-confirmation" autocomplete="off" class="
                 focus:outline-none text-gray-900 py-1
-                dark:bg-gray-900 dark:text-white
+                dark:bg-[#121212] dark:text-white
             ">
             @error('password_confirmation')
                 <p class="text-red-500">{{ $message }}</p>
