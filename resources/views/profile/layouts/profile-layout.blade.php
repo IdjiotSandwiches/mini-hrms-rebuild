@@ -22,8 +22,8 @@
         ">
             <!-- Sidebar -->
             <aside class="grid gap-2 h-fit">
-                @include('components.sidebar-item', with(['item_title' => 'Edit Profile', 'path' => 'profile.edit-profile-page']))
-                @include('components.sidebar-item', with(['item_title' => 'Change Password', 'path' => 'profile.change-password-page']))
+                @include('components.sidebar-item', with(['item_title' => 'Edit Profile', 'path' => ['profile.edit-profile-page']]))
+                @include('components.sidebar-item', with(['item_title' => 'Change Password', 'path' => ['profile.change-password-page']]))
             </aside>
             <section>
                 <div class="border-gray-200 border-b-2 pb-5">

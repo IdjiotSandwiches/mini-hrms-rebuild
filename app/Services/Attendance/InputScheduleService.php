@@ -2,6 +2,7 @@
 
 namespace App\Services\Attendance;
 
+use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,16 @@ class InputScheduleService extends BaseService
     public function getSchedule()
     {
         return Schedule::where('user_id', $this->getUser()->user_id);
+    }
+
+    public function isUpdateSchedule() {
+        $currentTime = $this->convertTime(Carbon::now());
+        $schedule = $this->getSchedule()->first();
+        $lastScheduleUpdate = $this->convertTime($schedule->updated_at);
+
+        if ($currentTime->diffInMonths($lastScheduleUpdate) == 0) return true;
+
+        return false;
     }
 
     public function calculateTotalWorkHour()
