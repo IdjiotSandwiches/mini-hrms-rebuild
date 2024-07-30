@@ -53,6 +53,17 @@
         $('#error').trigger('error');
     }
 
+    const customSwal = Swal.mixin({
+        showConfirmButton: true,
+        confirmButtonColor: 'blue',
+        cancelButtonColor: 'red',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        customClass: {
+            title: 'font-medium'
+        },
+    });
+
     function ajaxRequest() {
         const url = "{{ route('attendance.input-schedule') }}";
         $.ajax({
@@ -60,10 +71,33 @@
             url: url,
             data: {
                 schedule: schedule,
-                _token: '{{ csrf_token() }}'
+                _token: '{{ csrf_token() }}',
+            },
+            success: function(res) {
+                customSwal.fire({
+                    title: res.status,
+                    text: res.message,
+                    icon: res.status,
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            },
+            error: function(res) {
+                customSwal.fire({
+                    title: res.status,
+                    text: res.message,
+                    icon: res.status,
+                }).then((result) => {
+                    if(result.isConfirmed) {
+                        location.reload();
+                    }
+                });
             }
         });
     }
+
 
     $(document).ready(function() {
         $('.action').click(function() {
@@ -140,24 +174,30 @@
             modal.toggle();
         });
 
-        $('#submit').click(function(e) {
+        $('#submit').click(function() {
             if(totalWorkHours < 20) {
-                $('#submit-error').text('You must work at least 20 hours a week');
-                $('#submit-error').removeClass('hidden');
-                e.preventDefault();
+                customSwal.fire({
+                    title: 'Invalid!',
+                    text: 'You must work at least 20 hours a week',
+                    icon: 'warning',
+                    customClass: {
+                        title: 'font-medium'
+                    },
+                });
                 return;
             }
 
-            $('#submit-error').addClass('hidden');
-            $('.confirm-modal').toggle();
-        });
-
-        $('#cancel').click(function() {
-            $('.confirm-modal').toggle()
-        });
-
-        $('#confirm-schedule').click(function() {
-            ajaxRequest();
+            customSwal.fire({
+                title: 'Are you sure?',
+                text: 'You cannot change your schedule in 3 months!',
+                icon: 'warning',
+                iconColor: 'red',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if(result.isConfirmed) ajaxRequest();
+            });
         });
 
         modal.on('click', function(event) {

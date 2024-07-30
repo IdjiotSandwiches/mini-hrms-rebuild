@@ -28,7 +28,6 @@
                 </tbody>
             </table>
         </div>
-        <p id="submit-error" class="text-red-500 text-center hidden"></p>
         <div class="flex gap-4 justify-end items-center">
             <p class="text-lg font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ str($totalWorkHour) . ' Hours' }}</span></p>
             @if ($isUpdateSchedule)

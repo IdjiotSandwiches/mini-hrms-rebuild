@@ -24,7 +24,7 @@ class InputScheduleService extends BaseService
         $schedule = $this->getSchedule()->first();
         $lastScheduleUpdate = $this->convertTime($schedule->updated_at);
 
-        if ($currentTime->diffInMonths($lastScheduleUpdate) == 0) return true;
+        if ($currentTime->diffInMonths($lastScheduleUpdate) >= 3) return true;
 
         return false;
     }
@@ -60,23 +60,23 @@ class InputScheduleService extends BaseService
 
             if ($totalWorkTime < 20) {
                 DB::rollBack();
-                return back()->with([
+                return [
                     'status' => 'error',
                     'message' => 'You must work at least 20 hours a week.',
-                ]);
+                ];
             }
 
             DB::commit();
-            return back()->with([
+            return [
                 'status' => 'success',
                 'message' => 'Schedule has submitted successfully.'
-            ]);
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            return [
                 'status' => 'error',
                 'message' => 'Invalid operation.'
-            ]);
+            ];
         }
     }
 }

@@ -39,7 +39,15 @@ class InputScheduleController extends Controller
 
     public function update()
     {
-        return view('attendance.input-schedule.update');
+        if ($this->inputScheduleService->isUpdateSchedule()) {
+            return view('attendance.input-schedule.update');
+        }
+
+        return redirect()->route('attendance.input-schedule-page')
+            ->with([
+                'status' => 'error',
+                'message' => 'Invalid operation.',
+            ]);
     }
 
     public function inputSchedule(Request $request)
