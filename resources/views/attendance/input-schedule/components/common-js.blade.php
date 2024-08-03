@@ -80,7 +80,7 @@
                     icon: res.status,
                 }).then((result) => {
                     if(result.isConfirmed) {
-                        location.reload();
+                        window.location.href = '{{ route('attendance.input-schedule-page') }}';
                     }
                 });
             },
