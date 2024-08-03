@@ -16,19 +16,35 @@ class InputScheduleController extends Controller
 
     public function index()
     {
-        $isScheduleSubmitted = $this->inputScheduleService
-            ->isScheduleSubmitted();
         $schedule = $this->inputScheduleService
             ->getSchedule()
-            ->get() ?? null;
-        $totalWorkHour = $this->inputScheduleService
-            ->calculateTotalWorkHour() ?? null;
+            ->get();
 
-        return view('attendance.input-schedule.index', [
-            'isScheduleSubmitted' => $isScheduleSubmitted,
-            'schedule' => $schedule,
-            'totalWorkHour' => $totalWorkHour,
-        ]);
+        $totalWorkHour = $this->inputScheduleService
+            ->calculateTotalWorkHour();
+
+        $isUpdateSchedule = $this->inputScheduleService
+            ->isUpdateSchedule();
+
+        if ($this->inputScheduleService->isScheduleSubmitted()) {
+            return view('attendance.input-schedule.index', compact('schedule', 'totalWorkHour', 'isUpdateSchedule'));
+        }
+
+        return view('attendance.input-schedule.update', compact('isUpdateSchedule'));
+    }
+
+    public function update()
+    {
+        $isUpdateSchedule = $this->inputScheduleService
+            ->isUpdateSchedule();
+
+        if ($isUpdateSchedule) return view('attendance.input-schedule.update', compact('isUpdateSchedule'));
+
+        return redirect()->route('attendance.input-schedule-page')
+            ->with([
+                'status' => 'error',
+                'message' => 'Invalid operation.',
+            ]);
     }
 
     public function inputSchedule(Request $request)

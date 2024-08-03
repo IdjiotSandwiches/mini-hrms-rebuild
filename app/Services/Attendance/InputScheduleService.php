@@ -2,6 +2,7 @@
 
 namespace App\Services\Attendance;
 
+use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -13,9 +14,16 @@ class InputScheduleService extends BaseService
         return $this->getSchedule()->exists();
     }
 
-    public function getSchedule()
-    {
-        return Schedule::where('user_id', $this->getUser()->user_id);
+    public function isUpdateSchedule() {
+        if (!$this->isScheduleSubmitted()) return false;
+
+        $currentTime = $this->convertTime(Carbon::now());
+        $schedule = $this->getSchedule()->first();
+        $lastScheduleUpdate = $this->convertTime($schedule->updated_at);
+
+        if ($currentTime->diffInMonths($lastScheduleUpdate) >= 3) return true;
+
+        return false;
     }
 
     public function calculateTotalWorkHour()
@@ -28,6 +36,8 @@ class InputScheduleService extends BaseService
 
     public function processSchedule($validated)
     {
+        $status = 'success';
+
         try {
             DB::beginTransaction();
 
@@ -38,7 +48,10 @@ class InputScheduleService extends BaseService
                 $totalWorkTime += $validatedTime->totalTime;
 
                 Schedule::updateOrCreate(
-                    ['user_id' => $this->getUser()->user_id, 'day' => $day],
+                    [
+                        'user_id' => $this->getUser()->user_id,
+                        'day' => $day
+                    ],
                     [
                         'start_time' => $validatedTime->start,
                         'end_time' => $validatedTime->end,
@@ -49,23 +62,19 @@ class InputScheduleService extends BaseService
 
             if ($totalWorkTime < 20) {
                 DB::rollBack();
-                return back()->with([
-                    'status' => 'error',
-                    'message' => 'You must work at least 20 hours a week.',
-                ]);
+                $status = 'error';
+                $message =  'You must work at least 20 hours a week.';
+                return compact('status', 'message');
             }
 
             DB::commit();
-            return back()->with([
-                'status' => 'success',
-                'message' => 'Schedule has submitted successfully.'
-            ]);
+            $message =  'Schedule has submitted successfully.';
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
-                'status' => 'error',
-                'message' => 'Invalid operation.'
-            ]);
+            $status = 'error';
+            $message =  'Invalid operation.';
         }
+
+        return compact('status', 'message');
     }
 }
