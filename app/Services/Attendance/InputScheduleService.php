@@ -9,13 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class InputScheduleService extends BaseService
 {
-    public function isScheduleSubmitted()
-    {
-        return $this->getSchedule()->exists();
-    }
-
     public function isUpdateSchedule() {
-        if (!$this->isScheduleSubmitted()) return false;
+        if (!$this->getSchedule()->exists()) return false;
 
         $currentTime = $this->convertTime(Carbon::now());
         $schedule = $this->getSchedule()->first();

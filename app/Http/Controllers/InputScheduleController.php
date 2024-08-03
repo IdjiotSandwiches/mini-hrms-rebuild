@@ -26,7 +26,11 @@ class InputScheduleController extends Controller
         $isUpdateSchedule = $this->inputScheduleService
             ->isUpdateSchedule();
 
-        if ($this->inputScheduleService->isScheduleSubmitted()) {
+        $isScheduleSubmitted = $this->inputScheduleService
+            ->getSchedule()
+            ->exists();
+
+        if ($isScheduleSubmitted) {
             return view('attendance.input-schedule.index', compact('schedule', 'totalWorkHour', 'isUpdateSchedule'));
         }
 
