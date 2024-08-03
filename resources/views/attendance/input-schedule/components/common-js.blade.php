@@ -165,7 +165,7 @@
             totalWorkHours >= 20 ? $('#work-hours').addClass('text-blue-500') : '';
 
             $('#error').addClass('hidden');
-            $('.time-input').val('');
+            $('input[type="time"]').val('');
 
             modal.toggle();
         });

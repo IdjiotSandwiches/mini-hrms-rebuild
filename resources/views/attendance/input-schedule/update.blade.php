@@ -7,7 +7,6 @@
 
 @section('content')
     @include('attendance.input-schedule.components.schedule-modal')
-    @include('attendance.input-schedule.components.confirm-modal')
 
     <schedule-section class="
         py-10 gap-4 flex flex-col

@@ -24,12 +24,14 @@ class BaseService
 
     public function getSchedule()
     {
-        return Schedule::with('user');
+        return Schedule::with('user')
+            ->where('user_id', $this->getUser()->user_id);
     }
 
     public function getAttendance()
     {
-        return Attendance::with('user');
+        return Attendance::with('user')
+            ->where('user_id', $this->getUser()->user_id);
     }
 
     public function calculateWorkTime($start, $end)
