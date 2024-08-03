@@ -14,11 +14,6 @@ class InputScheduleService extends BaseService
         return $this->getSchedule()->exists();
     }
 
-    public function getSchedule()
-    {
-        return Schedule::with('user');
-    }
-
     public function isUpdateSchedule() {
         if (!$this->isScheduleSubmitted()) return false;
 
