@@ -40,7 +40,4 @@
             {{ $monthlyAttendances->links('pagination::tailwind') }}
         </monthly-table>
     </report-section>
-
-    @include('components.common-js')
-
 @endsection
