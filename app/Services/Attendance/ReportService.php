@@ -20,7 +20,7 @@ class ReportService extends BaseService
 
     public function getRangeReport($startTime, $endTime)
     {
-        if(!$startTime || !$endTime) return;
+        if (!$startTime || !$endTime) return;
 
         $startTime = $this->convertTime($startTime)
             ->toDateString();
