@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ScheduleAbsences extends Command
@@ -40,28 +41,32 @@ class ScheduleAbsences extends Command
     public function handle()
     {
         try {
-            $yesterdayDate = $this->baseService
-                ->convertTime(Carbon::yesterday())
+            DB::beginTransaction();
+
+            $currentDate = $this->baseService
+                ->convertTime(Carbon::now())
                 ->toDateString();
 
-            User::chunk(1000, function ($users) use ($yesterdayDate) {
+            User::chunk(1000, function ($users) use ($currentDate) {
                 foreach ($users as $user) {
-                    $attendance = Attendance::where([
+                    $attendances = Attendance::where([
                         ['user_id', $user->user_id],
-                        ['date', $yesterdayDate]
-                    ])->first();
+                        ['date', '<', $currentDate]
+                    ])->get();
 
-                    if (!$attendance) continue;
+                    $attendances = $attendances->each(function($attendance) {
+                        $absence = !$attendance->check_in || !$attendance->check_out;
 
-                    $absence = !$attendance->check_in || !$attendance->check_out;
-
-                    $attendance->absence = $absence;
-                    $attendance->save();
+                        $attendance->absence = $absence;
+                        $attendance->save();
+                    });
                 }
             });
 
+            DB::commit();
             $this->info('Scheduler run successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Absence scheduler error: ' . $e->getMessage());
             $this->error('Absence scheduler error: ' . $e->getMessage());
         }
