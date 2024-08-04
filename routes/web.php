@@ -51,6 +51,7 @@ Route::middleware(['auth:web'])->group(function () {
 
             Route::controller(ReportController::class)->group(function () {
                 Route::get('/report', 'index')->name('report-page');
+                Route::get('/range-report', 'rangeReport')->name('get-range-report');
             });
     });
 
