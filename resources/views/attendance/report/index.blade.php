@@ -18,7 +18,7 @@
                 <p class="
                     text-gray-500
                     dark:text-gray-300
-                ">This is your work report for the last 30 days.</p>
+                ">Pick your own date.</p>
             </div>
             <div id="date-range-picker" date-rangepicker class="
                 flex flex-col gap-4 items-center
@@ -152,7 +152,11 @@
                     }
                 },
                 error: function(res) {
-                    toastr.error(res);
+                    Swal.fire({
+                        text: 'Invalid operation.',
+                        icon: 'error',
+                        confirmButtonColor: 'blue',
+                    });
                 }
             });
         }
