@@ -18,6 +18,25 @@ class ReportService extends BaseService
         return (object) compact('attendances', 'workHours');
     }
 
+    public function getRangeReport($startTime, $endTime)
+    {
+        if(!$startTime || !$endTime) return;
+
+        $startTime = $this->convertTime($startTime)
+            ->toDateString();
+        $endTime = $this->convertTime($endTime)
+            ->toDateString();
+
+        $attendance = $this->getAttendance();
+        $rangeReport = $attendance->whereBetween('date', [$startTime, $endTime])
+            ->get()
+            ->map(function($report) {
+                return $this->reportConversion($report);
+            });
+
+        return $rangeReport;
+    }
+
     public function getWeeklyReport()
     {
         $currentTime = $this->convertTime(Carbon::now());
