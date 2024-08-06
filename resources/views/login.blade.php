@@ -43,9 +43,4 @@
             <a href="{{ route('register') }}" class="font-semibold leading-6 text-blue-600 transition-colors hover:text-blue-500 underline decoration-2 underline-offset-2">Register</a>
         </p>
     </form>
-    <script type="module">
-        @if (Session::has('status'))
-            toastr.{{ Session::get('status') }}('{{ Session::get('message') }}');
-        @endif
-    </script>
 @endsection

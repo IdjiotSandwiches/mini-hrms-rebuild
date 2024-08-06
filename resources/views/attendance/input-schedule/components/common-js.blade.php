@@ -1,8 +1,4 @@
 <script type="module">
-    @if (Session::has('status'))
-        toastr.{{ Session::get('status') }}('{{ Session::get('message') }}');
-    @endif
-
     let modal = $('.schedule-modal');
     let totalWorkHours = 0;
     let id = null;

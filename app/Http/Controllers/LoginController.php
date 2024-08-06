@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
@@ -15,12 +14,9 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(LoginRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'email' => 'required|email:dns',
-            'password' => 'required',
-        ]);
+        $validated = $request->validated();
 
         if (!Auth::attempt($validated)) {
             return back()->with([
