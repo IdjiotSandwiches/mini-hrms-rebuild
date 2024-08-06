@@ -43,10 +43,6 @@
     </password-section>
 
     <script type="module">
-        @if (Session::has('status'))
-            toastr.{{ Session::get('status') }}('{{ Session::get('message') }}');
-        @endif
-
         $(document).ready(function() {
             $('input[type="password"]').on('input change', function() {
                 $('#update-btn').prop('disabled', !$(this).val().length);
