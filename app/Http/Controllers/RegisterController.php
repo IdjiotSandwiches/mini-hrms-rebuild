@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\RegisterService;
+use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
@@ -19,15 +19,9 @@ class RegisterController extends Controller
         return view('register');
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email:dns|unique:users,email',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'password' => 'required|confirmed|min:6',
-            'password_confirmation' => 'required',
-        ]);
+        $validated = $request->validated();
 
         return $this->registerService->registerUser($validated);
     }
