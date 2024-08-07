@@ -52,10 +52,12 @@ class ChangePasswordService extends BaseService
             {
                 $countdownTimer = $this->countdownTimer();
                 DB::rollBack();
-                return back()->with([
+                $response = [
                     'status' => 'error',
                     'message' => 'You need to wait ' . str($countdownTimer) . ' to change password again.'
-                ]);
+                ];
+
+                return back()->with($response);
             }
 
             if (!Hash::check($validated['confirm_password'], $this->getUser()
@@ -80,19 +82,23 @@ class ChangePasswordService extends BaseService
             $user->save();
 
             DB::commit();
-            return redirect()
-                ->intended(route('profile.edit-profile-page'))
-                ->with([
-                    'status' => 'success',
-                    'message' => 'Password has been changed successfully.',
-                ]);
+            $response = [
+                'status' => 'success',
+                'message' => 'Password has been changed successfully.',
+            ];
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.'
-            ]);
+            ];
+
+            return back()->with($response);
         }
+
+        return redirect()
+            ->intended(route('profile.edit-profile-page'))
+            ->with($response);
     }
 }

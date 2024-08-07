@@ -31,17 +31,22 @@ class RegisterService extends BaseService
             $user->save();
 
             DB::commit();
-            return redirect()->route('login')
-                ->with([
-                    'status' => 'success',
-                    'message' => 'Account successfully created',
-                ]);
+            $response = [
+                'status' => 'success',
+                'message' => 'Account successfully created',
+            ];
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.',
-            ]);
+            ];
+
+            return back()->with($response);
         }
+
+        return redirect()->route('login')
+            ->with($response);
     }
 }
