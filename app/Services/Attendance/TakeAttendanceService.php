@@ -61,10 +61,12 @@ class TakeAttendanceService extends BaseService
 
             if (!$this->isWork($currentTime)) {
                 DB::rollBack();
-                return back()->with([
+                $response = [
                     'status' => 'error',
                     'message' => 'You do not have work schedule today.'
-                ]);
+                ];
+
+                return back()->with($response);
             }
 
             $isLate = $this->isLate($currentTime);
@@ -78,17 +80,21 @@ class TakeAttendanceService extends BaseService
             $attendance->save();
 
             DB::commit();
-            return back()->with([
+            $response = [
                 'status' => 'success',
                 'message' => 'Checked In.',
-            ]);
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.',
-            ]);
+            ];
+
+            return back()->with($response);
         }
+
+        return back()->with($response);
     }
 
     public function checkOutValidation()

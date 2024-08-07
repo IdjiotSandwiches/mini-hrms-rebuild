@@ -34,10 +34,12 @@ class EditProfileService extends BaseService
                 is_null($validated['first_name']) &&
                 is_null($validated['last_name'])) {
                     DB::rollBack();
-                    return back()->with([
+                    $response = [
                         'status' => 'error',
                         'message' => 'At least one of the fields is required.'
-                    ]);
+                    ];
+
+                    return back()->with($response);
                 }
 
             $user = $this->getUser();
@@ -47,16 +49,20 @@ class EditProfileService extends BaseService
             $user->save();
 
             DB::commit();
-            return back()->with([
+            $response = [
                 'status' => 'success',
                 'message' => 'Your profile has been updated successfully.'
-            ]);
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.',
-            ]);
+            ];
+
+            return back()->with($response);
         }
+
+        return back()->with($response);
     }
 }
