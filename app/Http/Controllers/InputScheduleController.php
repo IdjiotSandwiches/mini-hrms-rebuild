@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\InputScheduleRequest;
 use App\Services\Attendance\InputScheduleService;
 
 class InputScheduleController extends Controller
@@ -51,13 +51,11 @@ class InputScheduleController extends Controller
             ]);
     }
 
-    public function inputSchedule(Request $request)
+    public function inputSchedule(InputScheduleRequest $request)
     {
         if (!$request->ajax()) abort(404);
 
-        $validated = $request->validate([
-            'schedule' => 'required|array'
-        ]);
+        $validated = $request->validated();
 
         return $this->inputScheduleService->processSchedule($validated);
     }
