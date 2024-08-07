@@ -62,6 +62,10 @@ class InputScheduleService extends BaseService
             }
 
             DB::commit();
+            $response = [
+                'status' => 'success',
+                'message' => 'Schedule has submitted successfully.',
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
@@ -71,11 +75,6 @@ class InputScheduleService extends BaseService
 
             return $response;
         }
-
-        $response = [
-            'status' => 'success',
-            'message' => 'Schedule has submitted successfully.',
-        ];
 
         return $response;
     }
