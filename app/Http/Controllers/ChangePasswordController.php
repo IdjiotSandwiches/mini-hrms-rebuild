@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Services\Profile\ChangePasswordService;
 
 class ChangePasswordController extends Controller
@@ -19,7 +19,7 @@ class ChangePasswordController extends Controller
         return view('profile.change-password.index');
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
         $validated = $request->validated();
 
