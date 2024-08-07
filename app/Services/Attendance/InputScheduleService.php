@@ -31,8 +31,6 @@ class InputScheduleService extends BaseService
 
     public function processSchedule($validated)
     {
-        $status = 'success';
-
         try {
             DB::beginTransaction();
 
@@ -57,19 +55,28 @@ class InputScheduleService extends BaseService
 
             if ($totalWorkTime < 20) {
                 DB::rollBack();
-                $status = 'error';
-                $message =  'You must work at least 20 hours a week.';
-                return compact('status', 'message');
+                $response = [
+                    'status' => 'error',
+                    'message' => 'You must work at least 20 hours a week.',
+                ];
             }
 
             DB::commit();
-            $message =  'Schedule has submitted successfully.';
         } catch (\Exception $e) {
             DB::rollBack();
-            $status = 'error';
-            $message =  'Invalid operation.';
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid operation.',
+            ];
+
+            return $response;
         }
 
-        return compact('status', 'message');
+        $response = [
+            'status' => 'success',
+            'message' => 'Schedule has submitted successfully.',
+        ];
+
+        return $response;
     }
 }
