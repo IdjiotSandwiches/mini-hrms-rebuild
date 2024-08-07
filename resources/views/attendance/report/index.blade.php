@@ -103,7 +103,10 @@
             </div>
             @include('attendance.report.components.report-table', with(['attendances' => $monthlyAttendances]))
             <p class="font-medium">Total Monthly Work Hours:
-                <span class="@if ($monthlyWorkHours < 80) text-red-500 @else text-blue-500 @endif">{{ $monthlyWorkHours }} Hours</span>
+                <span @class([
+                    'text-red-500' => $monthlyWorkHours < 80,
+                    'text-blue-500'
+                ])>{{ $monthlyWorkHours }} Hours</span>
             </p>
             {{ $monthlyAttendances->links('pagination::tailwind') }}
         </monthly-table>
