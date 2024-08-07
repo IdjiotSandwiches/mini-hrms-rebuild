@@ -18,13 +18,10 @@ class ChangePasswordController extends Controller
     {
         return view('profile.change-password.index');
     }
-  
+
     public function changePassword(Request $request)
     {
-        $validated = $request->validate([
-            'update_password' => 'required|min:6',
-            'confirm_password' => 'required',
-        ]);
+        $validated = $request->validated();
 
         return $this->changePasswordService
             ->changePasswordValidation($validated);

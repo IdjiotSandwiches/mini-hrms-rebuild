@@ -116,8 +116,8 @@
                 type: 'GET',
                 url: url,
                 data: {
-                    startTime: start,
-                    endTime: end,
+                    start_time: start,
+                    end_time: end,
                     _token: '{{ csrf_token() }}',
                 },
                 success: function(res) {

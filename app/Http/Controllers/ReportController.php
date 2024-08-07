@@ -33,8 +33,10 @@ class ReportController extends Controller
     {
         if (!$request->ajax()) abort(404);
 
-        $startTime = $request->startTime;
-        $endTime = $request->endTime;
+        $validated = $request->validated();
+
+        $startTime = $validated->startTime;
+        $endTime = $validated->endTime;
 
         return $this->reportService->getRangeReport($startTime, $endTime);
     }
