@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ReportRequest;
 use App\Services\Attendance\ReportService;
 
 class ReportController extends Controller
@@ -29,12 +29,14 @@ class ReportController extends Controller
         ]);
     }
 
-    public function rangeReport(Request $request)
+    public function rangeReport(ReportRequest $request)
     {
         if (!$request->ajax()) abort(404);
 
-        $startTime = $request->startTime;
-        $endTime = $request->endTime;
+        $validated = $request->validated();
+
+        $startTime = $validated->startTime;
+        $endTime = $validated->endTime;
 
         return $this->reportService->getRangeReport($startTime, $endTime);
     }

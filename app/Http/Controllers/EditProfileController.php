@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\EditProfileRequest;
 use App\Services\Profile\EditProfileService;
 
 class EditProfileController extends Controller
@@ -24,20 +24,12 @@ class EditProfileController extends Controller
         ]));
     }
 
-    public function editProfile(Request $request)
+    public function editProfile(EditProfileRequest $request)
     {
-        $validated = $request->validate([
-            'avatar' => 'image|extensions:jpg,jpeg,png|nullable',
-            'first_name' => 'string|nullable',
-            'last_name' => 'string|nullable',
-        ]);
+        $validated = $request->validated();
 
-        if ($request->hasFile('avatar')) {
-            $validated['avatar'] = 'storage/' . $request->file('avatar')->store('avatars');
-        }
-        else {
-            $validated['avatar'] = null;
-        }
+        $validated['avatar'] = $request->hasFile('avatar') ?
+            'storage/' . $request->file('avatar')->store('avatars') : null;
 
         return $this->editProfileService->updateProfile($validated);
     }
