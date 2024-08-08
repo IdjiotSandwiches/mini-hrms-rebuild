@@ -35,8 +35,8 @@ class ReportController extends Controller
 
         $validated = $request->validated();
 
-        $startTime = $validated->startTime;
-        $endTime = $validated->endTime;
+        $startTime = $validated['start_time'];
+        $endTime = $validated['end_time'];
 
         return $this->reportService->getRangeReport($startTime, $endTime);
     }

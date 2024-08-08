@@ -42,7 +42,10 @@
         </form>
     </password-section>
 
-    <script type="module">
+@endsection
+
+@section('extra-js')
+    <script>
         $(document).ready(function() {
             $('input[type="password"]').on('input change', function() {
                 $('#update-btn').prop('disabled', !$(this).val().length);

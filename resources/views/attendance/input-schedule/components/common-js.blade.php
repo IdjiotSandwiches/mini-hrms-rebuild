@@ -1,4 +1,4 @@
-<script type="module">
+<script>
     let modal = $('.schedule-modal');
     let totalWorkHours = 0;
     let id = null;
@@ -83,8 +83,8 @@
         });
     }
 
-
     $(document).ready(function() {
+        // dayjs.extend(dayjs_plugin_customParseFormat);
         $('.action').click(function() {
             id = $(this).closest('tr').attr('id');
             modal.toggle();

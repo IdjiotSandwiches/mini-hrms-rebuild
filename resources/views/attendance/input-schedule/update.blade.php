@@ -61,6 +61,8 @@
             <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Save Schedule</button>
         </div>
     </schedule-section>
+@endsection
 
+@section('extra-js')
     @include('attendance.input-schedule.components.common-js')
 @endsection

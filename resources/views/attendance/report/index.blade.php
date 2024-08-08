@@ -111,8 +111,10 @@
             {{ $monthlyAttendances->links('pagination::tailwind') }}
         </monthly-table>
     </report-section>
+@endsection
 
-    <script type="module">
+@section('extra-js')
+    <script>
         function ajaxRequest(start, end) {
             const url = '{{ route('attendance.get-range-report') }}';
             $.ajax({

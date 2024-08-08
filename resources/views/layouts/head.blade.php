@@ -14,6 +14,9 @@
         }
     </script>
 
+    {{-- Flowbite --}}
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+
     {{-- Favicon --}}
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.svg') }}" type="image/x-icon">
 
