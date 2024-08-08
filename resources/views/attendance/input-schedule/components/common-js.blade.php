@@ -84,7 +84,7 @@
     }
 
     $(document).ready(function() {
-        // dayjs.extend(dayjs_plugin_customParseFormat);
+        dayjs.extend(dayjs_plugin_customParseFormat);
         $('.action').click(function() {
             id = $(this).closest('tr').attr('id');
             modal.toggle();
