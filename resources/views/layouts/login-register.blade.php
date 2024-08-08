@@ -11,6 +11,7 @@
         @yield('content')
     </section>
 
+    @include('components.cdn')
     @include('components.common-js')
 </body>
 </html>

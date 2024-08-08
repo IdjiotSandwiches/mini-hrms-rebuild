@@ -10,7 +10,6 @@
 @endif
 
 <script>
-
     let lightThemeToggle = $('#theme-toggle-dark-icon');
     let darkThemeToggle = $('#theme-toggle-light-icon');
     let toggleBtn = $('#theme-toggle');
