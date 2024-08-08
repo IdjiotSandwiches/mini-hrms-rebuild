@@ -1,4 +1,27 @@
 <script type="module">
+    const confirmSwal = Swal.mixin({
+        showConfirmButton: true,
+        confirmButtonColor: 'blue',
+        cancelButtonColor: 'red',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: {
+            title: 'font-medium'
+        },
+    });
+
+    const alertSwal = Swal.mixin({
+        showConfirmButton: true,
+        confirmButtonColor: 'blue',
+        confirmButtonText: 'OK',
+        customClass: {
+            title: 'font-medium'
+        },
+    });
+
     @if (Session::has('status'))
         toastr.{{ Session::get('status') }}('{{ Session::get('message') }}')
     @endif

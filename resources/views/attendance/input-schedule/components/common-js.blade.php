@@ -70,7 +70,7 @@
                 _token: '{{ csrf_token() }}',
             },
             success: function(res) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: res.status,
                     text: res.message,
                     icon: res.status,
@@ -81,7 +81,7 @@
                 });
             },
             error: function(res) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: res.status,
                     text: res.message,
                     icon: res.status,
@@ -172,25 +172,19 @@
 
         $('#submit').click(function() {
             if(totalWorkHours < 20) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: 'Invalid!',
                     text: 'You must work at least 20 hours a week',
                     icon: 'warning',
-                    customClass: {
-                        title: 'font-medium'
-                    },
                 });
                 return;
             }
 
-            customSwal.fire({
+            confirmSwal.fire({
                 title: 'Are you sure?',
                 text: 'You cannot change your schedule in 3 months!',
                 icon: 'warning',
                 iconColor: 'red',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
             }).then((result) => {
                 if(result.isConfirmed) ajaxRequest();
             });
