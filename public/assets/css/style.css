@@ -2,7 +2,7 @@
     font-family: 'poppins';
     /* font-family: 'arial'; */
 }
-
+/*
 .toast {
     width: 20rem !important;
     top: 4rem;
@@ -26,7 +26,7 @@
 .toast-warning {
     background-color: #eab308 !important;
     color: white !important;
-}
+} */
 
 body.swal2-shown > [aria-hidden='true'] {
     transition: 0.1s filter;

@@ -49,17 +49,6 @@
         $('#error').trigger('error');
     }
 
-    const customSwal = Swal.mixin({
-        showConfirmButton: true,
-        confirmButtonColor: 'blue',
-        cancelButtonColor: 'red',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        customClass: {
-            title: 'font-medium'
-        },
-    });
-
     function ajaxRequest() {
         const url = "{{ route('attendance.input-schedule') }}";
         $.ajax({
