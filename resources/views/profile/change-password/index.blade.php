@@ -8,14 +8,11 @@
             @method('PUT')
             <password-input class="grid gap-2">
                 <label for="update-password" class="font-medium">Password</label>
-                <input type="password" name="update_password" id="update-password" class="
-                    px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
-                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
-
-                    @error('update_password')
-                        border-red-500 dark:border-red-500
-                    @enderror
-                ">
+                <input type="password" name="update_password" id="update-password" @class([
+                    'px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500',
+                    'dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'border-red-500 dark:border-red-500' => $errors->has('update_password')
+                ])>
                 @error('update_password')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
@@ -23,14 +20,11 @@
             <confirm-password class="grid gap-2">
                 <password-input class="grid gap-2">
                     <label for="confirm-password" class="font-medium">Confirm Password</label>
-                    <input type="password" name="confirm_password" id="confirm-password" class="
-                        px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500
-                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
-
-                        @error('confirm_password')
-                            border-red-500 dark:border-red-500
-                        @enderror
-                    ">
+                    <input type="password" name="confirm_password" id="confirm-password" @class([
+                        'px-2 py-1 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500',
+                        'dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                        'border-red-500 dark:border-red-500' => $errors->has('confirm_password'),
+                    ])>
                     @error('confirm_password')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
