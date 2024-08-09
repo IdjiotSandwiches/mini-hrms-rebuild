@@ -111,9 +111,11 @@ class TakeAttendanceService extends BaseService
 
             if ($diffTime < 60) {
                 DB::rollBack();
-                return back()->withErrors([
-                    'attendanceError' => 'You need at least 1 hour to check out.'
-                ]);
+                $response = [
+                    'status' => 'warning',
+                    'message' => 'You need at least 1 hour to check out.',
+                ];
+                return back()->with($response);
             }
 
             $isEarly = $this->isEarly($currentTime);
@@ -131,17 +133,19 @@ class TakeAttendanceService extends BaseService
             );
 
             DB::commit();
-            return back()->with([
+            $response = [
                 'status' => 'success',
                 'message' => 'Checked Out',
-            ]);
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.',
-            ]);
+            ];
         }
+
+        return back()->with($response);
     }
 }
 

@@ -31,8 +31,7 @@ class TakeAttendanceController extends Controller
         }
 
         if ($this->takeAttendanceService
-            ->getTodayAttendance()
-            ->exists()) {
+            ->isCheckedIn()) {
                 return back()->withErrors([
                     'attendanceError' => 'You have already checked in today.'
                 ]);
