@@ -11,7 +11,7 @@ class TakeAttendanceService extends BaseService
 {
     public function getTodayAttendance()
     {
-        return Attendance::where('user_id', $this->getUser()->user_id)
+        return $this->getAttendance()
             ->whereDate('date', $this->convertTime(Carbon::now())
                 ->toDateString());
     }
@@ -45,9 +45,11 @@ class TakeAttendanceService extends BaseService
     public function isCheckedIn()
     {
         $attendance = $this->getTodayAttendance();
+        $schedule = $this->getSchedule();
+
         if (!$attendance->exists()) return false;
         else {
-            if (!$attendance->first()->check_out) return true;
+            if (!$attendance->first()->check_out && $schedule->exists()) return true;
             return false;
         }
     }
