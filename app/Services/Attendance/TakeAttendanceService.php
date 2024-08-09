@@ -57,6 +57,28 @@ class TakeAttendanceService extends BaseService
         try {
             DB::beginTransaction();
 
+            if ($this->getTodayAttendance()
+                ->exists()) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => 'warning',
+                        'message' => 'You have already checked in today.'
+                    ];
+
+                    return back()->with($response);
+            }
+
+            if (!$this->getSchedule()
+                ->exists()) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => 'error',
+                        'message' => 'Input schedule first',
+                    ];
+
+                    return back()->with($response);
+            }
+
             $currentTime = $this->convertTime(Carbon::now());
 
             if (!$this->isWork($currentTime)) {
@@ -111,9 +133,11 @@ class TakeAttendanceService extends BaseService
 
             if ($diffTime < 60) {
                 DB::rollBack();
-                return back()->withErrors([
-                    'attendanceError' => 'You need at least 1 hour to check out.'
-                ]);
+                $response = [
+                    'status' => 'warning',
+                    'message' => 'You need at least 1 hour to check out.',
+                ];
+                return back()->with($response);
             }
 
             $isEarly = $this->isEarly($currentTime);
@@ -131,17 +155,19 @@ class TakeAttendanceService extends BaseService
             );
 
             DB::commit();
-            return back()->with([
+            $response = [
                 'status' => 'success',
                 'message' => 'Checked Out',
-            ]);
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with([
+            $response = [
                 'status' => 'error',
                 'message' => 'Invalid operation.',
-            ]);
+            ];
         }
+
+        return back()->with($response);
     }
 }
 

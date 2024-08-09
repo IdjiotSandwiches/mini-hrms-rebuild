@@ -26,9 +26,6 @@
                 dark:bg-gray-600
             " id="current-seconds"></div>
         </div>
-        @error('attendanceError')
-            <p class="text-red-500">{{ $message }}</p>
-        @enderror
         @if ($isCheckedIn)
             <form action="{{ route('attendance.check-out') }}" method="POST">
                 @method('PUT')

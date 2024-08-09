@@ -11,10 +11,10 @@
         2xl:w-1/3
     ">
         @csrf
-        <email-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
-            @error('email')
-                border-red-500 text-red-500
-            @enderror">
+        <email-form @class([
+            'grid border-2 rounded-md px-2 py-1 text-gray-400',
+            'border-red-500 text-red-500' => $errors->has('email'),
+        ])>
             <label for="email" class="text-xs font-medium">E-mail</label>
             <input type="email" name="email" id="email" class="
                 focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
@@ -24,10 +24,10 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </email-form>
-        <password-form class="grid border-2 rounded-md px-2 py-1 text-gray-400
-            @error('password')
-                border-red-500 text-red-500
-            @enderror">
+        <password-form @class([
+            'grid border-2 rounded-md px-2 py-1 text-gray-400',
+            'border-red-500 text-red-500' => $errors->has('password'),
+        ])>
             <label for="password" class="text-xs font-medium">Password</label>
             <input type="password" name="password" id="password" autocomplete="off" class="
                 focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
