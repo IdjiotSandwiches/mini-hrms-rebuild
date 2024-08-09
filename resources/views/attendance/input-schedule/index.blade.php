@@ -35,6 +35,8 @@
             @endif
         </div>
     </schedule-section>
+@endsection
 
+@section('extra-js')
     @include('attendance.input-schedule.components.common-js')
 @endsection

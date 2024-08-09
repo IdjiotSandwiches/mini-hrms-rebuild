@@ -36,5 +36,6 @@
     </section>
 
     @include('components.common-js')
+    @yield('extra-js')
 </body>
 </html>

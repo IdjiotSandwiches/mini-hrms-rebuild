@@ -51,17 +51,18 @@
             </table>
         </div>
         <p class="text-lg font-medium text-center">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
-        <div class="flex justify-end
-            @if ($isUpdateSchedule)
-                justify-between
-            @endif
-        ">
+        <div @class([
+            'justify-between' => $isUpdateSchedule,
+            'flex justify-end'
+        ])>
             @if ($isUpdateSchedule)
                 <a href="{{ route('attendance.input-schedule-page') }}" class="py-2 px-5 text-white text-lg rounded-md bg-red-600 hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-colors">Cancel</a>
             @endif
             <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Save Schedule</button>
         </div>
     </schedule-section>
+@endsection
 
+@section('extra-js')
     @include('attendance.input-schedule.components.common-js')
 @endsection

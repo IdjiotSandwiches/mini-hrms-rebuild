@@ -1,8 +1,16 @@
-<script type="module">
-    @if (Session::has('status'))
-        toastr.{{ Session::get('status') }}('{{ Session::get('message') }}')
-    @endif
+@include('components.cdn')
+@include('components.custom-swal')
 
+@if (Session::has('status'))
+    <script>
+        {{ Session::get('status') }}Toast.fire({
+            icon: '{{ Session::get('status') }}',
+            titleText: '{{ Session::get('message') }}',
+        });
+    </script>
+@endif
+
+<script>
     let lightThemeToggle = $('#theme-toggle-dark-icon');
     let darkThemeToggle = $('#theme-toggle-light-icon');
     let toggleBtn = $('#theme-toggle');
