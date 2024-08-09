@@ -90,7 +90,10 @@
             </div>
             @include('attendance.report.components.report-table', with(['attendances' => $weeklyAttendances]))
             <p class="font-medium">Total Weekly Work Hours:
-                <span class="@if ($weeklyWorkHours < 20) text-red-500 @else text-blue-500 @endif">{{ $weeklyWorkHours }} Hours</span>
+                <span @class([
+                    'text-blue-500',
+                    'text-red-500' => $weeklyWorkHours < 20
+                ])>{{ $weeklyWorkHours }} Hours</span>
             </p>
         </weekly-table>
         <monthly-table class="gap-4 flex flex-col">
