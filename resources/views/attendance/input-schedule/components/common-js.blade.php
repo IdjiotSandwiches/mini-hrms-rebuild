@@ -1,4 +1,4 @@
-<script type="module">
+<script>
     let modal = $('.schedule-modal');
     let totalWorkHours = 0;
     let id = null;
@@ -49,17 +49,6 @@
         $('#error').trigger('error');
     }
 
-    const customSwal = Swal.mixin({
-        showConfirmButton: true,
-        confirmButtonColor: 'blue',
-        cancelButtonColor: 'red',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        customClass: {
-            title: 'font-medium'
-        },
-    });
-
     function ajaxRequest() {
         const url = "{{ route('attendance.input-schedule') }}";
         $.ajax({
@@ -70,7 +59,7 @@
                 _token: '{{ csrf_token() }}',
             },
             success: function(res) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: res.status,
                     text: res.message,
                     icon: res.status,
@@ -81,7 +70,7 @@
                 });
             },
             error: function(res) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: res.status,
                     text: res.message,
                     icon: res.status,
@@ -94,8 +83,8 @@
         });
     }
 
-
     $(document).ready(function() {
+        dayjs.extend(dayjs_plugin_customParseFormat);
         $('.action').click(function() {
             id = $(this).closest('tr').attr('id');
             modal.toggle();
@@ -172,25 +161,19 @@
 
         $('#submit').click(function() {
             if(totalWorkHours < 20) {
-                customSwal.fire({
+                alertSwal.fire({
                     title: 'Invalid!',
                     text: 'You must work at least 20 hours a week',
                     icon: 'warning',
-                    customClass: {
-                        title: 'font-medium'
-                    },
                 });
                 return;
             }
 
-            customSwal.fire({
+            confirmSwal.fire({
                 title: 'Are you sure?',
                 text: 'You cannot change your schedule in 3 months!',
                 icon: 'warning',
                 iconColor: 'red',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
             }).then((result) => {
                 if(result.isConfirmed) ajaxRequest();
             });

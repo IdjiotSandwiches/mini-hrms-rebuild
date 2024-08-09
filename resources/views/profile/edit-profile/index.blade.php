@@ -68,8 +68,10 @@
             </div>
         </form>
     </profile-section>
+@endsection
 
-    <script type="module">
+@section('extra-js')
+    <script>
         $(document).ready(function() {
             $('input').on('input change', function() {
                 $('#update-btn').prop('disabled', !$(this).val().length);

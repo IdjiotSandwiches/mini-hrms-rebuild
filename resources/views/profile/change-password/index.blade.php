@@ -13,7 +13,7 @@
                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 
                     @error('update_password')
-                        border-red-500
+                        border-red-500 dark:border-red-500
                     @enderror
                 ">
                 @error('update_password')
@@ -28,7 +28,7 @@
                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 
                         @error('confirm_password')
-                            border-red-500
+                            border-red-500 dark:border-red-500
                         @enderror
                     ">
                     @error('confirm_password')
@@ -42,7 +42,10 @@
         </form>
     </password-section>
 
-    <script type="module">
+@endsection
+
+@section('extra-js')
+    <script>
         $(document).ready(function() {
             $('input[type="password"]').on('input change', function() {
                 $('#update-btn').prop('disabled', !$(this).val().length);
