@@ -22,22 +22,6 @@ class TakeAttendanceController extends Controller
 
     public function checkIn(Request $request)
     {
-        if (!$this->takeAttendanceService
-            ->getSchedule()
-            ->exists()) {
-                return back()->withErrors([
-                    'attendanceError' => 'Input schedule first.'
-                ]);
-        }
-
-        if ($this->takeAttendanceService
-            ->getTodayAttendance()
-            ->exists()) {
-                return back()->withErrors([
-                    'attendanceError' => 'You have already checked in today.'
-                ]);
-        }
-
         return $this->takeAttendanceService->checkInValidation();
     }
 

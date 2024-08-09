@@ -11,13 +11,11 @@
         2xl:w-1/3
     ">
         @csrf
-        <email-form class="
-            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
-            sm:grid
-
-            @error('email')
-                border-red-500 text-red-500
-            @enderror">
+        <email-form @class([
+            'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400',
+            'sm:grid',
+            'border-red-500 text-red-500' => $errors->has('email'),
+        ])>
             <label for="email" class="text-xs font-medium">E-mail</label>
             <input type="email" name="email" id="email" class="
                 focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
@@ -31,13 +29,11 @@
             sm:grid sm:grid-cols-2
             flex flex-col gap-5
         ">
-            <first-name class="
-                flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
-                sm:grid
-
-                @error('first_name')
-                    border-red-500 text-red-500
-                @enderror">
+            <first-name @class([
+                'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400',
+                'sm:grid',
+                'border-red-500 text-red-500' => $errors->has('first_name'),
+            ])>
                 <label for="first-name" class=" text-xs font-medium">First Name</label>
                 <input type="text" name="first_name" id="first-name" autocomplete="off" class="
                     focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
@@ -47,13 +43,11 @@
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </first-name>
-            <last-name class="
-                flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
-                sm:grid
-
-                @error('last_name')
-                    border-red-500 text-red-500
-                @enderror">
+            <last-name @class([
+                'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400',
+                'sm:grid',
+                'border-red-500 text-red-500' => $errors->has('last_name'),
+            ])>
                 <label for="last-name" class="text-xs font-medium">Last Name</label>
                 <input type="text" name="last_name" id="last-name" autocomplete="off" class="
                     focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
@@ -64,13 +58,11 @@
                 @enderror
             </last-name>
         </fullname-form>
-        <password-form class="
-            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
-            sm:grid
-
-            @error('password')
-                border-red-500 text-red-500
-            @enderror">
+        <password-form @class([
+            'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400',
+            'sm:grid',
+            'border-red-500 text-red-500' => $errors->has('password'),
+        ])>
             <label for="password" class="text-xs font-medium">Password</label>
             <input type="password" name="password" id="password" autocomplete="off" class="
                 focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
@@ -80,13 +72,11 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </password-form>
-        <password-form class="
-            flex flex-col border-2 rounded-md px-2 py-1 text-gray-400
-            sm:grid
-
-            @error('password_confirmation')
-                border-red-500 text-red-500
-            @enderror">
+        <password-form @class([
+            'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400',
+            'sm:grid',
+            'border-red-500 text-red-500' => $errors->has('password_confirmation'),
+        ])>
             <label for="password" class="text-xs font-medium">Confirm Password</label>
             <input type="password" name="password_confirmation" id="password-confirmation" autocomplete="off" class="
                 focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0
