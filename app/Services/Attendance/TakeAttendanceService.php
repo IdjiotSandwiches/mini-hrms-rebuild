@@ -57,6 +57,28 @@ class TakeAttendanceService extends BaseService
         try {
             DB::beginTransaction();
 
+            if ($this->getTodayAttendance()
+                ->exists()) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => 'warning',
+                        'message' => 'You have already checked in today.'
+                    ];
+
+                    return back()->with($response);
+            }
+
+            if (!$this->getSchedule()
+                ->exists()) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => 'error',
+                        'message' => 'Input schedule first',
+                    ];
+
+                    return back()->with($response);
+            }
+
             $currentTime = $this->convertTime(Carbon::now());
 
             if (!$this->isWork($currentTime)) {
