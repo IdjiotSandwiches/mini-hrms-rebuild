@@ -139,7 +139,7 @@
                         table.append(row);
                     }
                     else {
-                        res.forEach((report, index) => {
+                        $.each(res, (report, index) => {
                             let row = `
                                 <tr class="border-b-2 border-gray-200">
                                     <td class="px-4 py-3 dark:bg-gray-700">${index + 1}</td>
