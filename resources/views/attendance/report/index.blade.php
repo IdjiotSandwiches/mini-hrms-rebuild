@@ -126,7 +126,6 @@
                 data: {
                     start_time: start,
                     end_time: end,
-                    _token: '{{ csrf_token() }}',
                 },
                 success: function(res) {
                     const table = $('#custom-report').find('tbody');

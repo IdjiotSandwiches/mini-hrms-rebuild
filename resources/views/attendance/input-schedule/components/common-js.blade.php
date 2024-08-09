@@ -56,7 +56,6 @@
             url: url,
             data: {
                 schedule: schedule,
-                _token: '{{ csrf_token() }}',
             },
             success: function(res) {
                 alertSwal.fire({
