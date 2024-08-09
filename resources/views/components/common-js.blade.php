@@ -1,3 +1,4 @@
+@include('components.cdn')
 @include('components.custom-swal')
 
 @if (Session::has('status'))

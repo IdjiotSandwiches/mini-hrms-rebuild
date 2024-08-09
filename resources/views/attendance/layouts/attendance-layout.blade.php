@@ -36,7 +36,6 @@
         </content-section>
     </section>
 
-    @include('components.cdn')
     @include('components.common-js')
     @yield('extra-js')
 </body>
