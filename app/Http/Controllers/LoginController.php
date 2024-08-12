@@ -38,6 +38,12 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('landing-page');
+        $response = [
+            'status' => 'success',
+            'message' => 'Logged out.'
+        ];
+
+        return redirect()->route('landing-page')
+            ->with($response);
     }
 }
