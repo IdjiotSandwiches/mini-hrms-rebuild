@@ -7,28 +7,12 @@ use App\Services\Attendance\InputScheduleService;
 
 class InputScheduleController extends Controller
 {
-    private $inputScheduleService;
-
-    public function __construct()
+    public function index(InputScheduleService $inputScheduleService)
     {
-        $this->inputScheduleService = new InputScheduleService();
-    }
-
-    public function index()
-    {
-        $schedule = $this->inputScheduleService
-            ->getSchedule()
-            ->get();
-
-        $totalWorkHour = $this->inputScheduleService
-            ->calculateTotalWorkHour();
-
-        $isUpdateSchedule = $this->inputScheduleService
-            ->isUpdateSchedule();
-
-        $isScheduleSubmitted = $this->inputScheduleService
-            ->getSchedule()
-            ->exists();
+        $schedule = $inputScheduleService->getSchedule()->get();
+        $totalWorkHour = $inputScheduleService->calculateTotalWorkHour();
+        $isUpdateSchedule = $inputScheduleService->isUpdateSchedule();
+        $isScheduleSubmitted = $inputScheduleService->getSchedule()->exists();
 
         if ($isScheduleSubmitted) {
             return view('attendance.input-schedule.index', compact('schedule', 'totalWorkHour', 'isUpdateSchedule'));
@@ -37,10 +21,9 @@ class InputScheduleController extends Controller
         return view('attendance.input-schedule.update', compact('isUpdateSchedule'));
     }
 
-    public function update()
+    public function update(InputScheduleService $inputScheduleService)
     {
-        $isUpdateSchedule = $this->inputScheduleService
-            ->isUpdateSchedule();
+        $isUpdateSchedule = $inputScheduleService->isUpdateSchedule();
 
         if ($isUpdateSchedule) return view('attendance.input-schedule.update', compact('isUpdateSchedule'));
 
@@ -51,12 +34,12 @@ class InputScheduleController extends Controller
             ]);
     }
 
-    public function inputSchedule(InputScheduleRequest $request)
+    public function inputSchedule(InputScheduleRequest $request, InputScheduleService $inputScheduleService)
     {
         if (!$request->ajax()) abort(404);
 
         $validated = $request->validated();
 
-        return $this->inputScheduleService->processSchedule($validated);
+        return $inputScheduleService->processSchedule($validated);
     }
 }

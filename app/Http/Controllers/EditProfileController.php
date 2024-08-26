@@ -7,13 +7,6 @@ use App\Services\Profile\EditProfileService;
 
 class EditProfileController extends Controller
 {
-    private $editProfileService;
-
-    public function __construct()
-    {
-        $this->editProfileService = new EditProfileService();
-    }
-
     public function index(EditProfileService $editProfileService)
     {
         $userInformation = $editProfileService->getUserInformation();
