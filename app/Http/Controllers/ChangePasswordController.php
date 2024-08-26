@@ -7,24 +7,15 @@ use App\Services\Profile\ChangePasswordService;
 
 class ChangePasswordController extends Controller
 {
-    private $changePasswordService;
-
-    public function __construct()
-    {
-        $this->changePasswordService = new ChangePasswordService();
-    }
-
     public function index()
     {
         return view('profile.change-password.index');
     }
 
-    public function changePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request, ChangePasswordService $changePasswordService)
     {
         $validated = $request->validated();
 
-        return $this->changePasswordService
-            ->changePasswordValidation($validated);
-
+        return $changePasswordService->changePasswordValidation($validated);
     }
 }
