@@ -14,23 +14,22 @@ class EditProfileController extends Controller
         $this->editProfileService = new EditProfileService();
     }
 
-    public function index()
+    public function index(EditProfileService $editProfileService)
     {
-        $userInformation = $this->editProfileService
-            ->getUserInformation();
+        $userInformation = $editProfileService->getUserInformation();
 
         return view('profile.edit-profile.index', with([
             'userInformation' => $userInformation,
         ]));
     }
 
-    public function editProfile(EditProfileRequest $request)
+    public function editProfile(EditProfileRequest $request, EditProfileService $editProfileService)
     {
         $validated = $request->validated();
 
         $validated['avatar'] = $request->hasFile('avatar') ?
             'storage/' . $request->file('avatar')->store('avatars') : null;
 
-        return $this->editProfileService->updateProfile($validated);
+        return $editProfileService->updateProfile($validated);
     }
 }
