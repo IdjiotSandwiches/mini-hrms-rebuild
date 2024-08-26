@@ -7,26 +7,20 @@ use Illuminate\Http\Request;
 
 class TakeAttendanceController extends Controller
 {
-    private $takeAttendanceService;
-
-    public function __construct() {
-        $this->takeAttendanceService = new TakeAttendanceService();
-    }
-
-    public function index()
+    public function index(TakeAttendanceService $takeAttendanceService)
     {
         return view('attendance.take-attendance.index', [
-            'isCheckedIn' => $this->takeAttendanceService->isCheckedIn()
+            'isCheckedIn' => $takeAttendanceService->isCheckedIn()
         ]);
     }
 
-    public function checkIn(Request $request)
+    public function checkIn(TakeAttendanceService $takeAttendanceService)
     {
-        return $this->takeAttendanceService->checkInValidation();
+        return $takeAttendanceService->checkInValidation();
     }
 
-    public function checkOut()
+    public function checkOut(TakeAttendanceService $takeAttendanceService)
     {
-        return $this->takeAttendanceService->checkOutValidation();
+        return $takeAttendanceService->checkOutValidation();
     }
 }
