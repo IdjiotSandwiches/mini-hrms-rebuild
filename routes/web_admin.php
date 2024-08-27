@@ -4,7 +4,6 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\EditProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TakeAttendanceController;
 use App\Http\Controllers\InputScheduleController;
 use App\Http\Controllers\ReportController;
@@ -20,19 +19,6 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::middleware(['guest:web'])->group(function () {
-    Route::controller(LoginController::class)->group(function () {
-        Route::get('/', 'index')->name('landing-page');
-        Route::get('/login', 'index')->name('login');
-        Route::post('/login', 'login')->name('attemptLogin');
-    });
-
-    Route::controller(RegisterController::class)->group(function () {
-        Route::get('/register', 'index')->name('register');
-        Route::post('/register', 'register')->name('attemptRegister');
-    });
-});
-
-Route::middleware(['auth:web'])->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/admin', function () {
+    return view('admin.welcome');
 });
