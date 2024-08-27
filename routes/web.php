@@ -20,7 +20,7 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::middleware(['guest:web'])->group(function () {
+Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('/', 'index')->name('landing-page');
         Route::get('/login', 'index')->name('login');
@@ -33,6 +33,6 @@ Route::middleware(['guest:web'])->group(function () {
     });
 });
 
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web,admin'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

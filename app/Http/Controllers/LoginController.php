@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\LoginService;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
@@ -14,19 +15,24 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(LoginRequest $request): RedirectResponse
+    public function login(LoginRequest $request, LoginService $loginService): RedirectResponse
     {
         $validated = $request->validated();
 
-        if (!Auth::attempt($validated)) {
+        $response = $loginService->attemptLogin($validated);
+
+        if (!$response) {
             return back()->with([
                 'status' => 'error',
                 'message' => 'E-mail or password invalid'
             ]);
         }
 
+        Auth::guard($response['isAdmin'])->login($response['user']);
         $request->session()->regenerate();
-        return redirect()->intended(route('attendance.take-attendance-page'))
+
+        $route = $response['isAdmin'] == 'admin' ? 'welcome' : 'attendance.take-attendance-page';
+        return redirect()->route($route)
             ->with([
                 'status' => 'success',
                 'message' => 'Logged In'

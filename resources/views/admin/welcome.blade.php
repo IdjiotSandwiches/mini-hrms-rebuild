@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    @include('components.navbar')
     HELLO TEST
 </body>
 </html>
