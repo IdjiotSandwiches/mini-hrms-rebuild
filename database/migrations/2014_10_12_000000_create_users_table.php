@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->timestamp('last_password_change')->nullable();
+            $table->timestamp('last_login')->nullable();
             $table->timestamps();
         });
     }
