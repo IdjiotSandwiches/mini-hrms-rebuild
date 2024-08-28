@@ -7,22 +7,15 @@ use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    private $registerService;
-
-    public function __construct()
-    {
-        $this->registerService = new RegisterService();
-    }
-
     public function index()
     {
         return view('register');
     }
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request, RegisterService $registerService)
     {
         $validated = $request->validated();
 
-        return $this->registerService->registerUser($validated);
+        return $registerService->registerUser($validated);
     }
 }

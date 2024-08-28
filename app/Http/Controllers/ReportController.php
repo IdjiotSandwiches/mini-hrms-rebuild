@@ -7,19 +7,10 @@ use App\Services\Attendance\ReportService;
 
 class ReportController extends Controller
 {
-    private $reportService;
-
-    public function __construct()
+    public function index(ReportService $reportService)
     {
-        $this->reportService = new ReportService();
-    }
-
-    public function index()
-    {
-        $weeklyAttendances = $this->reportService
-            ->getWeeklyReport();
-        $monthlyAttendances = $this->reportService
-            ->getMonthlyReport();
+        $weeklyAttendances = $reportService->getWeeklyReport();
+        $monthlyAttendances = $reportService->getMonthlyReport();
 
         return view('attendance.report.index', [
             'weeklyAttendances' => $weeklyAttendances->attendances,
@@ -29,7 +20,7 @@ class ReportController extends Controller
         ]);
     }
 
-    public function rangeReport(ReportRequest $request)
+    public function rangeReport(ReportRequest $request, ReportService $reportService)
     {
         if (!$request->ajax()) abort(404);
 
@@ -38,6 +29,6 @@ class ReportController extends Controller
         $startTime = $validated['start_time'];
         $endTime = $validated['end_time'];
 
-        return $this->reportService->getRangeReport($startTime, $endTime);
+        return $reportService->getRangeReport($startTime, $endTime);
     }
 }
