@@ -22,6 +22,9 @@ return new class extends Migration
             $table->timestamp('last_password_change')->nullable();
             $table->timestamps();
         });
+
+        $seeder = new AdminSeeder();
+        $seeder->run();
     }
 
     /**
