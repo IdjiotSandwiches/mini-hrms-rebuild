@@ -18,7 +18,6 @@ class LoginController extends Controller
     public function login(LoginRequest $request, LoginService $loginService): RedirectResponse
     {
         $validated = $request->validated();
-
         $response = $loginService->attemptLogin($validated);
 
         if (!$response) {
