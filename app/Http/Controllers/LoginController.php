@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\LoginService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\LoginService;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -18,13 +20,32 @@ class LoginController extends Controller
     public function login(LoginRequest $request, LoginService $loginService): RedirectResponse
     {
         $validated = $request->validated();
-        $response = $loginService->attemptLogin($validated);
 
-        if (!$response) {
-            return back()->with([
+        try {
+            DB::beginTransaction();
+
+            $response = $loginService->attemptLogin($validated);
+
+            if (!$response) {
+                DB::rollBack();
+                return back()->with([
+                    'status' => 'error',
+                    'message' => 'E-mail or password invalid'
+                ]);
+            }
+
+            $response['user']->last_login = $loginService->convertTime(Carbon::now());
+            $response['user']->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
                 'status' => 'error',
-                'message' => 'E-mail or password invalid'
-            ]);
+                'message' => 'Invalid operation.'
+            ];
+
+            return back()->with($response);
         }
 
         Auth::guard($response['isAdmin'])->login($response['user']);
