@@ -39,7 +39,8 @@
         </div>
         <div class="select-none grid">
             @if (auth()->guard('admin')->check())
-
+                @include('components.dropdown-item', with(['name' => 'Users Report', 'path' => 'welcome']))
+                @include('components.dropdown-item', with(['name' => 'Users Management', 'path' => 'welcome']))
             @else
                 @include('components.dropdown-item', with(['name' => 'Profile', 'path' => 'profile.edit-profile-page']))
                 @include('components.dropdown-item', with(['name' => 'Attendance', 'path' => 'attendance.take-attendance-page']))
