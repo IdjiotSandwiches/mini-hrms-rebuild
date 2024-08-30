@@ -20,5 +20,5 @@ use App\Http\Controllers\ReportController;
 */
 
 Route::get('/admin', function () {
-    return view('admin.index');
+    return view('admin.dashboard.index');
 })->name('welcome');
