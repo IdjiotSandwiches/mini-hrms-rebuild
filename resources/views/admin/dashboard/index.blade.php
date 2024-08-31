@@ -22,11 +22,11 @@
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
                     <dl class="bg-blue-50 dark:bg-blue-600 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-white text-xl font-semibold flex items-center justify-center mb-1">12</dt>
+                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-white text-xl font-semibold flex items-center justify-center mb-1" id="checked-in"></dt>
                         <dd class="text-blue-600 dark:text-white text-sm font-medium">Checked In</dd>
                     </dl>
                     <dl class="bg-teal-50 dark:bg-teal-400 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-white text-xl font-semibold flex items-center justify-center mb-1">23</dt>
+                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-white text-xl font-semibold flex items-center justify-center mb-1" id="checked-out"></dt>
                         <dd class="text-teal-400 dark:text-white text-sm font-medium">Checked Out</dd>
                     </dl>
                 </div>
@@ -73,93 +73,93 @@
 
 @section('extra-js')
     <script>
-        const userStatusChart = () => {
-            return {
-                series: [35.1, 23.5],
-                colors: ["#1C64F2", "#16BDCA"],
-                chart: {
-                    height: 320,
-                    width: "100%",
-                    type: "donut",
-                },
-                stroke: {
-                    colors: ["transparent"],
-                    lineCap: "",
-                },
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            labels: {
+        const userStatusChartOptions = {
+            series: [],
+            colors: ["#1C64F2", "#16BDCA"],
+            chart: {
+                height: 320,
+                width: "100%",
+                type: "donut",
+            },
+            stroke: {
+                colors: ["transparent"],
+                lineCap: "",
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            name: {
                                 show: true,
-                                name: {
-                                    show: true,
-                                    offsetY: 20,
-                                },
-                                total: {
-                                    showAlways: true,
-                                    show: true,
-                                    label: "User status",
-                                    formatter: function (w) {
-                                        const sum = w.globals.seriesTotals.reduce((a, b) => {
-                                            return a + b
-                                        }, 0)
-                                        return sum
-                                    },
-                                },
-                                value: {
-                                    show: true,
-                                    offsetY: -20,
-                                    formatter: function (value) {
-                                        return value
-                                    },
+                                offsetY: 20,
+                            },
+                            total: {
+                                showAlways: true,
+                                show: true,
+                                label: "User active",
+                                formatter: function (w) {
+                                    const val = w.globals.seriesTotals;
+                                    return val[0] - val[1];
                                 },
                             },
-                            size: "85%",
+                            value: {
+                                show: true,
+                                offsetY: -20,
+                                formatter: function (value) {
+                                    return value
+                                },
+                            },
                         },
+                        size: "85%",
                     },
                 },
-                grid: {
-                    padding: {
-                        top: -2,
+            },
+            grid: {
+                padding: {
+                    top: -2,
+                },
+            },
+            labels: ["Checked In", "Checked Out"],
+            dataLabels: {
+                enabled: false,
+            },
+            legend: {
+                position: "bottom",
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (value) {
+                        return value
                     },
                 },
-                labels: ["Checked In", "Checked Out"],
-                dataLabels: {
-                    enabled: false,
-                },
-                legend: {
-                    position: "bottom",
-                },
-                yaxis: {
-                    labels: {
-                        formatter: function (value) {
-                            return value
-                        },
+            },
+            xaxis: {
+                labels: {
+                    formatter: function (value) {
+                        return value
                     },
                 },
-                xaxis: {
-                    labels: {
-                        formatter: function (value) {
-                            return value
-                        },
-                    },
-                    axisTicks: {
-                        show: false,
-                    },
-                    axisBorder: {
-                        show: false,
-                    },
+                axisTicks: {
+                    show: false,
                 },
-            }
+                axisBorder: {
+                    show: false,
+                },
+            },
         }
 
+        const userStatusChart = new ApexCharts($('#user-status-chart')[0], userStatusChartOptions);
+
         function ajaxRequest() {
-            const url = '';
+            const url = '{{ route('admin.get-data') }}';
             $.ajax({
                 type: 'GET',
                 url: url,
                 success: function(res) {
-
+                    userStatusChart.updateSeries([res.checkIn, res.checkOut]);
+                    $('#checked-in').text(res.checkIn);
+                    $('#checked-out').text(res.checkOut);
                 },
                 error: function(res) {
                     Swal.fire({
@@ -172,10 +172,8 @@
         }
 
         $(document).ready(function() {
-            if ($('#user-status-chart')[0]) {
-                const chart = new ApexCharts($('#user-status-chart')[0], userStatusChart());
-                chart.render();
-            }
+            ajaxRequest();
+            userStatusChart.render();
         });
 
 
