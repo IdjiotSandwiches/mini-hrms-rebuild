@@ -8,17 +8,10 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(DashboardService $dashboardService)
     {
-        return view('admin.dashboard.index');
-    }
-
-    public function getData(Request $request, DashboardService $dashboardService)
-    {
-        if (!$request->ajax()) abort(404);
-
-        $attendanceCount = $dashboardService->getAttendanceCount();
-
-        return $attendanceCount;
+        return view('admin.dashboard.index', with([
+            'attendanceCount' => $dashboardService->getAttendanceCount(),
+        ]));
     }
 }

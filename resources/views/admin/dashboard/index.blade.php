@@ -74,7 +74,7 @@
 @section('extra-js')
     <script>
         const userStatusChartOptions = {
-            series: [],
+            series: [{{ $attendanceCount->checkIn }}, {{ $attendanceCount->checkOut }}],
             colors: ["#1C64F2", "#16BDCA"],
             chart: {
                 height: 320,
@@ -149,33 +149,15 @@
             },
         }
 
-        const userStatusChart = new ApexCharts($('#user-status-chart')[0], userStatusChartOptions);
-
-        function ajaxRequest() {
-            const url = '{{ route('admin.get-data') }}';
-            $.ajax({
-                type: 'GET',
-                url: url,
-                success: function(res) {
-                    userStatusChart.updateSeries([res.checkIn, res.checkOut]);
-                    $('#checked-in').text(res.checkIn);
-                    $('#checked-out').text(res.checkOut);
-                },
-                error: function(res) {
-                    Swal.fire({
-                        text: 'Invalid operation.',
-                        icon: 'error',
-                        confirmButtonColor: 'blue',
-                    });
-                }
-            });
+        function updateUserStatusChart() {
+            const userStatusChart = new ApexCharts($('#user-status-chart')[0], userStatusChartOptions);
+            userStatusChart.render();
+            $('#checked-in').text({{ $attendanceCount->checkIn }});
+            $('#checked-out').text({{ $attendanceCount->checkOut }});
         }
 
         $(document).ready(function() {
-            ajaxRequest();
-            userStatusChart.render();
+            updateUserStatusChart();
         });
-
-
     </script>
 @endsection

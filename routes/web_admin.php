@@ -25,6 +25,5 @@ Route::prefix('admin')
     ->group(function () {
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard');
-            Route::get('/dashboard/data', 'getData')->name('get-data');
         });
     });
