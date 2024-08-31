@@ -53,8 +53,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         $route = $response['isAdmin'] == 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::USER_HOME;
-        return redirect($route)
-            ->with([
+        return redirect($route)->with([
                 'status' => 'success',
                 'message' => 'Logged In'
             ]);
