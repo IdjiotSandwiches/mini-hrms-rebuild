@@ -10,15 +10,19 @@ class DashboardService implements AttendanceInterface
     public function getAttendanceCount()
     {
         $attendances = Attendance::whereDate('date', Carbon::now())->get();
-        $attendances = [
-            'checkIn' => $attendances->whereNotNull(self::CHECK_IN_COLUMN)->count(),
-            'checkOut' => $attendances->whereNotNull(self::CHECK_OUT_COLUMN)->count(),
+        $checkInOut = (object) [
+            'checkedIn' => $attendances->whereNotNull(self::CHECK_IN_COLUMN)
+                ->count(),
+            'checkedOut' => $attendances->whereNotNull(self::CHECK_OUT_COLUMN)
+                ->count(),
+        ];
+        $attendances = (object) [
             'late' => $this->countItem($attendances, self::LATE_COLUMN),
             'early' => $this->countItem($attendances, self::EARLY_COLUMN),
             'absence' => $this->countItem($attendances, self::ABSENCE_COLUMN),
         ];
 
-        return (object) $attendances;
+        return (object) compact('checkInOut', 'attendances');
     }
 
     public function countItem($attendances, $columnName)

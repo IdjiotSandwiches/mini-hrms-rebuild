@@ -10,8 +10,10 @@ class DashboardController extends Controller
 {
     public function index(DashboardService $dashboardService)
     {
+        $data = $dashboardService->getAttendanceCount();
         return view('admin.dashboard.index', with([
-            'attendanceCount' => $dashboardService->getAttendanceCount(),
+            'checkInOut' => $data->checkInOut,
+            'attendances' => $data->attendances,
         ]));
     }
 }
