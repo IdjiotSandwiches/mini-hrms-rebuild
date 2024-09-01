@@ -7,7 +7,7 @@ use App\Interfaces\AttendanceInterface;
 
 class DashboardService implements AttendanceInterface
 {
-    public function getAttendanceCount()
+    public function getDailyAttendance()
     {
         $attendances = Attendance::whereDate('date', Carbon::now())->get();
         $checkInOut = (object) [
