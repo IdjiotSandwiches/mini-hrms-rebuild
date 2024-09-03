@@ -10,10 +10,12 @@ class DashboardController extends Controller
 {
     public function index(DashboardService $dashboardService)
     {
-        $data = $dashboardService->getDailyAttendance();
+        $dailyData = $dashboardService->getDailyAttendance();
+        $weeklyData = $dashboardService->getWeeklyAttendance();
+
         return view('admin.dashboard.index', with([
-            'checkInOut' => $data->checkInOut,
-            'attendances' => $data->attendances,
+            'daily' => $dailyData,,
+            'weekly' => $weeklyData,
         ]));
     }
 }

@@ -6,7 +6,7 @@
 @endphp
 
 @section('content')
-    <dashboard-section class="flex flex-col gap-8 py-10">
+    <dashboard-section class="flex flex-col gap-4 py-10">
         <most-rank class="grid grid-cols-1 xl:grid-cols-2 gap-4 text-center">
             <!-- Current checked in & out -->
             <div class="max-w-screen-3xl w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4 md:p-6">
@@ -23,14 +23,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 mb-2">
+                <div class="grid grid-cols-2 gap-4 mb-2" id="check-in-out">
                     <dl class="bg-blue-50 dark:bg-blue-600 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-blue-100 text-xl font-semibold flex items-center justify-center mb-1" id="{{ 'checked-in' }}"></dt>
-                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">{{ 'Checked In' }}</dd>
+                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-blue-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">Checked In</dd>
                     </dl>
                     <dl class="bg-teal-50 dark:bg-teal-400 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-teal-100 text-xl font-semibold flex items-center justify-center mb-1" id="{{ 'checked-out' }}"></dt>
-                        <dd class="text-teal-600 dark:text-teal-100 text-sm font-medium">{{ 'Checked Out' }}</dd>
+                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-teal-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-teal-600 dark:text-teal-100 text-sm font-medium">Checked Out</dd>
                     </dl>
                 </div>
                 <div class="py-6" id="user-status-chart"></div>
@@ -51,18 +51,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mb-2">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2" id="attendance">
                     <dl class="bg-blue-50 dark:bg-blue-600 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-blue-100 text-xl font-semibold flex items-center justify-center mb-1" id="late"></dt>
-                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">Late</dd>
+                        <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-blue-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">Attendance</dd>
                     </dl>
                     <dl class="bg-teal-50 dark:bg-teal-400 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-teal-100 text-xl font-semibold flex items-center justify-center mb-1" id="early"></dt>
-                        <dd class="text-teal-400 dark:text-teal-100 text-sm font-medium">Early</dd>
+                        <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-teal-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-teal-400 dark:text-teal-100 text-sm font-medium">Late</dd>
                     </dl>
                     <dl class="bg-orange-50 dark:bg-orange-400 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-orange-600 dark:text-orange-100 text-xl font-semibold flex items-center justify-center mb-1" id="absence"></dt>
-                        <dd class="text-orange-400 dark:text-orange-100 text-sm font-medium">Absence</dd>
+                        <dt class="w-8 h-8 rounded-full text-orange-600 dark:text-orange-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-orange-400 dark:text-orange-100 text-sm font-medium">Early</dd>
+                    </dl>
+                    <dl class="bg-red-50 dark:bg-red-400 rounded-lg flex flex-col items-center justify-center h-24">
+                        <dt class="w-8 h-8 rounded-full text-red-600 dark:text-red-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
+                        <dd class="text-red-400 dark:text-red-100 text-sm font-medium">Absence</dd>
                     </dl>
                 </div>
                 <div class="py-6" id="user-absence-chart"></div>
@@ -91,8 +95,11 @@
 
 @section('extra-js')
     <script>
+        const daily = @json($daily);
+        const weekly = @json($weekly);
+
         const userStatusChartOptions = {
-            series: [{{ $checkInOut->checkedIn }}, {{ $checkInOut->checkedOut }}],
+            series: Object.values(daily.checkInOut),
             colors: ['#1C64F2', '#16BDCA'],
             chart: {
                 height: '320px',
@@ -168,8 +175,8 @@
         }
 
         const userAbsenceChartOptions = {
-            series: [{{ $attendances->late }}, {{ $attendances->early }}, {{ $attendances->absence }}],
-            colors: ['#1C64F2', '#16BDCA', '#FDBA8C'],
+            series: Object.values(daily.attendances),
+            colors: ['#1C64F2', '#16BDCA', '#FDBA8C', '#F05252'],
             chart: {
                 height: '320px',
                 width: '100%',
@@ -199,7 +206,7 @@
                     bottom: -20,
                 },
             },
-            labels: ['Late', 'Early', 'Absence'],
+            labels: ['Attendance', 'Late', 'Early', 'Absence'],
             legend: {
                 show: true,
                 position: 'bottom',
@@ -215,34 +222,39 @@
             }
         }
 
+        const attendance = [];
+        const late = [];
+        const early = [];
+        const absence = [];
+        Object.entries(weekly).forEach(([key, val]) => {
+            attendance.push({x: key, y: val.attendance});
+            late.push({x: key, y: val.late});
+            early.push({x: key, y: val.early});
+            absence.push({x: key, y: val.absence});
+        });
+
         const weeklyAttendanceChartOptions = {
-            colors: ['#1A56DB', '#FDBA8C'],
+            colors: ['#1C64F2', '#16BDCA'],
             series: [
                 {
-                    name: 'Organic',
-                    color: '#1A56DB',
-                    data: [
-                        { x: 'Mon', y: 231 },
-                        { x: 'Tue', y: 122 },
-                        { x: 'Wed', y: 63 },
-                        { x: 'Thu', y: 421 },
-                        { x: 'Fri', y: 122 },
-                        { x: 'Sat', y: 323 },
-                        { x: 'Sun', y: 111 },
-                    ],
+                    name: 'Attendance',
+                    color: '#1C64F2',
+                    data: attendance,
                 },
                 {
-                    name: 'Social media',
+                    name: 'Late',
+                    color: '#16BDCA',
+                    data: late,
+                },
+                {
+                    name: 'Early',
                     color: '#FDBA8C',
-                    data: [
-                        { x: 'Mon', y: 232 },
-                        { x: 'Tue', y: 113 },
-                        { x: 'Wed', y: 341 },
-                        { x: 'Thu', y: 224 },
-                        { x: 'Fri', y: 522 },
-                        { x: 'Sat', y: 411 },
-                        { x: 'Sun', y: 243 },
-                    ],
+                    data: early,
+                },
+                {
+                    name: 'Absence',
+                    color: '#F05252',
+                    data: absence,
                 },
             ],
             chart: {
@@ -263,8 +275,6 @@
             tooltip: {
                 shared: true,
                 intersect: false,
-                style: {
-                },
             },
             states: {
                 hover: {
@@ -292,15 +302,13 @@
                 enabled: false,
             },
             legend: {
-                show: false,
+                show: true,
+                position: 'bottom',
             },
             xaxis: {
                 floating: false,
                 labels: {
                     show: true,
-                    style: {
-                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-                    }
                 },
                 axisBorder: {
                     show: false,
@@ -308,33 +316,31 @@
                 axisTicks: {
                     show: false,
                 },
+                categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             },
             yaxis: {
-                show: false,
+                show: true,
             },
             fill: {
                 opacity: 1,
             },
         }
 
-        function updateUserStatusChart() {
-            const userStatusChart = new ApexCharts($('#user-status-chart')[0], userStatusChartOptions);
-            userStatusChart.render();
-            $('#checked-in').text({{ $checkInOut->checkedIn }});
-            $('#checked-out').text({{ $checkInOut->checkedOut }});
-        }
+        function updateChart(chartContainer, chartOptions, countContainer, countItem) {
+            const chart = new ApexCharts(chartContainer, chartOptions);
+            chart.render();
 
-        function updateUserAbsenceChart() {
-            const userAbsenceChart = new ApexCharts($('#user-absence-chart')[0], userAbsenceChartOptions);
-            userAbsenceChart.render();
-            $('#late').text({{ $attendances->late }});
-            $('#early').text({{ $attendances->early }});
-            $('#absence').text({{ $attendances->absence }});
+            countContainer.each(function (index) {
+                let textContainer = $(this).children().first();
+                let item = Object.values(countItem)[index];
+
+                textContainer.text(item);
+            });
         }
 
         $(document).ready(function() {
-            updateUserStatusChart();
-            updateUserAbsenceChart();
+            updateChart($('#user-status-chart')[0], userStatusChartOptions, $('#check-in-out').children(), daily.checkInOut);
+            updateChart($('#user-absence-chart')[0], userAbsenceChartOptions, $('#attendance').children(), daily.attendances);
 
             const weeklyAttendanceChart = new ApexCharts($('#weekly-attendance-chart')[0], weeklyAttendanceChartOptions);
             weeklyAttendanceChart.render();
