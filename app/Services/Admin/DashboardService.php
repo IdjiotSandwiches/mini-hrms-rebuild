@@ -2,9 +2,10 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Attendance;
+use App\Services\BaseService;
 use App\Interfaces\AttendanceInterface;
 
 class DashboardService extends BaseService implements AttendanceInterface
@@ -52,6 +53,12 @@ class DashboardService extends BaseService implements AttendanceInterface
         $absence = $this->dataGrouping($attendances, self::ABSENCE_COLUMN);
 
         return (object) compact('attendance', 'late', 'early', 'absence');
+    }
+
+    public function getMostOnTimeAndLate()
+    {
+        $attendances = User::with('attendance')->get();
+        dd($attendances->first()->attendance);
     }
 
     public function count($attendances, $columnName)
