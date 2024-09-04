@@ -35,13 +35,6 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('checkInOut', 'attendances');
     }
 
-    public function count($attendances, $columnName)
-    {
-        return $attendances
-            ->where($columnName, true)
-            ->count();
-    }
-
     public function getWeeklyAttendance()
     {
         $startOfWeek = $this->currentTime
@@ -59,6 +52,13 @@ class DashboardService extends BaseService implements AttendanceInterface
         $absence = $this->dataGrouping($attendances, self::ABSENCE_COLUMN);
 
         return (object) compact('attendance', 'late', 'early', 'absence');
+    }
+
+    public function count($attendances, $columnName)
+    {
+        return $attendances
+            ->where($columnName, true)
+            ->count();
     }
 
     public function groupMapping($attendances)
