@@ -22,18 +22,24 @@ class DashboardService extends BaseService implements AttendanceInterface
             ->get();
 
         $checkInOut = (object) [
-            'checkedIn' => $attendances
-                ->whereNotNull(self::CHECK_IN_COLUMN)
-                ->count(),
-            'checkedOut' => $attendances
-                ->whereNotNull(self::CHECK_OUT_COLUMN)
-                ->count(),
+            'checkedIn' => $this->count($attendances, self::CHECK_IN_COLUMN),
+            'checkedOut' => $this->count($attendances, self::CHECK_OUT_COLUMN),
         ];
 
-        $attendances = $this->dataGrouping($attendances)
-            ->first();
+        $attendances = (object) [
+            'late' => $this->count($attendances, self::LATE_COLUMN),
+            'early' => $this->count($attendances, self::EARLY_COLUMN),
+            'absence' => $this->count($attendances, self::ABSENCE_COLUMN),
+        ];
 
         return (object) compact('checkInOut', 'attendances');
+    }
+
+    public function count($attendances, $columnName)
+    {
+        return $attendances
+            ->where($columnName, true)
+            ->count();
     }
 
     public function getWeeklyAttendance()
@@ -46,34 +52,47 @@ class DashboardService extends BaseService implements AttendanceInterface
             ->toDateString();
         $attendances = Attendance::whereBetween('date', [$startOfWeek, $endOfWeek])
             ->get();
-        $attendances = $this->dataGrouping($attendances);
 
-        return (object) $attendances;
+        $attendance = $this->groupMapping($attendances);
+        $late = $this->dataGrouping($attendances, self::LATE_COLUMN);
+        $early = $this->dataGrouping($attendances, self::EARLY_COLUMN);
+        $absence = $this->dataGrouping($attendances, self::ABSENCE_COLUMN);
+
+        return (object) compact('attendance', 'late', 'early', 'absence');
     }
 
-    public function dataGrouping($attendances)
+    public function groupMapping($attendances)
     {
-        $attendances = $attendances->groupBy(function ($attendance) {
-            $key = $this->convertTime($attendance->date)
-                ->shortEnglishDayOfWeek;
-            return $key;
-        })->map(function ($attendance) {
-            return (object) [
-                'attendance' => $attendance->count(),
-                'late' => $this->filterCountItem($attendance, self::LATE_COLUMN),
-                'early' => $this->filterCountItem($attendance, self::EARLY_COLUMN),
-                'absence' => $this->filterCountItem($attendance, self::ABSENCE_COLUMN),
+        $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        $placeholder = [];
+        foreach ($days as $day) {
+            $item = [
+                'x' => $day,
+                'y' => 0,
             ];
-        });
+            array_push($placeholder, $item);
+        }
 
-        return (object) $attendances;
+        $attendances = $attendances->groupBy(function ($attendance) {
+            return $this->convertTime($attendance->date)
+                ->shortEnglishDayOfWeek;
+        })->map(function ($attendance, $key) {
+            return (object) [
+                'x' => $key,
+                'y' => $attendance->count(),
+            ];
+        })->values();
+
+        $attendances = array_replace($placeholder, $attendances->toArray());
+
+        return (object) [$attendances];
     }
 
-    public function filterCountItem($attendance, $columnName)
+    public function dataGrouping($attendances, $columnName)
     {
-        return $attendance->filter(function ($day) use ($columnName) {
-            return $day->whereNotNull($columnName)
-                ->where($columnName, 1);;
-        })->count();
+        $attendances = $attendances->where($columnName, true);
+        $attendances = $this->groupMapping($attendances);
+
+        return $attendances;
     }
 }

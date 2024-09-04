@@ -12,9 +12,8 @@ class DashboardController extends Controller
     {
         $dailyData = $dashboardService->getDailyAttendance();
         $weeklyData = $dashboardService->getWeeklyAttendance();
-
         return view('admin.dashboard.index', with([
-            'daily' => $dailyData,,
+            'daily' => $dailyData,
             'weekly' => $weeklyData,
         ]));
     }

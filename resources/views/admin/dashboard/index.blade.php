@@ -51,22 +51,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2" id="attendance">
+                <div class="grid grid-cols-3 gap-4 mb-2" id="attendance">
                     <dl class="bg-blue-50 dark:bg-blue-600 rounded-lg flex flex-col items-center justify-center h-24">
                         <dt class="w-8 h-8 rounded-full text-blue-600 dark:text-blue-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
-                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">Attendance</dd>
+                        <dd class="text-blue-600 dark:text-blue-100 text-sm font-medium">Late</dd>
                     </dl>
                     <dl class="bg-teal-50 dark:bg-teal-400 rounded-lg flex flex-col items-center justify-center h-24">
                         <dt class="w-8 h-8 rounded-full text-teal-600 dark:text-teal-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
-                        <dd class="text-teal-400 dark:text-teal-100 text-sm font-medium">Late</dd>
+                        <dd class="text-teal-400 dark:text-teal-100 text-sm font-medium">Early</dd>
                     </dl>
                     <dl class="bg-orange-50 dark:bg-orange-400 rounded-lg flex flex-col items-center justify-center h-24">
                         <dt class="w-8 h-8 rounded-full text-orange-600 dark:text-orange-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
-                        <dd class="text-orange-400 dark:text-orange-100 text-sm font-medium">Early</dd>
-                    </dl>
-                    <dl class="bg-red-50 dark:bg-red-400 rounded-lg flex flex-col items-center justify-center h-24">
-                        <dt class="w-8 h-8 rounded-full text-red-600 dark:text-red-100 text-xl font-semibold flex items-center justify-center mb-1"></dt>
-                        <dd class="text-red-400 dark:text-red-100 text-sm font-medium">Absence</dd>
+                        <dd class="text-orange-400 dark:text-orange-100 text-sm font-medium">Absence</dd>
                     </dl>
                 </div>
                 <div class="py-6" id="user-absence-chart"></div>
@@ -176,7 +172,7 @@
 
         const userAbsenceChartOptions = {
             series: Object.values(daily.attendances),
-            colors: ['#1C64F2', '#16BDCA', '#FDBA8C', '#F05252'],
+            colors: ['#1C64F2', '#16BDCA', '#FDBA8C'],
             chart: {
                 height: '320px',
                 width: '100%',
@@ -206,7 +202,7 @@
                     bottom: -20,
                 },
             },
-            labels: ['Attendance', 'Late', 'Early', 'Absence'],
+            labels: ['Late', 'Early', 'Absence'],
             legend: {
                 show: true,
                 position: 'bottom',
@@ -222,39 +218,28 @@
             }
         }
 
-        const attendance = [];
-        const late = [];
-        const early = [];
-        const absence = [];
-        Object.entries(weekly).forEach(([key, val]) => {
-            attendance.push({x: key, y: val.attendance});
-            late.push({x: key, y: val.late});
-            early.push({x: key, y: val.early});
-            absence.push({x: key, y: val.absence});
-        });
-
         const weeklyAttendanceChartOptions = {
-            colors: ['#1C64F2', '#16BDCA'],
+            colors: ['#1C64F2', '#16BDCA', '#FDBA8C', '#F05252'],
             series: [
                 {
                     name: 'Attendance',
                     color: '#1C64F2',
-                    data: attendance,
+                    data: weekly.attendance[0],
                 },
                 {
                     name: 'Late',
                     color: '#16BDCA',
-                    data: late,
+                    data: weekly.late[0],
                 },
                 {
                     name: 'Early',
                     color: '#FDBA8C',
-                    data: early,
+                    data: weekly.early[0],
                 },
                 {
                     name: 'Absence',
                     color: '#F05252',
-                    data: absence,
+                    data: weekly.absence[0],
                 },
             ],
             chart: {
@@ -273,13 +258,15 @@
                 },
             },
             tooltip: {
-                shared: true,
-                intersect: false,
+                enabled: true,
+                x: {
+                    show: false,
+                },
             },
             states: {
                 hover: {
                     filter: {
-                        type: 'darken',
+                        type: 'none',
                         value: 1,
                     },
                 },
@@ -291,7 +278,7 @@
             },
             grid: {
                 show: false,
-                strokeDashArray: 4,
+                strokeDashArray: 1,
                 padding: {
                     left: 2,
                     right: 2,
@@ -311,7 +298,7 @@
                     show: true,
                 },
                 axisBorder: {
-                    show: false,
+                    show: true,
                 },
                 axisTicks: {
                     show: false,
