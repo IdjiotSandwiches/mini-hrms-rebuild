@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Schedule extends Model
 {
-    protected $guarded = ['schedule_id'];
+    protected $guarded = ['id'];
 
     public function user()
     {

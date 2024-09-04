@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendance extends Model
 {
-    protected $guarded = ['attendance_id'];
+    protected $guarded = ['id'];
 
     public function user()
     {
