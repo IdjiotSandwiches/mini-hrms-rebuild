@@ -96,7 +96,7 @@ class TakeAttendanceService extends BaseService
             $isLate = $this->isLate($currentTime);
 
             $attendance = new Attendance();
-            $attendance->user_id = $this->getUser()->user_id;
+            $attendance->user_id = $this->getUser()->id;
             $attendance->check_in = $this->convertTime(Carbon::now());
             $attendance->date = $this->convertTime(Carbon::now())
                 ->toDateString();
@@ -147,7 +147,7 @@ class TakeAttendanceService extends BaseService
             Attendance::updateOrCreate(
                 [
                     'user_id' => $this->getUser()
-                        ->user_id,
+                        ->id,
                     'date' => $currentTime->toDateString(),
                 ],
                 [
