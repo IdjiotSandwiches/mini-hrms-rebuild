@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\EditProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TakeAttendanceController;
-use App\Http\Controllers\InputScheduleController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +14,10 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin.dashboard.index');
-})->name('welcome');
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::controller(ManagementController::class)->group(function () {
+            Route::get('/management', 'index')->name('management');
+        });
+    });
