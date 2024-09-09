@@ -9,8 +9,12 @@
                     <div class="flex flex-col gap-4 justify-center items-center h-full">
                         <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most On Time</h5>
                         <div class="grid gap-2">
-                            <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->onTimeUser->userFullName }}</h5>
-                            <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">On Time Count: {{ $mostRank->onTimeUser->count }}</h5>
+                            @if ($mostRank->onTimeUser)
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->onTimeUser->userFullName }}</h5>
+                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">On Time Count: {{ $mostRank->onTimeUser->count }}</h5>
+                            @else
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">-</h5>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -18,8 +22,12 @@
                     <div class="flex flex-col gap-4 justify-center items-center h-full">
                         <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most Absence</h5>
                         <div class="grid gap-2">
-                            <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->absenceUser->userFullName }}</h5>
-                            <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">Absence Count: {{ $mostRank->absenceUser->count }}</h5>
+                            @if ($mostRank->absenceUser)
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->absenceUser->userFullName }}</h5>
+                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">Absence Count: {{ $mostRank->absenceUser->count }}</h5>
+                            @else
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">-</h5>
+                            @endif
                         </div>
                     </div>
                 </div>

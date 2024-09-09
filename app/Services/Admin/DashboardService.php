@@ -81,6 +81,8 @@ class DashboardService extends BaseService implements AttendanceInterface
 
     public function getUserInfo($attendance, $mostKey)
     {
+        if ($attendance->isEmpty()) return null;
+
         $sorted = $attendance->sortByDesc($mostKey);
 
         $id = $sorted->keys()
