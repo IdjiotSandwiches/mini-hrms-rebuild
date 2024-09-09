@@ -51,7 +51,7 @@ class LoginController extends Controller
         Auth::guard($response['isAdmin'])->login($response['user']);
         $request->session()->regenerate();
 
-        $route = $response['isAdmin'] == 'admin' ? 'welcome' : 'attendance.take-attendance-page';
+        $route = $response['isAdmin'] == 'admin' ? 'admin.management' : 'attendance.take-attendance-page';
         return redirect()->route($route)
             ->with([
                 'status' => 'success',
