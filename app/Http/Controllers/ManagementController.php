@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ManagementController extends Controller
 {
     public function index()
     {
-        // return all users data
+        // dd(User::all());
         return view('admin.management.index');
     }
 
