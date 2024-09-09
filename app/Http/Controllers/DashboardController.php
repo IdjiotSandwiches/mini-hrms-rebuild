@@ -13,6 +13,7 @@ class DashboardController extends Controller
         $dailyData = $dashboardService->getDailyAttendance();
         $weeklyData = $dashboardService->getWeeklyAttendance();
         $mostRank = $dashboardService->getMostOnTimeAndAbsence();
+
         return view('admin.dashboard.index', with([
             'daily' => $dailyData,
             'weekly' => $weeklyData,
