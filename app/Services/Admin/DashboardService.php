@@ -60,11 +60,11 @@ class DashboardService extends BaseService implements AttendanceInterface
         $attendances = Attendance::all()->groupBy('user_id')
             ->map(function ($attendance) {
                 $onTime = $attendance->filter(function ($item) {
-                    return $item->late == 0 && $item->early == 0;
+                    return $item->late === 0 && $item->early === 0;
                 })->count();
 
                 $absence = $attendance->filter(function ($item) {
-                    return $item->absence == 1;
+                    return $item->absence === 1;
                 })->count();
 
                 return (object) [
