@@ -47,7 +47,7 @@ class DashboardService extends BaseService implements AttendanceInterface
         $attendances = Attendance::whereBetween('date', [$startOfWeek, $endOfWeek])
             ->get();
 
-        $attendance = $this->groupMapping($attendances);
+        $attendance = $this->weeklyMapping($attendances);
         $late = $this->dataGrouping($attendances, self::LATE_COLUMN);
         $early = $this->dataGrouping($attendances, self::EARLY_COLUMN);
         $absence = $this->dataGrouping($attendances, self::ABSENCE_COLUMN);
@@ -55,10 +55,43 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('attendance', 'late', 'early', 'absence');
     }
 
-    public function getMostOnTimeAndLate()
+    public function getMostOnTimeAndAbsence()
     {
-        $attendances = User::with('attendance')->get();
-        dd($attendances->first()->attendance);
+        $attendances = Attendance::all()->groupBy('user_id')
+            ->map(function ($attendance) {
+                $onTime = $attendance->filter(function ($item) {
+                    return $item->late == 0 && $item->early == 0;
+                })->count();
+
+                $absence = $attendance->filter(function ($item) {
+                    return $item->absence == 1;
+                })->count();
+
+                return (object) [
+                    'onTime' => $onTime,
+                    'absence' => $absence,
+                ];
+            });
+
+        $onTimeUser = $this->getUserInfo($attendances, 'onTime');
+        $absenceUser = $this->getUserInfo($attendances, 'absence');
+
+        return (object) compact('onTimeUser', 'absenceUser');
+    }
+
+    public function getUserInfo($attendance, $mostKey)
+    {
+        $sorted = $attendance->sortByDesc($mostKey);
+
+        $id = $sorted->keys()
+            ->first();
+
+        $count = $sorted->first()
+            ->$mostKey;
+
+        $user = User::find($id);
+        $userFullName = "$user->first_name $user->last_name";
+        return (object) compact('userFullName', 'count');
     }
 
     public function count($attendances, $columnName)
@@ -68,7 +101,7 @@ class DashboardService extends BaseService implements AttendanceInterface
             ->count();
     }
 
-    public function groupMapping($attendances)
+    public function weeklyMapping($attendances)
     {
         $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         $placeholder = [];
@@ -98,7 +131,7 @@ class DashboardService extends BaseService implements AttendanceInterface
     public function dataGrouping($attendances, $columnName)
     {
         $attendances = $attendances->where($columnName, true);
-        $attendances = $this->groupMapping($attendances);
+        $attendances = $this->weeklyMapping($attendances);
 
         return $attendances;
     }

@@ -1,22 +1,26 @@
 @extends('admin.layout', with(['title' => 'Dashboard', 'desc' => 'Review of registered users.']))
 @section('title', 'Admin - Dashboard')
 
-@php
-    $colors = ['blue', 'teal', 'orange'];
-@endphp
-
 @section('content')
     <dashboard-section class="flex flex-col gap-4 py-10">
         <user-status class="grid grid-cols-1 xl:grid-cols-3 gap-4 text-center">
             <most-rank class="grid grid-rows-2 gap-4">
                 <div class="max-w-screen-3xl w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4 md:p-6">
-                    <div class="flex justify-center items-center h-full">
-                        <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">Most On Time</h5>
+                    <div class="flex flex-col gap-4 justify-center items-center h-full">
+                        <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most On Time</h5>
+                        <div class="grid gap-2">
+                            <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->onTimeUser->userFullName }}</h5>
+                            <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">On Time Count: {{ $mostRank->onTimeUser->count }}</h5>
+                        </div>
                     </div>
                 </div>
                 <div class="max-w-screen-3xl w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4 md:p-6">
-                    <div class="flex justify-center items-center h-full">
-                        <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">Most Late</h5>
+                    <div class="flex flex-col gap-4 justify-center items-center h-full">
+                        <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most Absence</h5>
+                        <div class="grid gap-2">
+                            <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->absenceUser->userFullName }}</h5>
+                            <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">Absence Count: {{ $mostRank->absenceUser->count }}</h5>
+                        </div>
                     </div>
                 </div>
             </most-rank>

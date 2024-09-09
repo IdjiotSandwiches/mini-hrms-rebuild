@@ -12,10 +12,11 @@ class DashboardController extends Controller
     {
         $dailyData = $dashboardService->getDailyAttendance();
         $weeklyData = $dashboardService->getWeeklyAttendance();
-        dd($dashboardService->getMostOnTimeAndLate());
+        $mostRank = $dashboardService->getMostOnTimeAndAbsence();
         return view('admin.dashboard.index', with([
             'daily' => $dailyData,
             'weekly' => $weeklyData,
+            'mostRank' => $mostRank,
         ]));
     }
 }
