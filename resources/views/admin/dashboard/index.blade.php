@@ -2,7 +2,7 @@
 @section('title', 'Admin - Dashboard')
 
 @section('content')
-    <dashboard-section class="flex flex-col gap-8 py-10">
+    <dashboard-section class="flex flex-col gap-8 pb-10">
         <user-status class="grid grid-cols-1 xl:grid-cols-3 gap-4 text-center">
             <most-rank class="grid grid-rows-2 gap-4">
                 <div class="max-w-screen-3xl w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4 md:p-6">
