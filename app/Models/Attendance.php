@@ -8,17 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendance extends Model
 {
-    protected $primaryKey = 'attendance_id';
-
-    protected $fillable = [
-        'user_id',
-        'check_in',
-        'check_out',
-        'early',
-        'late',
-        'absence',
-        'date',
-    ];
+    protected $guarded = ['id'];
 
     public function user()
     {
