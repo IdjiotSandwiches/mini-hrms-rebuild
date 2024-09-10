@@ -2,7 +2,7 @@
 @section('title', 'Admin - Dashboard')
 
 @section('content')
-    <dashboard-section class="flex flex-col gap-8 pb-10">
+    <dashboard-section class="flex flex-col gap-4 pb-10">
         <user-status class="grid grid-cols-1 xl:grid-cols-3 gap-4 text-center">
             <most-rank class="grid grid-rows-2 gap-4">
                 <div class="max-w-screen-3xl w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4 md:p-6">
@@ -57,7 +57,7 @@
                         <dd class="text-teal-600 dark:text-teal-100 text-sm font-medium">Checked Out</dd>
                     </dl>
                 </div>
-                <div class="py-6" id="user-status-chart"></div>
+                <div id="user-status-chart"></div>
             </div>
 
             <!-- Late, early, absence -->
@@ -89,7 +89,7 @@
                         <dd class="text-orange-400 dark:text-orange-100 text-sm font-medium">Absence</dd>
                     </dl>
                 </div>
-                <div class="py-6" id="user-absence-chart"></div>
+                <div id="user-absence-chart"></div>
             </div>
         </user-status>
         <attendance-frequency class="grid grid-cols-1 gap-4 text-center">
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="py-6" id="weekly-attendance-chart"></div>
+                <div id="weekly-attendance-chart"></div>
             </div>
         </attendance-frequency>
     </dashboard-section>
