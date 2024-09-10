@@ -10,8 +10,20 @@ class ManagementController extends Controller
 {
     public function index()
     {
-        // dd(User::all());
-        return view('admin.management.index');
+        $users = User::paginate(2, ['*'], 'user')
+            ->through(function ($user) {
+                $result = [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                ];
+
+                return (object) $result;
+            });
+        return view('admin.management.index', with([
+            'users' => $users,
+        ]));
     }
 
     // search using ajax request
