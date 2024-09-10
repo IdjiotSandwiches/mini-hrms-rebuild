@@ -53,7 +53,7 @@
                                     {{ $user->email }}
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('admin.edit-page', $user->username) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a href="{{ route('admin.management.edit-page', $user->username) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -67,8 +67,19 @@
 
 @section('extra-js')
     <script>
-        function ajaxRequest() {
+        function ajaxRequest(keyword) {
+            let url = '{{ route('admin.management.search', ['::KEYWORD::']) }}'
+            url = url.replace('::KEYWORD::', keyword);
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(res) {
 
+                },
+                error: function(res) {
+
+                }
+            });
         }
 
         $(document).ready(function() {

@@ -17,10 +17,14 @@ use App\Http\Controllers\ManagementController;
 Route::prefix('admin')
     ->as('admin.')
     ->group(function () {
-        Route::controller(ManagementController::class)->group(function () {
-            Route::get('/management', 'index')->name('management');
-            Route::get('/management/{keyword}', 'search')->name('search');
-            Route::get('/management/edit/{username}', 'editPage')->name('edit-page');
-            Route::put('/management/edit/{username}', 'edit')->name('edit');
-        });
+        Route::prefix('management')
+            ->as('management.')
+            ->group(function () {
+                Route::controller(ManagementController::class)->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/{keyword}', 'search')->name('search');
+                    Route::get('/edit/{username}', 'editPage')->name('edit-page');
+                    Route::put('/edit/{username}', 'edit')->name('edit');
+                });
+            });
     });
