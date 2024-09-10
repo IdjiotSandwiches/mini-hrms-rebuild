@@ -2,7 +2,7 @@
 @section('title', 'Admin - Users Management')
 
 @section('content')
-    <management-section class="flex flex-col gap-8 py-10">
+    <management-section class="flex flex-col gap-8 pb-10">
         <search-bar class="gap-4 flex flex-col">
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
