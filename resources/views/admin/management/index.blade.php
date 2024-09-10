@@ -41,10 +41,10 @@
                         @foreach ($users as $user)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $user->first_name }}
+                                    {{ $user->firstName }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $user->last_name }}
+                                    {{ $user->lastName }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ $user->username }}
@@ -53,7 +53,7 @@
                                     {{ $user->email }}
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a href="{{ route('admin.edit-page', $user->username) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -63,4 +63,17 @@
             {{ $users->links('pagination::tailwind') }}
         </user-list>
     </management-section>
+@endsection
+
+@section('extra-js')
+    <script>
+        function ajaxRequest() {
+
+        }
+
+        $(document).ready(function() {
+
+        });
+
+    </script>
 @endsection

@@ -19,5 +19,8 @@ Route::prefix('admin')
     ->group(function () {
         Route::controller(ManagementController::class)->group(function () {
             Route::get('/management', 'index')->name('management');
+            Route::get('/management/{keyword}', 'search')->name('search');
+            Route::get('/management/edit/{username}', 'editPage')->name('edit-page');
+            Route::put('/management/edit/{username}', 'edit')->name('edit');
         });
     });

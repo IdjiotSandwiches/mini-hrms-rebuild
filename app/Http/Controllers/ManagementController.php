@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Services\Admin\ManagementService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ManagementController extends Controller
 {
-    public function index()
+    public function index(ManagementService $managementService)
     {
-        $users = User::paginate(2, ['*'], 'user')
-            ->through(function ($user) {
-                $result = [
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'username' => $user->username,
-                    'email' => $user->email,
-                ];
+        $users = $managementService->getUserList();
 
-                return (object) $result;
-            });
         return view('admin.management.index', with([
             'users' => $users,
         ]));
+    }
+
+    public function editPage($username)
+    {
+        // dd($username);
+        return view('admin.management.edit');
+    }
+
+    public function edit($username)
+    {
+
     }
 
     // search using ajax request
