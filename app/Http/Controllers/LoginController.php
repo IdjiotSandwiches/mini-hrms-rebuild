@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\LoginService;
@@ -51,9 +52,8 @@ class LoginController extends Controller
         Auth::guard($response['isAdmin'])->login($response['user']);
         $request->session()->regenerate();
 
-        $route = $response['isAdmin'] == 'admin' ? 'welcome' : 'attendance.take-attendance-page';
-        return redirect()->route($route)
-            ->with([
+        $route = $response['isAdmin'] == 'admin' ? RouteServiceProvider::ADMIN_HOME : RouteServiceProvider::USER_HOME;
+        return redirect($route)->with([
                 'status' => 'success',
                 'message' => 'Logged In'
             ]);

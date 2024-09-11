@@ -13,8 +13,8 @@
     ">
         <!-- Title -->
         <div class="border-gray-200 border-b-2 py-5">
-            <h1 class="text-2xl font-semibold">Attendance</h1>
-            <p>Manage your work schedule and attendance here.</p>
+            <h1 class="text-2xl font-semibold">{{ $title }}</h1>
+            <p>{{ $desc }}</p>
         </div>
         <content-section class="
             lg:grid lg:grid-cols-[20%_minmax(20%,_1fr)] lg:gap-10 lg:py-10
@@ -27,10 +27,6 @@
                 @include('components.sidebar-item', with(['item_title' => 'Report', 'path' => ['attendance.report-page']]))
             </aside>
             <section>
-                <div class="border-gray-200 border-b-2 pb-5">
-                    <h2 class="text-xl font-semibold">{{ $title }}</h2>
-                    <p class="text-gray-500 dark:text-gray-300">{{ $desc }}</p>
-                </div>
                 @yield('content')
             </section>
         </content-section>
