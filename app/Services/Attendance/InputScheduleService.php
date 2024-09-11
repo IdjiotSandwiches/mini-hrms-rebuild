@@ -42,7 +42,7 @@ class InputScheduleService extends BaseService
 
                 Schedule::updateOrCreate(
                     [
-                        'user_id' => $this->getUser()->user_id,
+                        'user_id' => $this->getUser()->id,
                         'day' => $day
                     ],
                     [

@@ -50,7 +50,7 @@ class ScheduleAbsences extends Command
             User::chunk(1000, function ($users) use ($currentDate) {
                 foreach ($users as $user) {
                     $attendances = Attendance::where([
-                        ['user_id', $user->user_id],
+                        ['user_id', $user->id],
                         ['date', '<', $currentDate]
                     ])->get();
 
