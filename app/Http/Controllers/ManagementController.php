@@ -34,12 +34,9 @@ class ManagementController extends Controller
     public function search(Request $request, ManagementService $managementService)
     {
         if (!$request->ajax()) abort(404);
+
         $keyword = $request->keyword;
-
-        $users = User::where('username', 'LIKE', "%{$keyword}%")
-            ->orWhere('email', 'LIKE', "%{$keyword}%");
-
-        $users = $managementService->getUserList($users);
+        $users = $managementService->searchUserList($keyword);
 
         return response()->json([
             'message' => 'Search Done',

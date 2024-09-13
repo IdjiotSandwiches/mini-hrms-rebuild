@@ -26,4 +26,14 @@ class ManagementService extends BaseService
 
         return (object) compact('firstName', 'lastName', 'username', 'email');
     }
+
+    public function searchUserList($keyword)
+    {
+        $users = User::where('username', 'LIKE', "%{$keyword}%")
+            ->orWhere('email', 'LIKE', "%{$keyword}%");
+
+        $users = $this->getUserList($users);
+
+        return $users;
+    }
 }
