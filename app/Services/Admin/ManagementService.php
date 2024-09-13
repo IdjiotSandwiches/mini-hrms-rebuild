@@ -7,9 +7,9 @@ use App\Services\BaseService;
 
 class ManagementService extends BaseService
 {
-    public function getUserList()
+    public function getUserList($users)
     {
-        $users = User::paginate(10, ['*'], 'user')
+        $users = $users->paginate(10, ['*'], 'user')
             ->through(function ($user) {
                 return $this->convertUserData($user);
             });

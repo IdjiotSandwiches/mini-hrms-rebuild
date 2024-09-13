@@ -23,7 +23,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::prefix('management')->as('management.')->group(function () {
         Route::controller(ManagementController::class)->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/{keyword}', 'search')->name('search');
+            Route::get('/search/{keyword?}', 'search')->name('search');
             Route::get('/edit/{username}', 'editPage')->name('edit-page');
             Route::put('/edit/{username}', 'edit')->name('edit');
         });
