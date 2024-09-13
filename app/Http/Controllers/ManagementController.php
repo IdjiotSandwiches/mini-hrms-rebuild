@@ -36,19 +36,14 @@ class ManagementController extends Controller
         if (!$request->ajax()) abort(404);
         $keyword = $request->keyword;
 
-        if (!$keyword) {
-            $data = '';
-        }
-        else {
-            $users = User::where('username', 'LIKE', "%{$keyword}%")
-                ->orWhere('email', 'LIKE', "%{$keyword}%");
+        $users = User::where('username', 'LIKE', "%{$keyword}%")
+            ->orWhere('email', 'LIKE', "%{$keyword}%");
 
-            $data = $managementService->getUserList($users);
-        }
+        $users = $managementService->getUserList($users);
 
         return response()->json([
             'message' => 'Search Done',
-            'data' => $data,
+            'data' => $users,
         ], 200);
     }
 }

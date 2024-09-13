@@ -75,10 +75,11 @@
             $.ajax({
                 url: url,
                 type: 'GET',
-                success: function(res, textStatus, xhr) {
-                    const users = res.data;
+                success: function(response, textStatus, xhr) {
+                    const users = response.data.data;
                     const table = $('#user-list').find('tbody');
                     table.children().remove();
+                    console.log(users)
 
                     if(users.length === 0) {
                         let row = `
@@ -91,24 +92,16 @@
                         table.append(row);
                     }
                     else {
-                        $.each(users.data, function(index, user) {
+                        $.each(users, function(index, user) {
                             let route = "{{ route('admin.management.edit-page', ['::USERKEYWORD::']) }}";
                             route = route.replace('::USERKEYWORD::', encodeURIComponent(user.username));
 
                             let row = `
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        ${user.firstName}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        ${user.lastName}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        ${user.username}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        ${user.email}
-                                    </td>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${user.firstName}</th>
+                                    <td class="px-6 py-4">${user.lastName}</td>
+                                    <td class="px-6 py-4">${user.username}</td>
+                                    <td class="px-6 py-4">${user.email}</td>
                                     <td class="px-6 py-4 text-right">
                                         <a href="${route}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                     </td>
