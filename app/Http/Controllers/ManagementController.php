@@ -19,13 +19,17 @@ class ManagementController extends Controller
         ]));
     }
 
-    public function editPage($username)
+    public function editPage(Request $request, ManagementService $managementService)
     {
-        // dd($username);
-        return view('admin.management.edit');
+        $username = $request->username;
+        $user = $managementService->getCurrentUser($username);
+
+        return view('admin.management.edit', with([
+            'user' => $user,
+        ]));
     }
 
-    public function edit($username)
+    public function edit(Request $request)
     {
 
     }

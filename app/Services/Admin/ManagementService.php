@@ -4,10 +4,11 @@ namespace App\Services\Admin;
 
 use App\Models\User;
 use App\Services\BaseService;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManagementService extends BaseService
 {
-    public function getUserList($users)
+    public function getUserList(User|Builder $users)
     {
         $users = $users->paginate(10, ['*'], 'user')
             ->through(function ($user) {
@@ -17,7 +18,7 @@ class ManagementService extends BaseService
         return $users;
     }
 
-    public function convertUserData($user)
+    public function convertUserData(User $user)
     {
         $firstName = $user->first_name;
         $lastName = $user->last_name;
@@ -27,7 +28,7 @@ class ManagementService extends BaseService
         return (object) compact('firstName', 'lastName', 'username', 'email');
     }
 
-    public function searchUserList($keyword)
+    public function searchUserList(?string $keyword)
     {
         $users = User::where('username', 'LIKE', "%{$keyword}%")
             ->orWhere('email', 'LIKE', "%{$keyword}%");
@@ -35,5 +36,14 @@ class ManagementService extends BaseService
         $users = $this->getUserList($users);
 
         return $users;
+    }
+
+    public function getCurrentUser(string $username): object
+    {
+        $user = User::where('username', $username)
+            ->first();
+        $user = $this->convertUserData($user);
+
+        return $user;
     }
 }
