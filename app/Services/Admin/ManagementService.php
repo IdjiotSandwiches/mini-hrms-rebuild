@@ -4,6 +4,8 @@ namespace App\Services\Admin;
 
 use App\Models\User;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 
 class ManagementService extends BaseService
@@ -45,5 +47,26 @@ class ManagementService extends BaseService
         $user = $this->convertUserData($user);
 
         return $user;
+    }
+
+    public function editUser(string $username, array $validated)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = User::where('username', $username)
+                ->first();
+
+            $user->email = $validated['email'] ?: $user->email;
+            $user->first_name = $validated['first_name'] ?: $user->first_name;
+            $user->last_name = $validated['last_name'] ?: $user->last_name;
+            $user->password = $validated['password'] ? Hash::make($validated['password']) : $user->password;
+            $user->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
     }
 }

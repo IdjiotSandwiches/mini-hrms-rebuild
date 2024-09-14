@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditUserRequest;
 use App\Services\Admin\ManagementService;
 
 class ManagementController extends Controller
@@ -22,21 +22,21 @@ class ManagementController extends Controller
 
     public function showEditPage(Request $request, ManagementService $managementService)
     {
-        try {
-            $username = $request->username;
-            $user = $managementService->getCurrentUser($username);
+        $username = $request->username;
+        $user = $managementService->getCurrentUser($username);
 
-            return view('admin.management.edit', with([
-                'user' => $user,
-            ]));
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        return view('admin.management.edit', with([
+            'user' => $user,
+        ]));
     }
 
-    public function edit(Request $request)
+    public function edit(EditUserRequest $request, ManagementService $managementService)
     {
+        $validated = $request->validated();
+        $username = $request->username;
 
+        $response = $managementService->editUser($username, $validated);
+        return redirect()->route('admin.management.index');
     }
 
     // search using ajax request
