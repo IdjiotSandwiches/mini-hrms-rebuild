@@ -30,16 +30,6 @@ class ManagementController extends Controller
         ]));
     }
 
-    public function edit(EditUserRequest $request, ManagementService $managementService)
-    {
-        $validated = $request->validated();
-        $username = $request->username;
-
-        $response = $managementService->editUser($username, $validated);
-        return redirect()->route('admin.management.index');
-    }
-
-    // search using ajax request
     public function search(Request $request, ManagementService $managementService)
     {
         if (!$request->ajax()) abort(404);
@@ -51,5 +41,24 @@ class ManagementController extends Controller
             'message' => 'Search Done',
             'data' => $users,
         ], 200);
+    }
+
+    // Nambahin error msg & benerin lgi yg krng
+    public function edit(EditUserRequest $request, ManagementService $managementService)
+    {
+        $validated = $request->validated();
+        $username = $request->username;
+
+        $response = $managementService->editUser($username, $validated);
+        return redirect()->route('admin.management.index');
+    }
+
+    public function delete(Request $request)
+    {
+        $username = $request->username;
+        $user = User::where('username', $username);
+        $user->delete();
+
+        return redirect()->route('admin.management.index');
     }
 }
