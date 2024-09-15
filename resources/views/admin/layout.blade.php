@@ -22,9 +22,8 @@
         ">
             <!-- Sidebar -->
             <aside class="grid gap-2 h-fit">
-                @include('components.sidebar-item', with(['item_title' => 'Take Attendance', 'path' => ['attendance.take-attendance-page']]))
-                @include('components.sidebar-item', with(['item_title' => 'Input Schedule', 'path' => ['attendance.input-schedule-page', 'attendance.update-schedule-page']]))
-                @include('components.sidebar-item', with(['item_title' => 'Report', 'path' => ['attendance.report-page']]))
+                @include('components.sidebar-item', with(['item_title' => 'Dashboard', 'path' => ['admin.dashboard']]))
+                @include('components.sidebar-item', with(['item_title' => 'Edit User', 'path' => ['admin.management.index']]))
             </aside>
             <section>
                 @yield('content')
