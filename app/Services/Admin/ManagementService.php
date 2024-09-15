@@ -22,12 +22,19 @@ class ManagementService extends BaseService
 
     public function convertUserData(User $user)
     {
+        $id = $user->id;
         $firstName = $user->first_name;
         $lastName = $user->last_name;
         $username = $user->username;
         $email = $user->email;
 
-        return (object) compact('firstName', 'lastName', 'username', 'email');
+        return (object) compact(
+            'id',
+            'firstName',
+            'lastName',
+            'username',
+            'email'
+        );
     }
 
     public function searchUserList(?string $keyword)
@@ -40,21 +47,21 @@ class ManagementService extends BaseService
         return $users;
     }
 
-    public function getCurrentUser(string $username): object
+    public function getCurrentUser(int $id): object
     {
-        $user = User::where('username', $username)
+        $user = User::where('id', $id)
             ->first();
         $user = $this->convertUserData($user);
 
         return $user;
     }
 
-    public function editUser(string $username, array $validated)
+    public function editUser(int $id, array $validated)
     {
         try {
             DB::beginTransaction();
 
-            $user = User::where('username', $username)
+            $user = User::where('id', $id)
                 ->first();
 
             $user->email = $validated['email'] ?: $user->email;

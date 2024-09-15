@@ -22,8 +22,8 @@ class ManagementController extends Controller
 
     public function showEditPage(Request $request, ManagementService $managementService)
     {
-        $username = $request->username;
-        $user = $managementService->getCurrentUser($username);
+        $id = $request->id;
+        $user = $managementService->getCurrentUser($id);
 
         return view('admin.management.edit', with([
             'user' => $user,
@@ -47,16 +47,16 @@ class ManagementController extends Controller
     public function edit(EditUserRequest $request, ManagementService $managementService)
     {
         $validated = $request->validated();
-        $username = $request->username;
+        $id = $request->id;
 
-        $response = $managementService->editUser($username, $validated);
+        $response = $managementService->editUser($id, $validated);
         return redirect()->route('admin.management.index');
     }
 
     public function delete(Request $request)
     {
-        $username = $request->username;
-        $user = User::where('username', $username);
+        $id = $request->id;
+        $user = User::where('id', $id);
         $user->delete();
 
         return redirect()->route('admin.management.index');
