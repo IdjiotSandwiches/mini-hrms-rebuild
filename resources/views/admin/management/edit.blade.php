@@ -25,10 +25,12 @@
             <div class="mb-5">
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                 <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $user->email }}" />
+                <p id="email-error" class="error-msg text-red-500"></p>
             </div>
             <div class="mb-5">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                 <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <p id="password-error" class="error-msg text-red-500"></p>
             </div>
             <button type="submit" id="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
         </edit-form>
@@ -44,7 +46,8 @@
                 <label for="password" class="flex items-center mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Enter current admin password to delete
                 </label>
-                <input type="password" id="confirmation-password" name="confirmation-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <input type="password" id="confirmation_password" name="confirmation_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <p id="confirmation_password-error" class="error-msg text-red-500"></p>
             </div>
             <button id="delete" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Delete</button>
         </delete-form>
@@ -59,10 +62,12 @@
                 url: url,
                 data: data,
                 success:function(response, textStatus, xhr) {
+                    const data = response[0];
+
                     alertSwal.fire({
-                        title: response.status,
-                        text: response.message,
-                        icon: response.status,
+                        title: data.status,
+                        text: data.message,
+                        icon: data.status,
                     }).then((result) => {
                         if(result.isConfirmed) {
                             window.location.href = '{{ route('admin.management.index') }}';
@@ -70,15 +75,28 @@
                     });
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    alertSwal.fire({
-                        title: response.status,
-                        text: response.message,
-                        icon: response.status,
-                    }).then((result) => {
-                        if(result.isConfirmed) {
-                            window.location.href = '{{ route('admin.management.index') }}';
-                        }
-                    });
+                    if(xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+
+                        $('.error-msg').text('');
+                        $('input').removeClass('border-red-500 dark:border-red-500');
+
+                        $.each(errors, function(key, message) {
+                            $(`#${key}`).addClass('border-red-500 dark:border-red-500');
+                            $(`#${key}-error`).text(message[0]);
+                        });
+                    }
+                    else {
+                        alertSwal.fire({
+                            title: response.status,
+                            text: response.message,
+                            icon: response.status,
+                        }).then((result) => {
+                            if(result.isConfirmed) {
+                                window.location.href = '{{ route('admin.management.index') }}';
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -98,8 +116,7 @@
             });
 
             $('#delete').click(function() {
-                let password = $('#confirmation-password').val();
-                console.log(password)
+                let password = $('#confirmation_password').val();
                 if(!password) return;
 
                 confirmSwal.fire({
@@ -109,7 +126,7 @@
                     iconColor: 'red',
                 }).then((result) => {
                     let data = {
-                        password: password,
+                        confirmation_password: password,
                     };
                     const URL = '{{ route('admin.management.delete', $user->id) }}';
                     const TYPE = 'DELETE';

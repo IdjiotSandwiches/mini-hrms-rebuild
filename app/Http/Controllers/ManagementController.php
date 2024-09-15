@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EditUserRequest;
+use App\Http\Requests\DeleteUserRequest;
 use App\Services\Admin\ManagementService;
 
 class ManagementController extends Controller
@@ -23,19 +24,12 @@ class ManagementController extends Controller
     public function showEditPage(Request $request, ManagementService $managementService)
     {
         $id = $request->id;
+
+        if (!User::find($id)) return redirect()->route('admin.management.index');
+
         $user = $managementService->getCurrentUser($id);
 
         return view('admin.management.edit', with([
-            'user' => $user,
-        ]));
-    }
-
-    public function showDeletePage(Request $request, ManagementService $managementService)
-    {
-        $id = $request->id;
-        $user = $managementService->getCurrentUser($id);
-
-        return view('admin.management.delete', with([
             'user' => $user,
         ]));
     }
@@ -48,28 +42,27 @@ class ManagementController extends Controller
         $users = $managementService->searchUserList($keyword);
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Search Done',
             'data' => $users,
-        ], 200);
+        ]);
     }
 
-    // Nambahin error msg & benerin lgi yg krng
     public function edit(EditUserRequest $request, ManagementService $managementService)
     {
         $validated = $request->validated();
         $id = $request->id;
 
-        return $managementService->editUser($id, $validated);
+        $response = $managementService->editUser($id, $validated);
+        return response()->json([$response]);
     }
 
-    public function delete(Request $request)
+    public function delete(DeleteUserRequest $request, ManagementService $managementService)
     {
+        $validated = $request->validated();
         $id = $request->id;
-        $password = $request->password;
-        dd($password);
-        $user = User::where('id', $id);
-        $user->delete();
 
-        return redirect()->route('admin.management.index');
+        $response = $managementService->deleteUser($id, $validated);
+        return response()->json([$response]);
     }
 }

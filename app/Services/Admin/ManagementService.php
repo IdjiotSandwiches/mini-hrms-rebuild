@@ -87,4 +87,41 @@ class ManagementService extends BaseService
 
         return $response;
     }
+
+    public function deleteUser(int $id, array $validated)
+    {
+        try {
+            DB::beginTransaction();
+
+            $currentAdmin = $this->getUser();
+            if (!Hash::check($validated['confirmation_password'], $currentAdmin->getAuthPassword())) {
+                DB::rollBack();
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Password confirmation not match.',
+                ];
+
+                return $response;
+            }
+
+            $user = User::where('id', $id);
+            $user->delete();
+
+            DB::commit();
+            $response = [
+                'status' => 'success',
+                'message' => 'User removed successfully',
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid operation.'
+            ];
+
+            return $response;
+        }
+
+        return $response;
+    }
 }
