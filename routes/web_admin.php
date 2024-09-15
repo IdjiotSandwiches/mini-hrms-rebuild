@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->as('admin.')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/', 'index')->name('dashboard');
     });
 
     Route::prefix('management')->as('management.')->group(function () {
