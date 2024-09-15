@@ -73,8 +73,8 @@
             url = url.replace('::KEYWORD::', encodeURIComponent(keyword));
 
             $.ajax({
-                url: url,
                 type: 'GET',
+                url: url,
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
                     const table = $('#user-list').find('tbody');

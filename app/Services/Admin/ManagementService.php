@@ -71,9 +71,20 @@ class ManagementService extends BaseService
             $user->save();
 
             DB::commit();
+            $response = [
+                'status' => 'success',
+                'message' => 'User information has been updated successfully.',
+            ];
         } catch (\Exception $e) {
             DB::rollBack();
-            return $e->getMessage();
+            $response = [
+                'status' => 'error',
+                'message' => 'Invalid operation.'
+            ];
+
+            return $response;
         }
+
+        return $response;
     }
 }

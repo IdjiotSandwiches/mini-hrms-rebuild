@@ -59,13 +59,14 @@ class ManagementController extends Controller
         $validated = $request->validated();
         $id = $request->id;
 
-        $response = $managementService->editUser($id, $validated);
-        return redirect()->route('admin.management.index');
+        return $managementService->editUser($id, $validated);
     }
 
     public function delete(Request $request)
     {
         $id = $request->id;
+        $password = $request->password;
+        dd($password);
         $user = User::where('id', $id);
         $user->delete();
 
