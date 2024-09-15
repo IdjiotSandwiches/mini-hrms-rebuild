@@ -70,7 +70,6 @@
                 },
                 success:function(response, textStatus, xhr) {
                     const data = response[0];
-
                     alertSwal.fire({
                         title: data.status,
                         text: data.message,
