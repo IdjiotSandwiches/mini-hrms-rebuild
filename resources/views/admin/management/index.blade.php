@@ -73,7 +73,6 @@
                     const users = response.data.data;
                     const table = $('#user-list').find('tbody');
                     table.children().remove();
-                    console.log(users)
 
                     if(users.length === 0) {
                         let row = `
@@ -103,10 +102,17 @@
                             table.append(row);
                         });
                     }
-
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    console.log(errorThrown);
+                    alertSwal.fire({
+                        title: response.status,
+                        text: response.message,
+                        icon: response.status,
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
                 }
             });
         }
