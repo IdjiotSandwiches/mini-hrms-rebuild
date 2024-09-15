@@ -96,7 +96,7 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('userFullName', 'count');
     }
 
-    public function count($attendances, $columnName)
+    public function count(object $attendances, string $columnName)
     {
         return $attendances
             ->where($columnName, true)
