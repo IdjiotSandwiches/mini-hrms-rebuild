@@ -2,6 +2,7 @@
 @section('title', 'Admin - Users Management')
 
 @section('content')
+    @include('components.loading-overlay')
     <div class="border-gray-200 border-b-2 pb-5">
         <h2 class="text-xl font-semibold">Edit User</h2>
         <p>Edit user properties.</p>
@@ -61,6 +62,12 @@
                 type: type,
                 url: url,
                 data: data,
+                beforeSend: function() {
+                    $('#loading-overlay').removeClass('hidden');
+                },
+                complete: function() {
+                    $('#loading-overlay').addClass('hidden');
+                },
                 success:function(response, textStatus, xhr) {
                     const data = response[0];
 
