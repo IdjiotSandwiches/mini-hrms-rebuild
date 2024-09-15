@@ -30,6 +30,16 @@ class ManagementController extends Controller
         ]));
     }
 
+    public function showDeletePage(Request $request, ManagementService $managementService)
+    {
+        $id = $request->id;
+        $user = $managementService->getCurrentUser($id);
+
+        return view('admin.management.delete', with([
+            'user' => $user,
+        ]));
+    }
+
     public function search(Request $request, ManagementService $managementService)
     {
         if (!$request->ajax()) abort(404);

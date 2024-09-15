@@ -1,4 +1,4 @@
-@extends('admin.management.layout.edit-layout', with(['title' => 'Users Management', 'desc' => 'Manage registered users.']))
+@extends('admin.management.layout.edit-layout', with(['title' => 'Edit User', 'desc' => 'Edit user properties.']))
 @section('title', 'Admin - Users Management')
 
 @section('content')
