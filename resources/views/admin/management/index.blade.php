@@ -18,6 +18,7 @@
         <user-list class="gap-4 flex flex-col">
             <div class="relative overflow-x-auto sm:rounded-lg">
                 <table id="user-list" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    @include('components.loading-overlay')
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -69,6 +70,12 @@
             $.ajax({
                 type: 'GET',
                 url: url,
+                beforeSend: function() {
+                    $('#loading-overlay').removeClass('hidden');
+                },
+                complete: function() {
+                    $('#loading-overlay').addClass('hidden');
+                },
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
                     const table = $('#user-list').find('tbody');
