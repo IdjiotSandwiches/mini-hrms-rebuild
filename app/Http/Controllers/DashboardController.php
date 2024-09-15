@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Admin\DashboardService;
 use Illuminate\Http\Request;
+use App\Services\Admin\DashboardService;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
