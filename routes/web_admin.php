@@ -26,6 +26,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/search/{keyword?}', 'search')->name('search');
             Route::get('/edit/{id}', 'showEditPage')->name('edit-page');
             Route::put('/edit/{id}', 'edit')->name('edit');
+            Route::get('/delete/{id}', 'showDeletePage')->name('delete-page');
             Route::delete('/delete/{id}', 'delete')->name('delete');
         });
     });

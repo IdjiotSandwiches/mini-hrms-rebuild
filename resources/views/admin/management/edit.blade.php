@@ -1,8 +1,8 @@
-@extends('admin.layout', with(['title' => 'Users Management', 'desc' => 'Manage registered users.']))
+@extends('admin.management.layout.edit-layout', with(['title' => 'Users Management', 'desc' => 'Manage registered users.']))
 @section('title', 'Admin - Users Management')
 
 @section('content')
-    <edit-section class="flex flex-col gap-8 pb-10">
+    <edit-section class="flex flex-col gap-4 py-10">
         <form action="{{ route('admin.management.edit', $user->username) }}" method="POST">
             @csrf
             @method('PUT')
