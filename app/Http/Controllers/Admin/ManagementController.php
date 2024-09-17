@@ -25,7 +25,7 @@ class ManagementController extends Controller
     {
         $id = $request->id;
 
-        if (!User::find($id)) return redirect()->route('admin.management.index');
+        if (!User::where('uuid', $id)->first()) return redirect()->route('admin.management.index');
 
         $user = $managementService->getCurrentUser($id);
 
