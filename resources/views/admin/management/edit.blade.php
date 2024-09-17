@@ -69,11 +69,10 @@
                     $('#loading-overlay').addClass('hidden');
                 },
                 success:function(response, textStatus, xhr) {
-                    const data = response[0];
                     alertSwal.fire({
-                        title: data.status,
-                        text: data.message,
-                        icon: data.status,
+                        title: response.status,
+                        text: response.message,
+                        icon: response.status,
                     }).then((result) => {
                         if(result.isConfirmed) {
                             window.location.href = '{{ route('admin.management.index') }}';
