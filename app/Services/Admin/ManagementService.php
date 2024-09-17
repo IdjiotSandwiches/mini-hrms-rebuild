@@ -7,10 +7,17 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ManagementService extends BaseService
 {
-    public function getUserList(User|Builder $users)
+    /**
+     * Method to paginate user list.
+     *
+     * @param User|Builder
+     * @return LengthAwarePaginator
+     */
+    public function getUserList(User|Builder $users): LengthAwarePaginator
     {
         $users = $users->paginate(10, ['*'], 'user')
             ->through(function ($user) {
@@ -20,7 +27,13 @@ class ManagementService extends BaseService
         return $users;
     }
 
-    public function convertUserData(User $user)
+    /**
+     * Method to map necessary user data.
+     *
+     * @param User
+     * @return object
+     */
+    public function convertUserData(User $user): object
     {
         $id = $user->id;
         $firstName = $user->first_name;
@@ -37,7 +50,13 @@ class ManagementService extends BaseService
         );
     }
 
-    public function searchUserList(?string $keyword)
+    /**
+     * Method to search user and return it as paginator.
+     *
+     * @param ?string
+     * @return LengthAwarePaginator
+     */
+    public function searchUserList(?string $keyword): LengthAwarePaginator
     {
         $users = User::where('username', 'LIKE', "%{$keyword}%")
             ->orWhere('email', 'LIKE', "%{$keyword}%");
@@ -47,6 +66,12 @@ class ManagementService extends BaseService
         return $users;
     }
 
+    /**
+     * Method to get selected user.
+     *
+     * @param int
+     * @return object
+     */
     public function getCurrentUser(int $id): object
     {
         $user = User::where('id', $id)
@@ -56,7 +81,13 @@ class ManagementService extends BaseService
         return $user;
     }
 
-    public function editUser(int $id, array $validated)
+    /**
+     * Method to update selected user information.
+     *
+     * @param int|array
+     * @return array
+     */
+    public function editUser(int $id, array $validated): array
     {
         try {
             DB::beginTransaction();
@@ -88,7 +119,13 @@ class ManagementService extends BaseService
         return $response;
     }
 
-    public function deleteUser(int $id, array $validated)
+    /**
+     * Method to delete selected user.
+     *
+     * @param int|array
+     * @return array
+     */
+    public function deleteUser(int $id, array $validated): array
     {
         try {
             DB::beginTransaction();
