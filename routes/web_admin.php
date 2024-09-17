@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*

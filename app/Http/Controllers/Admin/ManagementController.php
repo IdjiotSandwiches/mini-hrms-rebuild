@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EditUserRequest;
-use App\Http\Requests\DeleteUserRequest;
+use App\Http\Requests\Admin\EditUserRequest;
+use App\Http\Requests\Admin\DeleteUserRequest;
 use App\Services\Admin\ManagementService;
 
 class ManagementController extends Controller
