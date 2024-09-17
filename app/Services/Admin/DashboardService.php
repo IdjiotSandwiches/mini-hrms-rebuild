@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Support\Collection;
+use App\Interfaces\DashboardInterface;
 use App\Interfaces\AttendanceInterface;
 
-class DashboardService extends BaseService implements AttendanceInterface
+class DashboardService extends BaseService implements
+AttendanceInterface, DashboardInterface
 {
     private $currentTime;
 
@@ -18,9 +20,14 @@ class DashboardService extends BaseService implements AttendanceInterface
         $this->currentTime = $this->convertTime(Carbon::now());
     }
 
-    public function getDailyAttendance()
+    /**
+     * Method to get daily check in & out, attendances.
+     *
+     * @return object
+     */
+    public function getDailyAttendance(): object
     {
-        $attendances = Attendance::whereDate('date', $this->currentTime)
+        $attendances = Attendance::whereDate(self::DATE_COLUMN, $this->currentTime)
             ->get();
 
         $checkInOut = (object) [
@@ -37,7 +44,12 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('checkInOut', 'attendances');
     }
 
-    public function getWeeklyAttendance()
+    /**
+     * Method to get weekly late, early, absence, and attendance.
+     *
+     * @return object
+     */
+    public function getWeeklyAttendance(): object
     {
         $startOfWeek = $this->currentTime
             ->startOfWeek()
@@ -45,7 +57,7 @@ class DashboardService extends BaseService implements AttendanceInterface
         $endOfWeek = $this->currentTime
             ->endOfWeek()
             ->toDateString();
-        $attendances = Attendance::whereBetween('date', [$startOfWeek, $endOfWeek])
+        $attendances = Attendance::whereBetween(self::DATE_COLUMN, [$startOfWeek, $endOfWeek])
             ->get();
 
         $attendance = $this->weeklyMapping($attendances);
@@ -56,9 +68,14 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('attendance', 'late', 'early', 'absence');
     }
 
-    public function getMostOnTimeAndAbsence()
+    /**
+     * Method to map most on time & most absence user.
+     *
+     * @return object
+     */
+    public function getMostOnTimeAndAbsence(): object
     {
-        $attendances = Attendance::all()->groupBy('user_id')
+        $attendances = Attendance::all()->groupBy(self::USER_ID_COLUMN)
             ->map(function ($attendance) {
                 $onTime = $attendance->filter(function ($item) {
                     return $item->late === 0 && $item->early === 0;
@@ -74,13 +91,19 @@ class DashboardService extends BaseService implements AttendanceInterface
                 ];
             });
 
-        $onTimeUser = $this->getUserInfo($attendances, 'onTime');
-        $absenceUser = $this->getUserInfo($attendances, 'absence');
+        $onTimeUser = $this->getUserInfo($attendances, self::ON_TIME_KEY);
+        $absenceUser = $this->getUserInfo($attendances, self::ABSENCE_KEY);
 
         return (object) compact('onTimeUser', 'absenceUser');
     }
 
-    public function getUserInfo(Collection $attendance, string $key)
+    /**
+     * Method to map most on time & most absence user.
+     *
+     * @param Collection|string
+     * @return object|null
+     */
+    public function getUserInfo(Collection $attendance, string $key): object|null
     {
         if ($attendance->isEmpty()) return null;
 
@@ -97,18 +120,31 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('userFullName', 'count');
     }
 
-    public function count(object $attendances, string $columnName)
+    /**
+     * Method to count based on column.
+     *
+     * @param object|string
+     * @return int
+     */
+    public function count(object $attendances, string $columnName): int
     {
         return $attendances
             ->where($columnName, true)
             ->count();
     }
 
-    public function weeklyMapping($attendances)
+    /**
+     * Method to map weekly attendance data.
+     *
+     * @param Collection
+     * @return object
+     */
+    public function weeklyMapping(Collection $attendances): object
     {
         $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         $placeholder = [];
         foreach ($days as $day) {
+            // Fit into apex chart data series format
             $item = [
                 'x' => $day,
                 'y' => 0,
@@ -121,6 +157,7 @@ class DashboardService extends BaseService implements AttendanceInterface
                 ->shortEnglishDayOfWeek;
         })->map(function ($attendance, $key) {
             return (object) [
+                // Fit into apex chart data series format
                 'x' => $key,
                 'y' => $attendance->count(),
             ];
@@ -131,7 +168,13 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) [$attendances];
     }
 
-    public function dataGrouping($attendances, $columnName)
+    /**
+     * Method to group data based on column name.
+     *
+     * @param Collection|string
+     * @return object
+     */
+    public function dataGrouping(Collection $attendances, string $columnName): object
     {
         $attendances = $attendances->where($columnName, true);
         $attendances = $this->weeklyMapping($attendances);

@@ -10,4 +10,5 @@ interface AttendanceInterface
     public const LATE_COLUMN = 'late';
     public const EARLY_COLUMN = 'early';
     public const ABSENCE_COLUMN = 'absence';
+    public const DATE_COLUMN = 'date';
 }
