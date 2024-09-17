@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\EditProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TakeAttendanceController;
-use App\Http\Controllers\InputScheduleController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\User\ChangePasswordController;
+use App\Http\Controllers\User\EditProfileController;
+use App\Http\Controllers\User\TakeAttendanceController;
+use App\Http\Controllers\User\InputScheduleController;
+use App\Http\Controllers\User\ReportController;
 
 /*
 |--------------------------------------------------------------------------
