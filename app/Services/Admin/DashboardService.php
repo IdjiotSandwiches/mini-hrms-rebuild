@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Services\BaseService;
+use Illuminate\Support\Collection;
 use App\Interfaces\AttendanceInterface;
 
 class DashboardService extends BaseService implements AttendanceInterface
@@ -79,17 +80,17 @@ class DashboardService extends BaseService implements AttendanceInterface
         return (object) compact('onTimeUser', 'absenceUser');
     }
 
-    public function getUserInfo($attendance, $mostKey)
+    public function getUserInfo(Collection $attendance, string $key)
     {
         if ($attendance->isEmpty()) return null;
 
-        $sorted = $attendance->sortByDesc($mostKey);
+        $sorted = $attendance->sortByDesc($key);
 
         $id = $sorted->keys()
             ->first();
 
         $count = $sorted->first()
-            ->$mostKey;
+            ->$key;
 
         $user = User::find($id);
         $userFullName = "$user->first_name $user->last_name";
