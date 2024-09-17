@@ -23,7 +23,7 @@
             <!-- Sidebar -->
             <aside class="grid gap-2 h-fit">
                 @include('components.sidebar-item', with(['item_title' => 'Dashboard', 'path' => ['admin.dashboard']]))
-                @include('components.sidebar-item', with(['item_title' => 'Edit User', 'path' => ['admin.management.index']]))
+                @include('components.sidebar-item', with(['item_title' => 'Edit User', 'path' => ['admin.management.index', 'admin.management.edit-page']]))
             </aside>
             <section>
                 @yield('content')
