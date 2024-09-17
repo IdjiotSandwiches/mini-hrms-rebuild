@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\InputScheduleRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\InputScheduleRequest;
 use App\Services\Attendance\InputScheduleService;
 
 class InputScheduleController extends Controller

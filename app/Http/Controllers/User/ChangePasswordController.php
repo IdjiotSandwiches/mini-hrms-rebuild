@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ChangePasswordRequest;
 use App\Services\Profile\ChangePasswordService;
 
 class ChangePasswordController extends Controller
