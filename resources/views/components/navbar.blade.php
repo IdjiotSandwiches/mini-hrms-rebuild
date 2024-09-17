@@ -3,7 +3,7 @@
     md:px-28
     dark:bg-[#121212] dark:text-white
 ">
-    @if (auth()->user())
+    @auth
         <a class="
             text-3xl font-semibold
             dark:text-white
@@ -24,10 +24,10 @@
             @include('components.navbar-item', with(['name' => 'Login', 'path' => ['login', 'landing-page']]))
             @include('components.navbar-item', with(['name' => 'Register', 'path' => ['register']]))
         </nav-button>
-    @endif
+    @endauth
 </nav>
 
-@if (auth()->user())
+@auth
     <nav-item class="
         nav-dropdown z-20 fixed hidden bg-white right-0 mt-20 mr-10 w-64 border-2 rounded-md divide-y-2
         md:mr-28
@@ -38,18 +38,13 @@
             <p class="text-xs">{{ auth()->user()->email }}</p>
         </div>
         <div class="select-none grid">
-            <a href="{{ route('profile.edit-profile-page') }}" class="
-                py-2 px-4 hover:bg-gray-100 transition-colors text-sm
-                dark:hover:bg-gray-600
-            ">
-                Profile
-            </a>
-            <a href="{{ route('attendance.take-attendance-page') }}" class="
-                py-2 px-4 hover:bg-gray-100 transition-colors text-sm
-                dark:hover:bg-gray-600
-            ">
-                Attendance
-            </a>
+            @if (auth()->guard('admin')->check())
+                @include('components.dropdown-item', with(['name' => 'Dashboard', 'path' => 'admin.dashboard']))
+                @include('components.dropdown-item', with(['name' => 'Edit User', 'path' => 'admin.management.index']))
+            @else
+                @include('components.dropdown-item', with(['name' => 'Profile', 'path' => 'profile.edit-profile-page']))
+                @include('components.dropdown-item', with(['name' => 'Attendance', 'path' => 'attendance.take-attendance-page']))
+            @endif
         </div>
         <div class="select-none grid">
             <a href="{{ route('logout') }}" class="
@@ -60,7 +55,7 @@
             </a>
         </div>
     </nav-item>
-@endif
+@endauth
 
 <script type="module">
     $(document).ready(function() {

@@ -1,12 +1,8 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\EditProfileController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ManagementController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TakeAttendanceController;
-use App\Http\Controllers\InputScheduleController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +15,18 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin.welcome');
-})->name('welcome');
+Route::prefix('admin')->as('admin.')->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/', 'index')->name('dashboard');
+    });
+
+    Route::prefix('management')->as('management.')->group(function () {
+        Route::controller(ManagementController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/search/{keyword?}', 'search')->name('search');
+            Route::get('/edit/{id}', 'showEditPage')->name('edit-page');
+            Route::put('/edit/{id}', 'edit')->name('edit');
+            Route::delete('/delete/{id}', 'delete')->name('delete');
+        });
+    });
+});
