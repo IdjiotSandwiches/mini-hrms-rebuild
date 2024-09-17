@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Services\Attendance\TakeAttendanceService;
-use Illuminate\Http\Request;
 
 class TakeAttendanceController extends Controller
 {

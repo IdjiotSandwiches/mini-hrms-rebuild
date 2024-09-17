@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\EditProfileRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\EditProfileRequest;
 use App\Services\Profile\EditProfileService;
 
 class EditProfileController extends Controller
