@@ -35,7 +35,7 @@ class ManagementService extends BaseService
      */
     public function convertUserData(User $user): object
     {
-        $id = $user->id;
+        $id = $user->uuid;
         $firstName = $user->first_name;
         $lastName = $user->last_name;
         $username = $user->username;
@@ -72,9 +72,9 @@ class ManagementService extends BaseService
      * @param int
      * @return object
      */
-    public function getCurrentUser(int $id): object
+    public function getCurrentUser(string $id): object
     {
-        $user = User::where('id', $id)
+        $user = User::where('uuid', $id)
             ->first();
         $user = $this->convertUserData($user);
 
@@ -87,12 +87,12 @@ class ManagementService extends BaseService
      * @param int|array
      * @return array
      */
-    public function editUser(int $id, array $validated): array
+    public function editUser(string $id, array $validated): array
     {
         try {
             DB::beginTransaction();
 
-            $user = User::where('id', $id)
+            $user = User::where('uuid', $id)
                 ->first();
 
             $user->email = $validated['email'] ?: $user->email;
@@ -125,7 +125,7 @@ class ManagementService extends BaseService
      * @param int|array
      * @return array
      */
-    public function deleteUser(int $id, array $validated): array
+    public function deleteUser(string $id, array $validated): array
     {
         try {
             DB::beginTransaction();
@@ -141,7 +141,7 @@ class ManagementService extends BaseService
                 return $response;
             }
 
-            $user = User::where('id', $id);
+            $user = User::where('uuid', $id);
             $user->delete();
 
             DB::commit();

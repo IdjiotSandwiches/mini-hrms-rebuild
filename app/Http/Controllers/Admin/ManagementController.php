@@ -25,7 +25,8 @@ class ManagementController extends Controller
     {
         $id = $request->id;
 
-        if (!User::find($id)) return redirect()->route('admin.management.index');
+        if (!User::where('uuid', $id)->first())
+            return redirect()->route('admin.management.index');
 
         $user = $managementService->getCurrentUser($id);
 
@@ -54,7 +55,7 @@ class ManagementController extends Controller
         $id = $request->id;
 
         $response = $managementService->editUser($id, $validated);
-        return response()->json([$response]);
+        return response()->json($response);
     }
 
     public function delete(DeleteUserRequest $request, ManagementService $managementService)
@@ -63,6 +64,6 @@ class ManagementController extends Controller
         $id = $request->id;
 
         $response = $managementService->deleteUser($id, $validated);
-        return response()->json([$response]);
+        return response()->json($response);
     }
 }
