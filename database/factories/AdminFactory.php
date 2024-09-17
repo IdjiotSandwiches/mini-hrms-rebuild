@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,6 +19,7 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid' => Str::uuid(),
             'first_name' => 'HRMS',
             'last_name' => 'Admin',
             'username' => 'hrmsadmin',
