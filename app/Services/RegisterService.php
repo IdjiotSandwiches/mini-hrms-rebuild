@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,6 +15,7 @@ class RegisterService extends BaseService
             DB::beginTransaction();
 
             $user = new User();
+            $user->uuid = Str::uuid();
             $user->email = $validated['email'];
             $user->first_name = ucwords($validated['first_name']);
             $user->last_name = ucwords($validated['last_name']);
