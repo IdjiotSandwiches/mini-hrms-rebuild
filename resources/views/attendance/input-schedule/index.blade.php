@@ -7,8 +7,8 @@
         dark:text-white
     ">
     <div class="relative overflow-x-auto sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">Day</th>
                         <th scope="col" class="px-6 py-3">Time</th>
@@ -31,7 +31,7 @@
         <div class="flex gap-4 justify-end items-center">
             <p class="text-md font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ "$totalWorkHour Hours" }}</span></p>
             @if ($isUpdateSchedule)
-                <a href="{{ route('attendance.update-schedule-page') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</a>
+                <a href="{{ route('attendance.update-schedule-page') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Schedule</a>
             @endif
         </div>
     </schedule-section>
