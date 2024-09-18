@@ -15,12 +15,12 @@
         </thead>
         <tbody>
             @if ($attendances->isEmpty())
-                <tr class="border-b-2 border-gray-200">
-                    <td colspan="8" class="px-6 py-3">You do not have work attendance</td>
+                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                    <td colspan="8" class="px-6 py-3 text-center">You do not have work attendance</td>
                 </tr>
             @endif
             @foreach ($attendances as $key => $value)
-                <tr class="border-b-2 border-gray-200">
+                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $key + $attendances->firstItem() }}</th>
                     <td class="px-6 py-4">{{ $value->date }}</td>
                     <td class="px-6 py-4">{{ $value->checkIn }}</td>

@@ -56,23 +56,22 @@
                     View
                 </button>
             </div>
-            <div class="w-full relative overflow-x-auto rounded-md" id="custom-report">
-                <table class="w-full table-auto text-center text-gray-500 dark:text-white">
-                    <thead class="bg-blue-500 text-white">
-                        <tr class="font-semibold">
-                            <td class="px-4 py-3">No.</td>
-                            <td class="px-4 py-3 bg-blue-600">Date</td>
-                            <td class="px-4 py-3">Check In Time</td>
-                            <td class="px-4 py-3 bg-blue-600">Check Out Time</td>
-                            <td class="px-4 py-3">Early</td>
-                            <td class="px-4 py-3 bg-blue-600">Late</td>
-                            <td class="px-4 py-3">Absence</td>
-                            <td class="px-4 py-3 bg-blue-600">Work Duration</td>
+            <div class="relative overflow-x-auto sm:rounded-lg" id="custom-report">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">No.</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
+                            <th scope="col" class="px-6 py-3">Check In Time</th>
+                            <th scope="col" class="px-6 py-3">Check Out Time</th>
+                            <th scope="col" class="px-6 py-3">Early</th>
+                            <th scope="col" class="px-6 py-3">Late</th>
+                            <th scope="col" class="px-6 py-3">Absence</th>
+                            <th scope="col" class="px-6 py-3">Work Duration</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="border-b-2 border-gray-200">
-                            <td colspan="8" class="px-4 py-3">
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <td colspan="8" class="px-6 py-3 text-center">
                                 You do not have work attendance
                             </td>
                         </tr>
@@ -132,8 +131,8 @@
                     table.children().remove();
                     if(res.length === 0) {
                         let row = `
-                            <tr class="border-b-2 border-gray-200">
-                                <td colspan="8" class="px-4 py-3">
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <td colspan="8" class="px-6 py-3 text-center">
                                     You do not have work attendance
                                 </td>
                             </tr>
@@ -143,15 +142,15 @@
                     else {
                         $.each(res, function(index, report) {
                             let row = `
-                                <tr class="border-b-2 border-gray-200">
-                                    <td class="px-4 py-3 dark:bg-gray-700">${index + 1}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.date}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.checkIn}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.checkOut}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.early}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.late}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.absence}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.workTime}</td>
+                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${index + 1}</th>
+                                    <td class="px-6 py-4">${report.date}</td>
+                                    <td class="px-6 py-4">${report.checkIn}</td>
+                                    <td class="px-6 py-4">${report.checkOut}</td>
+                                    <td class="px-6 py-4">${report.early}</td>
+                                    <td class="px-6 py-4">${report.late}</td>
+                                    <td class="px-6 py-4">${report.absence}</td>
+                                    <td class="px-6 py-4">${report.workTime}</td>
                                 </tr>
                             `;
                             table.append(row);
