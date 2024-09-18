@@ -34,15 +34,15 @@
                 </tbody>
             </table>
         </div>
-        <p class="text-lg font-medium text-center">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
+        <p class="text-md font-medium text-center">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
         <div @class([
             'justify-between' => $isUpdateSchedule,
             'flex justify-end'
         ])>
             @if ($isUpdateSchedule)
-                <a href="{{ route('attendance.input-schedule-page') }}" class="py-2 px-5 text-white text-lg rounded-md bg-red-600 hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-colors">Cancel</a>
+                <a href="{{ route('attendance.input-schedule-page') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Cancel</a>
             @endif
-            <button class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors" id="submit">Save Schedule</button>
+            <button type="submit" id="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Schedule</button>
         </div>
     </schedule-section>
 @endsection

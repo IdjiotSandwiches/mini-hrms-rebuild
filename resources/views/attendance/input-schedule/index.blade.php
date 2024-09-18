@@ -29,9 +29,9 @@
             </table>
         </div>
         <div class="flex gap-4 justify-end items-center">
-            <p class="text-lg font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ str($totalWorkHour) . ' Hours' }}</span></p>
+            <p class="text-md font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ "$totalWorkHour Hours" }}</span></p>
             @if ($isUpdateSchedule)
-                <a href="{{ route('attendance.update-schedule-page') }}" class="py-2 px-5 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Change Schedule</a>
+                <a href="{{ route('attendance.update-schedule-page') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</a>
             @endif
         </div>
     </schedule-section>
