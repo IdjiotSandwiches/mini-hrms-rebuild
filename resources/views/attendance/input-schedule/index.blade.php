@@ -6,22 +6,22 @@
         py-10 gap-4 flex flex-col
         dark:text-white
     ">
-        <div class="w-full relative overflow-x-auto rounded-md">
-            <table class="w-full table-auto text-center text-gray-500">
-                <thead class="bg-blue-500 text-white">
-                    <tr class="font-semibold">
-                        <td class="px-4 py-3">Day</td>
-                        <td class="px-4 py-3 bg-blue-600">Time</td>
+    <div class="relative overflow-x-auto sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Day</th>
+                        <th scope="col" class="px-6 py-3">Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($schedule as $eachSchedule)
-                        <tr class="border-b-2 border-gray-200 dark:text-white">
-                            <td class="px-4 py-3 dark:bg-gray-700">{{ $eachSchedule->day }}</td>
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $eachSchedule->day }}</th>
                             @if ($eachSchedule->start_time == '00:00:00' && $eachSchedule->end_time == '00:00:00')
-                                <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">No work schedule</td>
+                                <td class="px-6 py-4">No work schedule.</td>
                             @else
-                                <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">{{ str($eachSchedule->start_time) . ' - ' . str($eachSchedule->end_time) }}</td>
+                                <td class="px-6 py-4">{{ "$eachSchedule->start_time - $eachSchedule->end_time" }}</td>
                             @endif
                         </tr>
                     @endforeach
