@@ -57,6 +57,12 @@
             data: {
                 schedule: schedule,
             },
+            beforeSend: function() {
+                $('#loading-overlay').show();
+            },
+            complete: function() {
+                $('#loading-overlay').hide();
+            },
             success: function(res) {
                 alertSwal.fire({
                     title: res.status,
@@ -82,11 +88,17 @@
         });
     }
 
+    function hideModal() {
+        modal.hide();
+        $('body').removeClass('overflow-hidden');
+    }
+
     $(document).ready(function() {
         dayjs.extend(dayjs_plugin_customParseFormat);
         $('.action').click(function() {
             id = $(this).closest('tr').attr('id');
-            modal.toggle();
+            modal.show();
+            $('body').addClass('overflow-hidden');
             $('#day').text(id);
         });
 
@@ -151,11 +163,11 @@
             $('#error').addClass('hidden');
             $('input[type="time"]').val('');
 
-            modal.toggle();
+            hideModal();
         });
 
         $('.close-btn').click(function() {
-            modal.toggle();
+            hideModal();
         });
 
         $('#submit').click(function() {
@@ -183,7 +195,7 @@
             let targetModal = $(event.target).closest('.modal');
 
             if(trigger[0] !== targetModal[0]){
-                modal.toggle();
+                hideModal();
             }
         })
     })

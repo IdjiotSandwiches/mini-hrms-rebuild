@@ -47,8 +47,7 @@
                     <input id="datepicker-end" name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
                 </div>
                 <button id="view-report" class="
-                    flex w-full justify-center items-center gap-2 py-1.5 px-4 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors
-                    sm:w-auto
+                    flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
                 ">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="fill-white h-5 w-5">
                         <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
@@ -56,23 +55,22 @@
                     View
                 </button>
             </div>
-            <div class="w-full relative overflow-x-auto rounded-md" id="custom-report">
-                <table class="w-full table-auto text-center text-gray-500 dark:text-white">
-                    <thead class="bg-blue-500 text-white">
-                        <tr class="font-semibold">
-                            <td class="px-4 py-3">No.</td>
-                            <td class="px-4 py-3 bg-blue-600">Date</td>
-                            <td class="px-4 py-3">Check In Time</td>
-                            <td class="px-4 py-3 bg-blue-600">Check Out Time</td>
-                            <td class="px-4 py-3">Early</td>
-                            <td class="px-4 py-3 bg-blue-600">Late</td>
-                            <td class="px-4 py-3">Absence</td>
-                            <td class="px-4 py-3 bg-blue-600">Work Duration</td>
+            <div class="relative overflow-x-auto sm:rounded-lg" id="custom-report">
+                <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">No.</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
+                            <th scope="col" class="px-6 py-3">Check In Time</th>
+                            <th scope="col" class="px-6 py-3">Check Out Time</th>
+                            <th scope="col" class="px-6 py-3">Early</th>
+                            <th scope="col" class="px-6 py-3">Late</th>
+                            <th scope="col" class="px-6 py-3">Absence</th>
+                            <th scope="col" class="px-6 py-3">Work Duration</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="border-b-2 border-gray-200">
-                            <td colspan="8" class="px-4 py-3">
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <td colspan="8" class="px-6 py-3 text-center">
                                 You do not have work attendance
                             </td>
                         </tr>
@@ -132,8 +130,8 @@
                     table.children().remove();
                     if(res.length === 0) {
                         let row = `
-                            <tr class="border-b-2 border-gray-200">
-                                <td colspan="8" class="px-4 py-3">
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <td colspan="8" class="px-6 py-3 text-center">
                                     You do not have work attendance
                                 </td>
                             </tr>
@@ -143,15 +141,15 @@
                     else {
                         $.each(res, function(index, report) {
                             let row = `
-                                <tr class="border-b-2 border-gray-200">
-                                    <td class="px-4 py-3 dark:bg-gray-700">${index + 1}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.date}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.checkIn}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.checkOut}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.early}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.late}</td>
-                                    <td class="px-4 py-3 dark:bg-gray-700">${report.absence}</td>
-                                    <td class="px-4 py-3 bg-gray-100 dark:bg-gray-800">${report.workTime}</td>
+                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${index + 1}</th>
+                                    <td class="px-6 py-4">${report.date}</td>
+                                    <td class="px-6 py-4">${report.checkIn}</td>
+                                    <td class="px-6 py-4">${report.checkOut}</td>
+                                    <td class="px-6 py-4">${report.early}</td>
+                                    <td class="px-6 py-4">${report.late}</td>
+                                    <td class="px-6 py-4">${report.absence}</td>
+                                    <td class="px-6 py-4">${report.workTime}</td>
                                 </tr>
                             `;
                             table.append(row);
