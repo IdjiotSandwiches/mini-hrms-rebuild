@@ -12,38 +12,22 @@
         py-10 gap-4 flex flex-col
         dark:text-white
     ">
-        <div class="w-full relative overflow-x-auto rounded-md">
-            <table class="w-full table-auto text-center text-gray-500">
-                <thead class="bg-blue-500 text-white">
-                    <tr class="font-semibold">
-                        <td class="px-4 py-3">Day</td>
-                        <td class="px-4 py-3 bg-blue-600">Time</td>
-                        <td class="px-4 py-3">Action</td>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Day</th>
+                        <th scope="col" class="px-6 py-3">Time</th>
+                        <th scope="col" class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($dayWeek as $day)
-                        <tr class="
-                            border-b-2 border-gray-200
-                            dark:text-white
-                        " id="{{ $day }}">
-                            <td class="
-                                px-4 py-3
-                                dark:bg-gray-700
-                            ">{{ $day }}</td>
-                            <td class="
-                                px-4 py-3 bg-gray-100
-                                dark:bg-gray-800
-                            ">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
-                            <td class="
-                                px-4 py-3
-                                dark:bg-gray-700
-                            ">
-                                <div class="flex justify-center items-center">
-                                    <svg viewBox="0 0 49 42" xmlns="http://www.w3.org/2000/svg" class="action fill-blue-500 transition-colors dark:hover:fill-white h-8 w-8">
-                                        <path d="M0.948975 11.8472H30.0956V17.2976H0.948975V11.8472ZM0.948975 6.39681H30.0956V0.946411H0.948975V6.39681ZM0.948975 28.1984H19.4968V22.748H0.948975V28.1984ZM40.7208 19.6685L42.6021 17.7336C42.8472 17.481 43.1384 17.2806 43.459 17.1438C43.7795 17.0071 44.1231 16.9367 44.4701 16.9367C44.8172 16.9367 45.1608 17.0071 45.4813 17.1438C45.8019 17.2806 46.093 17.481 46.3382 17.7336L48.2195 19.6685C49.2528 20.7313 49.2528 22.4482 48.2195 23.511L46.3382 25.4459L40.7208 19.6685ZM38.8396 21.6034L24.7962 36.047V41.8244H30.4135L44.4569 27.3808L38.8396 21.6034Z"/>
-                                    </svg>
-                                </div>
+                        <tr id="{{ $day }}" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $day }}</th>
+                            <td class="px-6 py-4">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
+                            <td class="px-6 py-4">
+                                <button class="action font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </td>
                         </tr>
                     @endforeach
