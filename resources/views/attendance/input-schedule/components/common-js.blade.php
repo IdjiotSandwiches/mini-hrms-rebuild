@@ -57,6 +57,12 @@
             data: {
                 schedule: schedule,
             },
+            beforeSend: function() {
+                $('#loading-overlay').show();
+            },
+            complete: function() {
+                $('#loading-overlay').hide();
+            },
             success: function(res) {
                 alertSwal.fire({
                     title: res.status,

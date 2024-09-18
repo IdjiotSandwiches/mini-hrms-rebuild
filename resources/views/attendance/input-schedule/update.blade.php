@@ -7,7 +7,7 @@
 
 @section('content')
     @include('attendance.input-schedule.components.schedule-modal')
-
+    @include('components.loading-overlay')
     <schedule-section class="
         py-10 gap-4 flex flex-col
         dark:text-white
