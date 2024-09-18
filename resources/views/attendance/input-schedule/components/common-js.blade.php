@@ -1,5 +1,5 @@
 <script>
-    let modal = $('.schedule-modal');
+    let modal = $('#default-modal');
     let totalWorkHours = 0;
     let id = null;
     let schedule = {
@@ -86,7 +86,6 @@
         dayjs.extend(dayjs_plugin_customParseFormat);
         $('.action').click(function() {
             id = $(this).closest('tr').attr('id');
-            modal.toggle();
             $('#day').text(id);
         });
 
@@ -151,11 +150,7 @@
             $('#error').addClass('hidden');
             $('input[type="time"]').val('');
 
-            modal.toggle();
-        });
-
-        $('.close-btn').click(function() {
-            modal.toggle();
+            modal.hide();
         });
 
         $('#submit').click(function() {
@@ -178,13 +173,13 @@
             });
         });
 
-        modal.on('click', function(event) {
-            let trigger = $('.modal');
-            let targetModal = $(event.target).closest('.modal');
+        // modal.on('click', function(event) {
+        //     let trigger = $('.modal');
+        //     let targetModal = $(event.target).closest('.modal');
 
-            if(trigger[0] !== targetModal[0]){
-                modal.toggle();
-            }
-        })
+        //     if(trigger[0] !== targetModal[0]){
+        //         modal.toggle();
+        //     }
+        // })
     })
 </script>
