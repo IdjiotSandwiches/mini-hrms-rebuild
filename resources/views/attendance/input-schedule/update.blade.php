@@ -27,7 +27,7 @@
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $day }}</th>
                             <td class="px-6 py-4">00:00:00 - 00:00:00 (0hr 0m 0s)</td>
                             <td class="px-6 py-4">
-                                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="action font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <button class="action font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </td>
                         </tr>
                     @endforeach
