@@ -6,7 +6,7 @@
         flex justify-center items-center h-full px-10
         md:px-28
     ">
-        <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <div class="modal relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
@@ -23,8 +23,8 @@
                 <div class="p-4 md:p-5 space-y-4">
                     <schedule-form>
                         <div class="
-                            flex flex-col
-                            sm:grid sm:grid-cols-2 gap-10 justify-between
+                            flex flex-col gap-5
+                            sm:grid sm:grid-cols-2 sm:gap-10 justify-between
                         ">
                             <div class="flex flex-col">
                                 <label for="from-hour" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">From Hour:</label>
