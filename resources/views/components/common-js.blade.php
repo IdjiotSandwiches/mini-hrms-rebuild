@@ -75,5 +75,10 @@
                 }
             }
         });
+
+        $('form').on('submit', function() {
+            $('button[type="submit"]').prop('disabled', true);
+            $('#loading-overlay').show();
+        })
     });
 </script>

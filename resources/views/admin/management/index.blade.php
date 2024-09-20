@@ -71,10 +71,10 @@
                 type: 'GET',
                 url: url,
                 beforeSend: function() {
-                    $('#loading-overlay').removeClass('hidden');
+                    $('#loading-overlay').show();
                 },
                 complete: function() {
-                    $('#loading-overlay').addClass('hidden');
+                    $('#loading-overlay').hide();
                 },
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
