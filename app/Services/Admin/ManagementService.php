@@ -119,7 +119,7 @@ class ManagementService extends BaseService
             DB::beginTransaction();
 
             $currentAdmin = $this->getUser();
-            if (!Hash::check($validated['confirmation_password'], $currentAdmin->getAuthPassword())) {
+            if (!Hash::check($validated['confirm_password'], $currentAdmin->getAuthPassword())) {
                 DB::rollBack();
                 $response = [
                     'status' => 'error',

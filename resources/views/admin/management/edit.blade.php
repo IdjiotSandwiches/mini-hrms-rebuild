@@ -42,7 +42,6 @@
         <p>Remove user from database.</p>
     </div>
     <delete-section class="flex flex-col gap-4 py-10">
-        <!-- Butuh di cek lagi -->
         <form action="{{ route('admin.management.delete', $user->id) }}" method="POST">
             @csrf
             @method('DELETE')
@@ -50,12 +49,11 @@
                 <label for="password" class="flex items-center mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Enter current admin password to delete
                 </label>
-                <input type="password" id="confirmation_password" name="confirmation_password" @class([
+                <input type="password" id="confirm_password" name="confirm_password" @class([
                     'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                    'border-red-500 dark:border-red-500' => $errors->has('confirmation_password')
+                    'border-red-500 dark:border-red-500' => $errors->has('confirm_password')
                 ]) />
-                <p id="confirmation_password-error" class="error-msg text-red-500"></p>
-                @error('confirmation_password')
+                @error('confirm_password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
