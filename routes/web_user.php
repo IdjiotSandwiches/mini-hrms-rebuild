@@ -23,8 +23,7 @@ Route::prefix('attendance')
     ->group(function () {
         Route::controller(TakeAttendanceController::class)->group(function () {
             Route::get('/take-attendance', 'index')->name('take-attendance-page');
-            Route::post('/take-attendance', 'checkIn')->name('check-in');
-            Route::put('/take-attendance', 'checkOut')->name('check-out');
+            Route::post('/take-attendance', 'takeAttendance')->name('take-attendance');
         });
 
         Route::controller(InputScheduleController::class)->group(function () {

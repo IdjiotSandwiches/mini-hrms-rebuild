@@ -14,9 +14,9 @@ class TakeAttendanceController extends Controller
         ]);
     }
 
-    public function checkIn(TakeAttendanceService $takeAttendanceService)
+    public function takeAttendance(TakeAttendanceService $takeAttendanceService)
     {
-        return $takeAttendanceService->checkInValidation();
+        return $takeAttendanceService->attendanceValidation();
     }
 
     public function checkOut(TakeAttendanceService $takeAttendanceService)

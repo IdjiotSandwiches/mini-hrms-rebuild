@@ -26,18 +26,26 @@
                 dark:bg-gray-600
             " id="current-seconds"></div>
         </div>
-        @if ($isCheckedIn)
-            <form action="{{ route('attendance.check-out') }}" method="POST">
-                @method('PUT')
-                @csrf
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check Out</button>
-            </form>
-        @else
-            <form action="{{ route('attendance.check-in') }}" method="POST">
-                @csrf
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check In</button>
-            </form>
-        @endif
+        <form action="{{ route('attendance.take-attendance') }}" method="POST">
+            @csrf
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                @if($isCheckedIn)
+                    Check Out
+                @else
+                    Check In
+                @endif
+            </button>
+        </form>
     </attendance-section>
+@endsection
+
+@section('extra-js')
+    <script>
+        $(document).ready(function() {
+            $('button[type="submit"]').click(function() {
+                disableButton();
+            });
+        });
+    </script>
 @endsection
 
