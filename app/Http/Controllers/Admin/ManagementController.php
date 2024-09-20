@@ -54,8 +54,7 @@ class ManagementController extends Controller
         $validated = $request->validated();
         $id = $request->id;
 
-        $response = $managementService->editUser($id, $validated);
-        return response()->json($response);
+        return $managementService->editUser($id, $validated);
     }
 
     public function delete(DeleteUserRequest $request, ManagementService $managementService)
@@ -63,7 +62,6 @@ class ManagementController extends Controller
         $validated = $request->validated();
         $id = $request->id;
 
-        $response = $managementService->deleteUser($id, $validated);
-        return response()->json($response);
+        return $managementService->deleteUser($id, $validated);
     }
 }
