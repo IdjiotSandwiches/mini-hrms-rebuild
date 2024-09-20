@@ -3,10 +3,16 @@
 namespace App\Services\Attendance;
 
 use Carbon\Carbon;
+use App\Models\Attendance;
 use App\Services\BaseService;
 
 class ReportService extends BaseService
 {
+    /**
+     * @param Attendance|\Illuminate\Database\Eloquent\Builder
+     * @param string
+     * @return object
+     */
     public function getReport($attendances, $paginationName)
     {
         $workHours = $this->calculateWorkHours($attendances);
@@ -18,6 +24,11 @@ class ReportService extends BaseService
         return (object) compact('attendances', 'workHours');
     }
 
+    /**
+     * @param string
+     * @param string
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|void
+     */
     public function getRangeReport($startTime, $endTime)
     {
         if (!$startTime || !$endTime) return;
@@ -37,6 +48,9 @@ class ReportService extends BaseService
         return $rangeReport;
     }
 
+    /**
+     * @return object
+     */
     public function getWeeklyReport()
     {
         $currentTime = $this->convertTime(Carbon::now());
@@ -50,6 +64,9 @@ class ReportService extends BaseService
         return $this->getReport($attendances, 'weekly');
     }
 
+    /**
+     * @return object
+     */
     public function getMonthlyReport()
     {
         $currentTime = $this->convertTime(Carbon::now());
@@ -60,6 +77,10 @@ class ReportService extends BaseService
         return $this->getReport($attendances, 'monthly');
     }
 
+    /**
+     * @param Attendance|\Illuminate\Database\Eloquent\Builder
+     * @return float
+     */
     public function calculateWorkHours($attendances)
     {
         $workHours = $attendances->get()
@@ -75,6 +96,10 @@ class ReportService extends BaseService
         return $workHours;
     }
 
+    /**
+     * @param Attendance|\Illuminate\Database\Eloquent\Builder
+     * @return object
+     */
     public function reportConversion($attendance)
     {
         $date = $this->convertTime($attendance->date)
@@ -100,6 +125,10 @@ class ReportService extends BaseService
         );
     }
 
+    /**
+     * @param bool
+     * @return string
+     */
     public function convertBoolean($condition)
     {
         if (is_null($condition)) return '-';
@@ -109,6 +138,10 @@ class ReportService extends BaseService
         }
     }
 
+    /**
+     * @param Attendance|\Illuminate\Database\Eloquent\Builder
+     * @return string
+     */
     public function convertWorkTime($attendance)
     {
         return $attendance->check_out ? gmdate('H:i:s',
