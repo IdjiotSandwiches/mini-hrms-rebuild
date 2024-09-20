@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginService extends BaseService
 {
-    public function attemptLogin($validated) {
+    /**
+     * @param array
+     * @return Admin|array|object|User|\Illuminate\Database\Eloquent\Model|null
+     */
+    public function attemptLogin($validated)
+    {
         $user = User::where('email', $validated['email'])->first() ??
             Admin::where('email', $validated['email'])->first();
 
