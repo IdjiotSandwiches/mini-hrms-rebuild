@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class InputScheduleService extends BaseService
 {
+    /**
+     * @return bool
+     */
     public function isUpdateSchedule() {
         if (!$this->getSchedule()->exists()) return false;
 
@@ -21,6 +24,9 @@ class InputScheduleService extends BaseService
         return false;
     }
 
+    /**
+     * @return float
+     */
     public function calculateTotalWorkHour()
     {
         $schedule = $this->getSchedule();
@@ -29,6 +35,10 @@ class InputScheduleService extends BaseService
         return $totalWorkHour;
     }
 
+    /**
+     * @param array
+     * @return array
+     */
     public function processSchedule($validated)
     {
         try {
