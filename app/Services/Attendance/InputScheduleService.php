@@ -19,7 +19,7 @@ class InputScheduleService extends BaseService
         $schedule = $this->getSchedule()->first();
         $lastScheduleUpdate = $this->convertTime($schedule->updated_at);
 
-        if ($currentTime->diffInMonths($lastScheduleUpdate) >= 3) return true;
+        if ($currentTime->diffInMonths($lastScheduleUpdate) >= 0) return true;
 
         return false;
     }
