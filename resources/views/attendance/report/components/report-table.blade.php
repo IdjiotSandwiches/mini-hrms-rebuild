@@ -1,6 +1,8 @@
-@props(['attendances'])
-<div class="relative overflow-x-auto sm:rounded-lg">
+@props(['attendances' => collect(), 'id' => ''])
+
+<div class="relative overflow-x-auto sm:rounded-lg" id="{{ $id }}">
     <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+        @include('components.loading-overlay')
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">No.</th>
