@@ -3,7 +3,7 @@
 
 @section('content')
     <schedule-section class="py-10 gap-4 flex flex-col dark:text-white">
-    <div class="relative overflow-x-auto sm:rounded-lg">
+        <div class="relative overflow-x-auto sm:rounded-lg">
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
