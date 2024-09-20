@@ -2,11 +2,8 @@
 @section('title', 'Attendance - Input Schedule')
 
 @section('content')
-    <schedule-section class="
-        py-10 gap-4 flex flex-col
-        dark:text-white
-    ">
-    <div class="relative overflow-x-auto sm:rounded-lg">
+    <schedule-section class="py-10 gap-4 flex flex-col dark:text-white">
+        <div class="relative overflow-x-auto sm:rounded-lg">
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -31,12 +28,9 @@
         <div class="flex gap-4 justify-end items-center">
             <p class="text-md font-medium">Work Hours: <span id="work-hours" class="text-blue-500">{{ "$totalWorkHour Hours" }}</span></p>
             @if ($isUpdateSchedule)
-                <a href="{{ route('attendance.update-schedule-page') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Schedule</a>
+                <a href="{{ route('attendance.update-schedule-page') }}" class="disabled:bg-blue-400 disabled:dark:bg-blue-500 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Schedule</a>
             @endif
         </div>
     </schedule-section>
 @endsection
 
-@section('extra-js')
-    @include('attendance.input-schedule.components.common-js')
-@endsection
