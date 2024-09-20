@@ -21,11 +21,9 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to get daily check in & out, attendances.
-     *
      * @return object
      */
-    public function getDailyAttendance(): object
+    public function getDailyAttendance()
     {
         $attendances = Attendance::whereDate(self::DATE_COLUMN, $this->currentTime)
             ->get();
@@ -45,11 +43,9 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to get weekly late, early, absence, and attendance.
-     *
      * @return object
      */
-    public function getWeeklyAttendance(): object
+    public function getWeeklyAttendance()
     {
         $startOfWeek = $this->currentTime
             ->startOfWeek()
@@ -69,11 +65,9 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to map most on time & most absence user.
-     *
      * @return object
      */
-    public function getMostOnTimeAndAbsence(): object
+    public function getMostOnTimeAndAbsence()
     {
         $attendances = Attendance::all()->groupBy(self::USER_ID_COLUMN)
             ->map(function ($attendance) {
@@ -98,12 +92,10 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to map most on time & most absence user.
-     *
      * @param Collection|string
      * @return object|null
      */
-    public function getUserInfo(Collection $attendance, string $key): object|null
+    public function getUserInfo($attendance, $key)
     {
         if ($attendance->isEmpty()) return null;
 
@@ -121,12 +113,10 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to count based on column.
-     *
      * @param object|string
      * @return int
      */
-    public function count(object $attendances, string $columnName): int
+    public function count($attendances, $columnName)
     {
         return $attendances
             ->where($columnName, true)
@@ -134,12 +124,10 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to map weekly attendance data.
-     *
      * @param Collection
      * @return object
      */
-    public function weeklyMapping(Collection $attendances): object
+    public function weeklyMapping($attendances)
     {
         $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         $placeholder = [];
@@ -169,12 +157,10 @@ AttendanceInterface, DashboardInterface
     }
 
     /**
-     * Method to group data based on column name.
-     *
      * @param Collection|string
      * @return object
      */
-    public function dataGrouping(Collection $attendances, string $columnName): object
+    public function dataGrouping($attendances, $columnName)
     {
         $attendances = $attendances->where($columnName, true);
         $attendances = $this->weeklyMapping($attendances);
