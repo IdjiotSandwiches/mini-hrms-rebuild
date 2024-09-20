@@ -94,7 +94,7 @@
                     else {
                         $.each(users, function(index, user) {
                             let route = "{{ route('admin.management.edit-page', ['::USERKEYWORD::']) }}";
-                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.username));
+                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.id));
 
                             let row = `
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
