@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class ManagementService extends BaseService
 {
     /**
-     * Method to paginate user list.
-     *
      * @param User|\Illuminate\Database\Eloquent\Builder
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
@@ -26,8 +24,6 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to map necessary user data.
-     *
      * @param User
      * @return object
      */
@@ -49,8 +45,6 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to search user and return it as paginator.
-     *
      * @param ?string
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
@@ -65,8 +59,6 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to get selected user.
-     *
      * @param string
      * @return object
      */
@@ -80,10 +72,9 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to update selected user information.
-     *
-     * @param int|array
-     * @return array
+     * @param string
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function editUser($id, $validated)
     {
@@ -111,17 +102,16 @@ class ManagementService extends BaseService
                 'message' => 'Invalid operation.'
             ];
 
-            return $response;
+            return back()->with($response);
         }
 
-        return $response;
+        return back()->with($response);
     }
 
     /**
-     * Method to delete selected user.
-     *
-     * @param int|array
-     * @return array
+     * @param string
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteUser($id, $validated)
     {
@@ -136,7 +126,7 @@ class ManagementService extends BaseService
                     'message' => 'Password confirmation not match.',
                 ];
 
-                return $response;
+                return back()->with($response);
             }
 
             $user = User::where('uuid', $id);
@@ -154,9 +144,9 @@ class ManagementService extends BaseService
                 'message' => 'Invalid operation.'
             ];
 
-            return $response;
+            return back()->with($response);
         }
 
-        return $response;
+        return back()->with($response);
     }
 }
