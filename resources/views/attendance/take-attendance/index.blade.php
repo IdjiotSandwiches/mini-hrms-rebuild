@@ -38,14 +38,3 @@
         </form>
     </attendance-section>
 @endsection
-
-@section('extra-js')
-    <script>
-        $(document).ready(function() {
-            $('button[type="submit"]').click(function() {
-                disableButton();
-            });
-        });
-    </script>
-@endsection
-
