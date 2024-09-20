@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterService extends BaseService
 {
+    /**
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function registerUser($validated)
     {
         try {

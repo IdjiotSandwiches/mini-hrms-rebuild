@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordService extends BaseService
 {
+    /**
+     * @return bool
+     */
     public function isUpdateTime()
     {
         $userLastUpdate = $this->getUser()
@@ -24,6 +27,9 @@ class ChangePasswordService extends BaseService
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function countdownTimer()
     {
         $userLastUpdate = $this->getUser()
@@ -43,6 +49,10 @@ class ChangePasswordService extends BaseService
         return str($seconds) . ' seconds';
     }
 
+    /**
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function changePasswordValidation($validated)
     {
         try {

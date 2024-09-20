@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class EditProfileService extends BaseService
 {
+    /**
+     * @return object
+     */
     public function getUserInformation()
     {
         $user = $this->getUser();
@@ -25,6 +28,10 @@ class EditProfileService extends BaseService
         );
     }
 
+    /**
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateProfile($validated)
     {
         try {
