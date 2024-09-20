@@ -71,10 +71,10 @@
                 type: 'GET',
                 url: url,
                 beforeSend: function() {
-                    $('#loading-overlay').removeClass('hidden');
+                    $('#loading-overlay').show();
                 },
                 complete: function() {
-                    $('#loading-overlay').addClass('hidden');
+                    $('#loading-overlay').hide();
                 },
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
@@ -94,7 +94,7 @@
                     else {
                         $.each(users, function(index, user) {
                             let route = "{{ route('admin.management.edit-page', ['::USERKEYWORD::']) }}";
-                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.username));
+                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.id));
 
                             let row = `
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

@@ -6,18 +6,14 @@ use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class ManagementService extends BaseService
 {
     /**
-     * Method to paginate user list.
-     *
-     * @param User|Builder
-     * @return LengthAwarePaginator
+     * @param User|\Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getUserList(User|Builder $users): LengthAwarePaginator
+    public function getUserList($users)
     {
         $users = $users->paginate(10, ['*'], 'user')
             ->through(function ($user) {
@@ -28,12 +24,10 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to map necessary user data.
-     *
      * @param User
      * @return object
      */
-    public function convertUserData(User $user): object
+    public function convertUserData($user)
     {
         $id = $user->uuid;
         $firstName = $user->first_name;
@@ -51,12 +45,10 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to search user and return it as paginator.
-     *
      * @param ?string
-     * @return LengthAwarePaginator
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function searchUserList(?string $keyword): LengthAwarePaginator
+    public function searchUserList($keyword)
     {
         $users = User::where('username', 'LIKE', "%{$keyword}%")
             ->orWhere('email', 'LIKE', "%{$keyword}%");
@@ -67,12 +59,10 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to get selected user.
-     *
-     * @param int
+     * @param string
      * @return object
      */
-    public function getCurrentUser(string $id): object
+    public function getCurrentUser($id)
     {
         $user = User::where('uuid', $id)
             ->first();
@@ -82,12 +72,11 @@ class ManagementService extends BaseService
     }
 
     /**
-     * Method to update selected user information.
-     *
-     * @param int|array
-     * @return array
+     * @param string
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function editUser(string $id, array $validated): array
+    public function editUser($id, $validated)
     {
         try {
             DB::beginTransaction();
@@ -113,32 +102,31 @@ class ManagementService extends BaseService
                 'message' => 'Invalid operation.'
             ];
 
-            return $response;
+            return back()->with($response);
         }
 
-        return $response;
+        return back()->with($response);
     }
 
     /**
-     * Method to delete selected user.
-     *
-     * @param int|array
-     * @return array
+     * @param string
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function deleteUser(string $id, array $validated): array
+    public function deleteUser($id, $validated)
     {
         try {
             DB::beginTransaction();
 
             $currentAdmin = $this->getUser();
-            if (!Hash::check($validated['confirmation_password'], $currentAdmin->getAuthPassword())) {
+            if (!Hash::check($validated['confirm_password'], $currentAdmin->getAuthPassword())) {
                 DB::rollBack();
                 $response = [
                     'status' => 'error',
                     'message' => 'Password confirmation not match.',
                 ];
 
-                return $response;
+                return back()->with($response);
             }
 
             $user = User::where('uuid', $id);
@@ -156,9 +144,9 @@ class ManagementService extends BaseService
                 'message' => 'Invalid operation.'
             ];
 
-            return $response;
+            return back()->with($response);
         }
 
-        return $response;
+        return back()->with($response);
     }
 }
