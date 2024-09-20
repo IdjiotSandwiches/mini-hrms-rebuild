@@ -8,10 +8,7 @@
 @section('content')
     @include('attendance.input-schedule.components.schedule-modal')
     @include('components.loading-overlay')
-    <schedule-section class="
-        py-10 gap-4 flex flex-col
-        dark:text-white
-    ">
+    <schedule-section class="py-10 gap-4 flex flex-col dark:text-white">
         <div class="relative overflow-x-auto sm:rounded-lg">
             <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -42,7 +39,7 @@
             @if ($isUpdateSchedule)
                 <a href="{{ route('attendance.input-schedule-page') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Cancel</a>
             @endif
-            <button type="submit" id="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Schedule</button>
+            <button type="submit" id="submit" class="disabled:bg-blue-400 disabled:dark:bg-blue-500 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Schedule</button>
         </div>
     </schedule-section>
 @endsection
