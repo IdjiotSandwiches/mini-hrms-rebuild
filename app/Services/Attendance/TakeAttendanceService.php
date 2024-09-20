@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class TakeAttendanceService extends BaseService
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function getTodayAttendance()
     {
         return $this->getAttendance()
@@ -16,6 +19,10 @@ class TakeAttendanceService extends BaseService
                 ->toDateString());
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isLate($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -25,6 +32,10 @@ class TakeAttendanceService extends BaseService
         return $currentTime->gt($startTime);
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isEarly($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -34,6 +45,10 @@ class TakeAttendanceService extends BaseService
         return $currentTime->lt($endTime);
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isWork($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -42,6 +57,9 @@ class TakeAttendanceService extends BaseService
         return $schedule[$currentTimeDay]->work_time;
     }
 
+    /**
+     * @return bool
+     */
     public function isCheckedIn()
     {
         $attendance = $this->getTodayAttendance();
@@ -54,6 +72,9 @@ class TakeAttendanceService extends BaseService
         }
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function attendanceValidation()
     {
         try {
