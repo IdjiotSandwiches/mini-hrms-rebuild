@@ -63,22 +63,22 @@
             complete: function() {
                 $('#loading-overlay').hide();
             },
-            success: function(res) {
+            success: function(response, textStatus, xhr) {
                 alertSwal.fire({
-                    title: res.status,
-                    text: res.message,
-                    icon: res.status,
+                    title: response.status,
+                    text: response.message,
+                    icon: response.status,
                 }).then((result) => {
                     if(result.isConfirmed) {
                         window.location.href = '{{ route('attendance.input-schedule-page') }}';
                     }
                 });
             },
-            error: function(res) {
+            error: function(xhr, textStatus, errorThrown) {
                 alertSwal.fire({
-                    title: res.status,
-                    text: res.message,
-                    icon: res.status,
+                    title: response.status,
+                    text: response.message,
+                    icon: response.status,
                 }).then((result) => {
                     if(result.isConfirmed) {
                         location.reload();
