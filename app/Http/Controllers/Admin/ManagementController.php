@@ -60,6 +60,7 @@ class ManagementController extends Controller
     public function delete(DeleteUserRequest $request, ManagementService $managementService)
     {
         $validated = $request->validated();
+        dd($validated);
         $id = $request->id;
 
         return $managementService->deleteUser($id, $validated);
