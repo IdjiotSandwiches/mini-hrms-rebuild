@@ -8,7 +8,9 @@
         <p>Edit user properties.</p>
     </div>
     <edit-section class="flex flex-col gap-4 py-10">
-        <edit-form>
+        <form action="{{ route('admin.management.edit', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
             <div class="mb-5">
                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                 <input type="text" aria-label="disabled input" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $user->username }}" disabled>
@@ -33,8 +35,8 @@
                 <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 <p id="password-error" class="error-msg text-red-500"></p>
             </div>
-            <button type="submit" id="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-        </edit-form>
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        </form>
     </edit-section>
 
     <div class="border-gray-200 border-b-2 pb-5">
@@ -42,7 +44,9 @@
         <p>Remove user from database.</p>
     </div>
     <delete-section class="flex flex-col gap-4 py-10">
-        <delete-form>
+        <!-- Butuh di cek lagi -->
+        <form action="{{ route('admin.management.delete', $user->id) }}" method="DELETE">
+            @csrf
             <div class="mb-5">
                 <label for="password" class="flex items-center mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Enter current admin password to delete
@@ -51,7 +55,7 @@
                 <p id="confirmation_password-error" class="error-msg text-red-500"></p>
             </div>
             <button id="delete" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Delete</button>
-        </delete-form>
+        </form>
     </delete-section>
 @endsection
 
