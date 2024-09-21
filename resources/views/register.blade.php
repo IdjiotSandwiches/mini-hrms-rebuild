@@ -56,7 +56,7 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </password-form>
-        <button class="py-2 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Create My Account</button>
+        <button type="submit" class="py-2 text-white text-lg rounded-md bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors">Create My Account</button>
         <p class="text-center text-sm">
             Already have an account?
             <a href="{{ route('login') }}" class="font-semibold leading-6 text-blue-600 transition-colors hover:text-blue-500 underline decoration-2 underline-offset-2">Login</a>
