@@ -151,6 +151,7 @@ class ManagementService extends BaseService implements
             return back()->with($response);
         }
 
-        return back()->with($response);
+        return redirect()->intended(route('admin.management.index'))
+            ->with($response);
     }
 }
