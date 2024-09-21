@@ -4,9 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ReportRequest;
+use App\Interfaces\ScheduleInterface;
 use App\Services\Attendance\ReportService;
 
-class ReportController extends Controller
+class ReportController extends Controller implements
+    ScheduleInterface
 {
     public function index(ReportService $reportService)
     {
@@ -27,8 +29,8 @@ class ReportController extends Controller
 
         $validated = $request->validated();
 
-        $startTime = $validated['start_time'];
-        $endTime = $validated['end_time'];
+        $startTime = $validated[self::START_TIME_COLUMN];
+        $endTime = $validated[self::END_TIME_COLUMN];
 
         return $reportService->getRangeReport($startTime, $endTime);
     }
