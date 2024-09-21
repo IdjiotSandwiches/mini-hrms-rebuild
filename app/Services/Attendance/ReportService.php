@@ -2,11 +2,13 @@
 
 namespace App\Services\Attendance;
 
+use App\Interfaces\AttendanceInterface;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Services\BaseService;
 
-class ReportService extends BaseService
+class ReportService extends BaseService implements
+    AttendanceInterface
 {
     /**
      * @param Attendance|\Illuminate\Database\Eloquent\Builder
@@ -39,7 +41,7 @@ class ReportService extends BaseService
             ->toDateString();
 
         $attendance = $this->getAttendance();
-        $rangeReport = $attendance->whereBetween('date', [$startTime, $endTime])
+        $rangeReport = $attendance->whereBetween(self::DATE_COLUMN, [$startTime, $endTime])
             ->get()
             ->map(function($report) {
                 return $this->reportConversion($report);
@@ -59,7 +61,7 @@ class ReportService extends BaseService
             ->toDateString();
 
         $attendances = $this->getAttendance()
-            ->whereBetween('date', [$startOfWeek, $currentTime->toDateString()]);
+            ->whereBetween(self::DATE_COLUMN, [$startOfWeek, $currentTime->toDateString()]);
 
         return $this->getReport($attendances, 'weekly');
     }
@@ -72,7 +74,7 @@ class ReportService extends BaseService
         $currentTime = $this->convertTime(Carbon::now());
 
         $attendances = $this->getAttendance()
-            ->whereMonth('date', $currentTime->month);
+            ->whereMonth(self::DATE_COLUMN, $currentTime->month);
 
         return $this->getReport($attendances, 'monthly');
     }
