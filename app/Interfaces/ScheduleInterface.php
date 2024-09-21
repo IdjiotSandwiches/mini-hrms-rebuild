@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface InputScheduleInterface
+interface ScheduleInterface
 {
     public const DAY_COLUMN = 'day';
     public const START_TIME_COLUMN = 'start_time';
