@@ -22,8 +22,7 @@ use App\Http\Controllers\ReportController;
 
 Route::middleware(['guest:web,admin'])->group(function () {
     Route::controller(LoginController::class)->group(function () {
-        Route::get('/', 'index')->name('landing-page');
-        Route::get('/login', 'index')->name('login');
+        Route::get('/', 'index')->name('login');
         Route::post('/login', 'login')->name('attemptLogin');
     });
 

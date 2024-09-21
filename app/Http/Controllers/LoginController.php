@@ -72,7 +72,7 @@ class LoginController extends Controller implements
             'message' => 'Logged out.'
         ];
 
-        return redirect()->route('landing-page')
+        return redirect()->route('login')
             ->with($response);
     }
 }
