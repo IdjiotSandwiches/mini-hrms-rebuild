@@ -2,12 +2,16 @@
 
 namespace App\Services\Admin;
 
+use App\Interfaces\StatusInterface;
+use App\Interfaces\UserInterface;
 use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ManagementService extends BaseService
+class ManagementService extends BaseService implements
+    UserInterface,
+    StatusInterface
 {
     /**
      * @param User|\Illuminate\Database\Eloquent\Builder
@@ -50,8 +54,8 @@ class ManagementService extends BaseService
      */
     public function searchUserList($keyword)
     {
-        $users = User::where('username', 'LIKE', "%{$keyword}%")
-            ->orWhere('email', 'LIKE', "%{$keyword}%");
+        $users = User::where(self::USERNAME_COLUMN, 'LIKE', "%{$keyword}%")
+            ->orWhere(self::EMAIL_COLUMN, 'LIKE', "%{$keyword}%");
 
         $users = $this->getUserList($users);
 
@@ -64,7 +68,7 @@ class ManagementService extends BaseService
      */
     public function getCurrentUser($id)
     {
-        $user = User::where('uuid', $id)
+        $user = User::where(self::UUID_COLUMN, $id)
             ->first();
         $user = $this->convertUserData($user);
 
@@ -81,24 +85,24 @@ class ManagementService extends BaseService
         try {
             DB::beginTransaction();
 
-            $user = User::where('uuid', $id)
+            $user = User::where(self::UUID_COLUMN, $id)
                 ->first();
 
-            $user->email = $validated['email'] ?: $user->email;
-            $user->first_name = $validated['first_name'] ?: $user->first_name;
-            $user->last_name = $validated['last_name'] ?: $user->last_name;
-            $user->password = $validated['password'] ? Hash::make($validated['password']) : $user->password;
+            $user->email = $validated[self::EMAIL_COLUMN] ?: $user->email;
+            $user->first_name = $validated[self::FIRST_NAME_COLUMN] ?: $user->first_name;
+            $user->last_name = $validated[self::LAST_NAME_COLUMN] ?: $user->last_name;
+            $user->password = $validated[self::PASSWORD_COLUMN] ? Hash::make($validated[self::PASSWORD_COLUMN]) : $user->password;
             $user->save();
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'User information has been updated successfully.',
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.'
             ];
 
@@ -122,25 +126,25 @@ class ManagementService extends BaseService
             if (!Hash::check($validated['confirm_password'], $currentAdmin->getAuthPassword())) {
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'Password confirmation not match.',
                 ];
 
                 return back()->with($response);
             }
 
-            $user = User::where('uuid', $id);
+            $user = User::where(self::UUID_COLUMN, $id);
             $user->delete();
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'User removed successfully',
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.'
             ];
 

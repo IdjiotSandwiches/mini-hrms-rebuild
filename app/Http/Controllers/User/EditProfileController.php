@@ -4,9 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\EditProfileRequest;
+use App\Interfaces\UserInterface;
 use App\Services\Profile\EditProfileService;
 
-class EditProfileController extends Controller
+class EditProfileController extends Controller implements
+    UserInterface
 {
     public function index(EditProfileService $editProfileService)
     {
@@ -21,8 +23,8 @@ class EditProfileController extends Controller
     {
         $validated = $request->validated();
 
-        $validated['avatar'] = $request->hasFile('avatar') ?
-            'storage/' . $request->file('avatar')->store('avatars') : null;
+        $validated[self::AVATAR_COLUMN] = $request->hasFile(self::AVATAR_COLUMN) ?
+            'storage/' . $request->file(self::AVATAR_COLUMN)->store('avatars') : null;
 
         return $editProfileService->updateProfile($validated);
     }

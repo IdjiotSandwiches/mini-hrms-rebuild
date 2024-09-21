@@ -4,9 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\InputScheduleRequest;
+use App\Interfaces\StatusInterface;
 use App\Services\Attendance\InputScheduleService;
 
-class InputScheduleController extends Controller
+class InputScheduleController extends Controller implements
+    StatusInterface
 {
     public function index(InputScheduleService $inputScheduleService)
     {
@@ -30,7 +32,7 @@ class InputScheduleController extends Controller
 
         return redirect()->route('attendance.input-schedule-page')
             ->with([
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ]);
     }

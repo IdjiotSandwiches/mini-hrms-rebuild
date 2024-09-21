@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Interfaces\CommonInterface;
 use Carbon\Factory;
 use App\Models\Schedule;
 use App\Models\Attendance;
 
-class BaseService
+class BaseService implements
+    CommonInterface
 {
     /**
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -35,7 +37,7 @@ class BaseService
     public function getSchedule()
     {
         return Schedule::with('user')
-            ->where('user_id', $this->getUser()->id);
+            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
     }
 
     /**
@@ -44,7 +46,7 @@ class BaseService
     public function getAttendance()
     {
         return Attendance::with('user')
-            ->where('user_id', $this->getUser()->id);
+            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
     }
 
     /**

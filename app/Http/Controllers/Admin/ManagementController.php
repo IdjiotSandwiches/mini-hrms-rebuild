@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Interfaces\StatusInterface;
+use App\Interfaces\UserInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,7 +11,9 @@ use App\Http\Requests\Admin\EditUserRequest;
 use App\Http\Requests\Admin\DeleteUserRequest;
 use App\Services\Admin\ManagementService;
 
-class ManagementController extends Controller
+class ManagementController extends Controller implements
+    UserInterface,
+    StatusInterface
 {
     public function index(ManagementService $managementService)
     {
@@ -25,7 +29,7 @@ class ManagementController extends Controller
     {
         $id = $request->id;
 
-        if (!User::where('uuid', $id)->first())
+        if (!User::where(self::UUID_COLUMN, $id)->first())
             return redirect()->route('admin.management.index');
 
         $user = $managementService->getCurrentUser($id);
@@ -43,7 +47,7 @@ class ManagementController extends Controller
         $users = $managementService->searchUserList($keyword);
 
         return response()->json([
-            'status' => 'success',
+            'status' => self::STATUS_SUCCESS,
             'message' => 'Search Done',
             'data' => $users,
         ]);

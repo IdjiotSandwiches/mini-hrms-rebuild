@@ -7,11 +7,14 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Support\Collection;
+use App\Interfaces\CommonInterface;
 use App\Interfaces\DashboardInterface;
 use App\Interfaces\AttendanceInterface;
 
 class DashboardService extends BaseService implements
-AttendanceInterface, DashboardInterface
+    AttendanceInterface,
+    DashboardInterface,
+    CommonInterface
 {
     private $currentTime;
 
