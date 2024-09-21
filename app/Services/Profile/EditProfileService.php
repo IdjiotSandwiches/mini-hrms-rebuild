@@ -2,10 +2,10 @@
 
 namespace App\Services\Profile;
 
-use App\Interfaces\StatusInterface;
-use App\Interfaces\UserInterface;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
+use App\Interfaces\StatusInterface;
+use App\Interfaces\UserInterface;
 
 class EditProfileService extends BaseService implements
     UserInterface,
@@ -46,7 +46,7 @@ class EditProfileService extends BaseService implements
                 is_null($validated[self::LAST_NAME_COLUMN])) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'error',
+                        'status' => self::STATUS_ERROR,
                         'message' => 'At least one of the fields is required.'
                     ];
 
