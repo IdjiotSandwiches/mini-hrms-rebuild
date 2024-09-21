@@ -11,7 +11,7 @@
             <label for="email" class="text-xs font-medium">E-mail</label>
             <input type="email" name="email" id="email" class="focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0 dark:bg-[#121212] dark:text-white" value="{{ old('email') }}">
             @error('email')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </email-form>
         <password-form @class([
@@ -21,7 +21,7 @@
             <label for="password" class="text-xs font-medium">Password</label>
             <input type="password" name="password" id="password" autocomplete="off" class="focus:outline-none text-gray-900 py-1 border-0 focus:ring-0 p-0 dark:bg-[#121212] dark:text-white">
             @error('password')
-                <p class="text-red-500">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </password-form>
         <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>

@@ -13,7 +13,7 @@
                     'border-red-500 dark:border-red-500' => $errors->has('update_password'),
                 ]) />
                 @error('update_password')
-                    <p class="text-red-500">{{ $message }}</p>
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </password-input>
             <confirm-password class="grid gap-2">
@@ -24,7 +24,7 @@
                         'border-red-500 dark:border-red-500' => $errors->has('confirm_password'),
                     ]) />
                     @error('confirm_password')
-                        <p class="text-red-500">{{ $message }}</p>
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
                 </password-input>
             </confirm-password>
