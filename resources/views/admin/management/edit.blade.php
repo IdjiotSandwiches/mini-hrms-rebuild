@@ -19,7 +19,7 @@
                     <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
                     <input type="text" id="first-name" name="first_name" @class([
                         'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                        'border-red-500 dark:border-red-500' => $errors->has('first_name')
+                        'border-red-500 dark:border-red-500' => $errors->has('first_name'),
                     ]) placeholder="{{ $user->firstName }}" />
                     @error('first_name')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -29,7 +29,7 @@
                     <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
                     <input type="text" id="last-name" name="last_name" @class([
                         'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                        'border-red-500 dark:border-red-500' => $errors->has('last_name')
+                        'border-red-500 dark:border-red-500' => $errors->has('last_name'),
                     ]) placeholder="{{ $user->lastName }}" />
                     @error('last_name')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -40,7 +40,7 @@
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                 <input type="email" id="email" name="email" @class([
                     'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                    'border-red-500 dark:border-red-500' => $errors->has('email')
+                    'border-red-500 dark:border-red-500' => $errors->has('email'),
                 ]) placeholder="{{ $user->email }}" />
                 @error('email')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -50,7 +50,7 @@
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                 <input type="password" id="password" name="password" @class([
                     'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                    'border-red-500 dark:border-red-500' => $errors->has('password')
+                    'border-red-500 dark:border-red-500' => $errors->has('password'),
                 ]) />
                 @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>

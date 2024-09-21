@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p id="error" class="text-red-500 hidden"></p>
+                        <p id="error" class="text-red-500 text-sm hidden"></p>
                     </schedule-form>
                 </div>
                 <!-- Modal footer -->

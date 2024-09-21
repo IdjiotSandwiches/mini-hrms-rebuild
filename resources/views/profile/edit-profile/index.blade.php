@@ -22,7 +22,7 @@
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-300">This is your public display avatar.</p>
                 @error('avatar')
-                    <p class="text-red-500">{{ $message }}</p>
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </avatar-input>
             <username-input class="grid gap-2">
@@ -40,7 +40,7 @@
                 <input type="text" id="first-name" name="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $userInformation->firstName }}" />
                 <p class="text-sm text-gray-500 dark:text-gray-300">This is your birth first name.</p>
                 @error('first_name')
-                    <p class="text-red-500">{{ $message }}</p>
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </name-input>
             <name-input class="grid gap-2">
@@ -48,7 +48,7 @@
                 <input type="text" id="last-name" name="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $userInformation->lastName }}" />
                 <p class="text-sm text-gray-500 dark:text-gray-300">This is your birth last name.</p>
                 @error('last_name')
-                    <p class="text-red-500">{{ $message }}</p>
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </name-input>
             <div>
