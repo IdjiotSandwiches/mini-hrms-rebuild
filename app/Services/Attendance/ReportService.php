@@ -3,12 +3,14 @@
 namespace App\Services\Attendance;
 
 use App\Interfaces\AttendanceInterface;
+use App\Interfaces\PagiantionInterface;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Services\BaseService;
 
 class ReportService extends BaseService implements
-    AttendanceInterface
+    AttendanceInterface,
+    PagiantionInterface
 {
     /**
      * @param Attendance|\Illuminate\Database\Eloquent\Builder
@@ -63,7 +65,7 @@ class ReportService extends BaseService implements
         $attendances = $this->getAttendance()
             ->whereBetween(self::DATE_COLUMN, [$startOfWeek, $currentTime->toDateString()]);
 
-        return $this->getReport($attendances, 'weekly');
+        return $this->getReport($attendances, self::WEEKLY_PAGINATION);
     }
 
     /**
@@ -76,7 +78,7 @@ class ReportService extends BaseService implements
         $attendances = $this->getAttendance()
             ->whereMonth(self::DATE_COLUMN, $currentTime->month);
 
-        return $this->getReport($attendances, 'monthly');
+        return $this->getReport($attendances, self::MONTHLY_PAGINATION);
     }
 
     /**
