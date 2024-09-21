@@ -54,17 +54,16 @@ class InputScheduleService extends BaseService implements
 
                 $totalWorkTime += $validatedTime->totalTime;
 
-                Schedule::updateOrCreate(
-                    [
-                        'user_id' => $this->getUser()->id,
-                        'day' => $day
-                    ],
-                    [
-                        'start_time' => $validatedTime->start,
-                        'end_time' => $validatedTime->end,
-                        'work_time' => $value['start'] == '00:00:00' && $value['end'] == '00:00:00' ? 0 : $validatedTime->totalTime,
-                    ]
-                );
+                $schedule = Schedule::firstOrNew([
+                    'user_id' => $this->getUser()->id,
+                    'day' => $day
+                ]);
+
+                $schedule->start_time = $validatedTime->start;
+                $schedule->end_time = $validatedTime->end;
+                $schedule->work_time = $value['start'] == '00:00:00' && $value['end'] == '00:00:00' ? 0 : $validatedTime->totalTime;
+
+                $schedule->save();
             }
 
             if ($totalWorkTime < 20) {
