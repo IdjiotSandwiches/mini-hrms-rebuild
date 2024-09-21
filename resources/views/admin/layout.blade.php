@@ -6,6 +6,7 @@
 <body>
     @include('components.navbar')
     @include('components.toggle-darkmode')
+    @include('components.loading-overlay')
     <section class="
         px-10 py-6 pt-20 min-h-screen
         md:px-28

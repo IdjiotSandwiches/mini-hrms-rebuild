@@ -18,7 +18,6 @@
         <user-list class="gap-4 flex flex-col">
             <div class="relative overflow-x-auto sm:rounded-lg">
                 <table id="user-list" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    @include('components.loading-overlay')
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -72,9 +71,11 @@
                 url: url,
                 beforeSend: function() {
                     $('#loading-overlay').show();
+                    $('button').prop('disabled', true);
                 },
                 complete: function() {
                     $('#loading-overlay').hide();
+                    $('button').prop('disabled', false);
                 },
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
