@@ -2,7 +2,6 @@
 @section('title', 'Admin - Users Management')
 
 @section('content')
-    @include('components.loading-overlay')
     <div class="border-gray-200 border-b-2 pb-5">
         <h2 class="text-xl font-semibold">Edit User</h2>
         <p>Edit user properties.</p>
