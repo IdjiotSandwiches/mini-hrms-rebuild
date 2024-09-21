@@ -35,7 +35,7 @@
             <p class="font-medium">Total Weekly Work Hours:
                 <span @class([
                     'text-blue-500',
-                    'text-red-500' => $weeklyWorkHours < 20
+                    'text-red-500' => $weeklyWorkHours < 20,
                 ])>{{ $weeklyWorkHours }} Hours</span>
             </p>
         </weekly-table>
@@ -50,7 +50,7 @@
             <p class="font-medium">Total Monthly Work Hours:
                 <span @class([
                     'text-red-500' => $monthlyWorkHours < 80,
-                    'text-blue-500'
+                    'text-blue-500',
                 ])>{{ $monthlyWorkHours }} Hours</span>
             </p>
         </monthly-table>
