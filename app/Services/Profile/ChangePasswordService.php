@@ -2,13 +2,15 @@
 
 namespace App\Services\Profile;
 
+use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ChangePasswordService extends BaseService
+class ChangePasswordService extends BaseService implements
+    StatusInterface
 {
     /**
      * @return bool
@@ -63,7 +65,7 @@ class ChangePasswordService extends BaseService
                 $countdownTimer = $this->countdownTimer();
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'You need to wait ' . str($countdownTimer) . ' to change password again.'
                 ];
 
@@ -93,14 +95,14 @@ class ChangePasswordService extends BaseService
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Password has been changed successfully.',
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.'
             ];
 
