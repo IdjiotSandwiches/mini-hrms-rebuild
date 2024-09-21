@@ -105,9 +105,11 @@
                 },
                 beforeSend: function() {
                     $('#loading-overlay').show();
+                    $('button').prop('disabled', true);
                 },
                 complete: function() {
                     $('#loading-overlay').hide();
+                    $('button').prop('disabled', false);
                 },
                 success: function(response, textStatus, xhr) {
                     alertSwal.fire({
