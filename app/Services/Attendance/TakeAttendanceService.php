@@ -2,12 +2,16 @@
 
 namespace App\Services\Attendance;
 
+use App\Interfaces\AttendanceInterface;
+use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
-class TakeAttendanceService extends BaseService
+class TakeAttendanceService extends BaseService implements
+    AttendanceInterface,
+    StatusInterface
 {
     /**
      * @return \Illuminate\Database\Eloquent\Builder
@@ -15,7 +19,7 @@ class TakeAttendanceService extends BaseService
     public function getTodayAttendance()
     {
         return $this->getAttendance()
-            ->whereDate('date', $this->convertTime(Carbon::now())
+            ->whereDate(self::DATE_COLUMN, $this->convertTime(Carbon::now())
                 ->toDateString());
     }
 
@@ -84,7 +88,7 @@ class TakeAttendanceService extends BaseService
                 ->exists()) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'warning',
+                        'status' => self::STATUS_WARNING,
                         'message' => 'Input schedule first',
                     ];
 
@@ -95,7 +99,7 @@ class TakeAttendanceService extends BaseService
             if (!$this->isWork($currentTime)) {
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'You do not have work schedule today.'
                 ];
 
@@ -115,7 +119,7 @@ class TakeAttendanceService extends BaseService
                 $attendance->save();
 
                 $response = [
-                    'status' => 'success',
+                    'status' => self::STATUS_SUCCESS,
                     'message' => 'Checked In.',
                 ];
             }
@@ -125,7 +129,7 @@ class TakeAttendanceService extends BaseService
                 if ($todayAttendance->check_out) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'warning',
+                        'status' => self::STATUS_WARNING,
                         'message' => 'You have already checked in today.',
                     ];
 
@@ -138,7 +142,7 @@ class TakeAttendanceService extends BaseService
                 if ($diffTime < 60) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'warning',
+                        'status' => self::STATUS_WARNING,
                         'message' => 'You need at least 1 hour to check out.',
                     ];
 
@@ -152,7 +156,7 @@ class TakeAttendanceService extends BaseService
                 $todayAttendance->save();
 
                 $response = [
-                    'status' => 'success',
+                    'status' => self::STATUS_SUCCESS,
                     'message' => 'Checked Out',
                 ];
             }
@@ -161,7 +165,7 @@ class TakeAttendanceService extends BaseService
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ];
 
