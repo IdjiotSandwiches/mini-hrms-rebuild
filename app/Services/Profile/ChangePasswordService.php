@@ -2,12 +2,11 @@
 
 namespace App\Services\Profile;
 
-use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
-use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Interfaces\StatusInterface;
 
 class ChangePasswordService extends BaseService implements
     StatusInterface
@@ -45,10 +44,10 @@ class ChangePasswordService extends BaseService implements
         $minutes = floor($countdown / 60) % 60;
         $seconds = $countdown % 60;
 
-        if ($hours)  return str($hours) . ' hours';
-        elseif ($minutes) return str($minutes) . ' minutes';
+        if ($hours)  return "$hours hours";
+        elseif ($minutes) return "$minutes minutes";
 
-        return str($seconds) . ' seconds';
+        return "$seconds seconds";
     }
 
     /**
@@ -66,7 +65,7 @@ class ChangePasswordService extends BaseService implements
                 DB::rollBack();
                 $response = [
                     'status' => self::STATUS_ERROR,
-                    'message' => 'You need to wait ' . str($countdownTimer) . ' to change password again.'
+                    'message' => "You need to wait $countdownTimer to change password again."
                 ];
 
                 return back()->with($response);
