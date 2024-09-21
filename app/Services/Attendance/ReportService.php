@@ -4,13 +4,15 @@ namespace App\Services\Attendance;
 
 use App\Interfaces\AttendanceInterface;
 use App\Interfaces\PagiantionInterface;
+use App\Interfaces\TimeFormatInterface;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Services\BaseService;
 
 class ReportService extends BaseService implements
     AttendanceInterface,
-    PagiantionInterface
+    PagiantionInterface,
+    TimeFormatInterface
 {
     /**
      * @param Attendance|\Illuminate\Database\Eloquent\Builder
@@ -107,12 +109,12 @@ class ReportService extends BaseService implements
     public function reportConversion($attendance)
     {
         $date = $this->convertTime($attendance->date)
-            ->format('l, d F Y');
+            ->format(self::DATE_FORMAT);
         $checkIn = $this->convertTime($attendance->check_in)
-            ->format('H:i:s');
+            ->format(self::TIME_FORMAT);
         $checkOut = $attendance->check_out ?
             $this->convertTime($attendance->check_out)
-                ->format('H:i:s') : '-';
+                ->format(self::TIME_FORMAT) : '-';
         $early = $this->convertBoolean($attendance->early);
         $late = $this->convertBoolean($attendance->late);
         $absence = $this->convertBoolean($attendance->absence);
@@ -148,7 +150,7 @@ class ReportService extends BaseService implements
      */
     public function convertWorkTime($attendance)
     {
-        return $attendance->check_out ? gmdate('H:i:s',
+        return $attendance->check_out ? gmdate(self::TIME_FORMAT,
             $this->calculateWorkTime($this->convertTime($attendance->check_in),
             $this->convertTime($attendance->check_out))->totalTime) : '-';
     }
