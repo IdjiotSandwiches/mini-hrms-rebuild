@@ -29,8 +29,9 @@
                 @include('components.dropdown-item', with(['name' => 'Attendance', 'path' => 'attendance.take-attendance-page']))
             @endif
         </div>
-        <div class="select-none grid">
-            <a href="{{ route('logout') }}" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm dark:hover:bg-gray-600">Logout</a>
-        </div>
+        <form action="{{ route('logout') }}" method="GET" class="select-none grid">
+            @csrf
+            <button type="submit" class="py-2 px-4 hover:bg-gray-100 transition-colors text-sm text-left dark:hover:bg-gray-600">Logout</button>
+        </form>
     </nav-item>
 @endauth
