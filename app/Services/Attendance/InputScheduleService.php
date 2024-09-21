@@ -2,12 +2,16 @@
 
 namespace App\Services\Attendance;
 
+use App\Interfaces\ScheduleInterface;
+use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
-class InputScheduleService extends BaseService
+class InputScheduleService extends BaseService implements
+    ScheduleInterface,
+    StatusInterface
 {
     /**
      * @return bool
@@ -30,7 +34,7 @@ class InputScheduleService extends BaseService
     public function calculateTotalWorkHour()
     {
         $schedule = $this->getSchedule();
-        $totalWorkHour = $schedule->sum('work_time');
+        $totalWorkHour = $schedule->sum(self::WORK_TIME_COLUMN);
         $totalWorkHour = floor($totalWorkHour / 3600);
         return $totalWorkHour;
     }
@@ -66,20 +70,20 @@ class InputScheduleService extends BaseService
             if ($totalWorkTime < 20) {
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'You must work at least 20 hours a week.',
                 ];
             }
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Schedule has submitted successfully.',
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ];
 
