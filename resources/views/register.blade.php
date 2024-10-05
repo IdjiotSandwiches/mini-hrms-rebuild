@@ -14,7 +14,7 @@
                 <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </email-form>
-        <fullname-form class="sm:grid sm:grid-cols-2flex flex-col gap-5">
+        <fullname-form class="sm:grid sm:grid-cols-2 flex flex-col gap-5">
             <first-name @class([
                 'flex flex-col border-2 rounded-md px-2 py-1 text-gray-400 sm:grid',
                 'border-red-500 text-red-500' => $errors->has('first_name'),
