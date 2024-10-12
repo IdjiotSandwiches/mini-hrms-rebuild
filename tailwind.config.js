@@ -10,6 +10,11 @@ module.exports = {
   theme: {
     extend: {},
   },
+  safelist: [
+    {
+      pattern: /^datatable-.*/,
+    },
+  ],
   plugins: [
     require('flowbite/plugin')({
         charts: true,
