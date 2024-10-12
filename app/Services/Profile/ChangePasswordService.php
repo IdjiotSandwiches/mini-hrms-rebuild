@@ -3,13 +3,17 @@
 namespace App\Services\Profile;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Interfaces\StatusInterface;
 
-class ChangePasswordService extends BaseService
+class ChangePasswordService extends BaseService implements
+    StatusInterface
 {
+    /**
+     * @return bool
+     */
     public function isUpdateTime()
     {
         $userLastUpdate = $this->getUser()
@@ -24,6 +28,9 @@ class ChangePasswordService extends BaseService
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function countdownTimer()
     {
         $userLastUpdate = $this->getUser()
@@ -37,12 +44,16 @@ class ChangePasswordService extends BaseService
         $minutes = floor($countdown / 60) % 60;
         $seconds = $countdown % 60;
 
-        if ($hours)  return str($hours) . ' hours';
-        elseif ($minutes) return str($minutes) . ' minutes';
+        if ($hours)  return "$hours hours";
+        elseif ($minutes) return "$minutes minutes";
 
-        return str($seconds) . ' seconds';
+        return "$seconds seconds";
     }
 
+    /**
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function changePasswordValidation($validated)
     {
         try {
@@ -53,8 +64,8 @@ class ChangePasswordService extends BaseService
                 $countdownTimer = $this->countdownTimer();
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
-                    'message' => 'You need to wait ' . str($countdownTimer) . ' to change password again.'
+                    'status' => self::STATUS_ERROR,
+                    'message' => "You need to wait $countdownTimer to change password again."
                 ];
 
                 return back()->with($response);
@@ -83,14 +94,14 @@ class ChangePasswordService extends BaseService
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Password has been changed successfully.',
             ];
 
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.'
             ];
 

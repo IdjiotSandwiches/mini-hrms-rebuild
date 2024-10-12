@@ -1,11 +1,5 @@
-<schedule-modal class="
-    schedule-modal z-30 fixed hidden bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0
-    dark:bg-opacity-0
-    ">
-    <div class="
-        flex justify-center items-center h-full px-10
-        md:px-28
-    ">
+<schedule-modal class="schedule-modal z-30 fixed hidden bg-black backdrop-blur-sm bg-opacity-30 w-screen h-screen left-0 top-0">
+    <div class="flex justify-center items-center h-full px-10 md:px-28">
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <div class="modal relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -22,10 +16,7 @@
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
                     <schedule-form>
-                        <div class="
-                            flex flex-col gap-5
-                            sm:grid sm:grid-cols-2 sm:gap-10 justify-between
-                        ">
+                        <div class="flex flex-col gap-5 sm:grid sm:grid-cols-2 sm:gap-10 justify-between">
                             <div class="flex flex-col">
                                 <label for="from-hour" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">From Hour:</label>
                                 <div class="relative">
@@ -49,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p id="error" class="text-red-500 hidden"></p>
+                        <p id="error" class="text-red-500 text-sm hidden"></p>
                     </schedule-form>
                 </div>
                 <!-- Modal footer -->

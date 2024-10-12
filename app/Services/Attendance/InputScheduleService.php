@@ -2,13 +2,20 @@
 
 namespace App\Services\Attendance;
 
+use App\Interfaces\ScheduleInterface;
+use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
 use App\Models\Schedule;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
-class InputScheduleService extends BaseService
+class InputScheduleService extends BaseService implements
+    ScheduleInterface,
+    StatusInterface
 {
+    /**
+     * @return bool
+     */
     public function isUpdateSchedule() {
         if (!$this->getSchedule()->exists()) return false;
 
@@ -21,14 +28,21 @@ class InputScheduleService extends BaseService
         return false;
     }
 
+    /**
+     * @return float
+     */
     public function calculateTotalWorkHour()
     {
         $schedule = $this->getSchedule();
-        $totalWorkHour = $schedule->sum('work_time');
+        $totalWorkHour = $schedule->sum(self::WORK_TIME_COLUMN);
         $totalWorkHour = floor($totalWorkHour / 3600);
         return $totalWorkHour;
     }
 
+    /**
+     * @param array
+     * @return array
+     */
     public function processSchedule($validated)
     {
         try {
@@ -40,36 +54,35 @@ class InputScheduleService extends BaseService
 
                 $totalWorkTime += $validatedTime->totalTime;
 
-                Schedule::updateOrCreate(
-                    [
-                        'user_id' => $this->getUser()->id,
-                        'day' => $day
-                    ],
-                    [
-                        'start_time' => $validatedTime->start,
-                        'end_time' => $validatedTime->end,
-                        'work_time' => $value['start'] == '00:00:00' && $value['end'] == '00:00:00' ? 0 : $validatedTime->totalTime,
-                    ]
-                );
+                $schedule = Schedule::firstOrNew([
+                    'user_id' => $this->getUser()->id,
+                    'day' => $day
+                ]);
+
+                $schedule->start_time = $validatedTime->start;
+                $schedule->end_time = $validatedTime->end;
+                $schedule->work_time = $value['start'] == '00:00:00' && $value['end'] == '00:00:00' ? 0 : $validatedTime->totalTime;
+
+                $schedule->save();
             }
 
             if ($totalWorkTime < 20) {
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'You must work at least 20 hours a week.',
                 ];
             }
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Schedule has submitted successfully.',
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ];
 

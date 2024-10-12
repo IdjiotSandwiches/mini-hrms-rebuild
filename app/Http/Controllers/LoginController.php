@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\StatusInterface;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,7 +12,8 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
-class LoginController extends Controller
+class LoginController extends Controller implements
+    StatusInterface
 {
     public function index()
     {
@@ -30,7 +32,7 @@ class LoginController extends Controller
             if (!$response) {
                 DB::rollBack();
                 return back()->with([
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'E-mail or password invalid'
                 ]);
             }
@@ -42,7 +44,7 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.'
             ];
 
@@ -55,7 +57,7 @@ class LoginController extends Controller
         $route = $response['isAdmin'] == 'admin' ? 'admin.dashboard' : 'attendance.take-attendance-page';
         return redirect()->route($route)
             ->with([
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Logged In'
             ]);
     }
@@ -66,11 +68,11 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         $response = [
-            'status' => 'success',
+            'status' => self::STATUS_SUCCESS,
             'message' => 'Logged out.'
         ];
 
-        return redirect()->route('landing-page')
+        return redirect()->route('login')
             ->with($response);
     }
 }

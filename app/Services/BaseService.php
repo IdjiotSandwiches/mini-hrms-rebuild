@@ -2,17 +2,26 @@
 
 namespace App\Services;
 
+use App\Interfaces\CommonInterface;
 use Carbon\Factory;
 use App\Models\Schedule;
 use App\Models\Attendance;
 
-class BaseService
+class BaseService implements
+    CommonInterface
 {
+    /**
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function getUser()
     {
         return auth()->user();
     }
 
+    /**
+     * @param string
+     * @return \Carbon\Carbon|null
+     */
     public function convertTime($time)
     {
         $factoryTime = new Factory([
@@ -22,18 +31,29 @@ class BaseService
         return $factoryTime->make($time);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function getSchedule()
     {
         return Schedule::with('user')
-            ->where('user_id', $this->getUser()->id);
+            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function getAttendance()
     {
         return Attendance::with('user')
-            ->where('user_id', $this->getUser()->id);
+            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
     }
 
+    /**
+     * @param string
+     * @param string
+     * @return object
+     */
     public function calculateWorkTime($start, $end)
     {
         $start = $this->convertTime($start);

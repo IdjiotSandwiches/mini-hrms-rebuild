@@ -4,9 +4,16 @@ namespace App\Services\Profile;
 
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
+use App\Interfaces\StatusInterface;
+use App\Interfaces\UserInterface;
 
-class EditProfileService extends BaseService
+class EditProfileService extends BaseService implements
+    UserInterface,
+    StatusInterface
 {
+    /**
+     * @return object
+     */
     public function getUserInformation()
     {
         $user = $this->getUser();
@@ -25,17 +32,21 @@ class EditProfileService extends BaseService
         );
     }
 
+    /**
+     * @param array
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateProfile($validated)
     {
         try {
             DB::beginTransaction();
 
-            if (is_null($validated['avatar']) &&
-                is_null($validated['first_name']) &&
-                is_null($validated['last_name'])) {
+            if (is_null($validated[self::AVATAR_COLUMN]) &&
+                is_null($validated[self::FIRST_NAME_COLUMN]) &&
+                is_null($validated[self::LAST_NAME_COLUMN])) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'error',
+                        'status' => self::STATUS_ERROR,
                         'message' => 'At least one of the fields is required.'
                     ];
 
@@ -43,20 +54,20 @@ class EditProfileService extends BaseService
                 }
 
             $user = $this->getUser();
-            $user->avatar = $validated['avatar'] ?: $user->avatar;
-            $user->first_name = $validated['first_name'] ?: $user->first_name;
-            $user->last_name = $validated['last_name'] ?: $user->last_name;
+            $user->avatar = $validated[self::AVATAR_COLUMN] ?: $user->avatar;
+            $user->first_name = $validated[self::FIRST_NAME_COLUMN] ?: $user->first_name;
+            $user->last_name = $validated[self::LAST_NAME_COLUMN] ?: $user->last_name;
             $user->save();
 
             DB::commit();
             $response = [
-                'status' => 'success',
+                'status' => self::STATUS_SUCCESS,
                 'message' => 'Your profile has been updated successfully.'
             ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ];
 

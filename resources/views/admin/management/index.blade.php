@@ -18,7 +18,6 @@
         <user-list class="gap-4 flex flex-col">
             <div class="relative overflow-x-auto sm:rounded-lg">
                 <table id="user-list" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    @include('components.loading-overlay')
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -71,10 +70,12 @@
                 type: 'GET',
                 url: url,
                 beforeSend: function() {
-                    $('#loading-overlay').removeClass('hidden');
+                    $('#loading-overlay').show();
+                    $('button').prop('disabled', true);
                 },
                 complete: function() {
-                    $('#loading-overlay').addClass('hidden');
+                    $('#loading-overlay').hide();
+                    $('button').prop('disabled', false);
                 },
                 success: function(response, textStatus, xhr) {
                     const users = response.data.data;
@@ -94,7 +95,7 @@
                     else {
                         $.each(users, function(index, user) {
                             let route = "{{ route('admin.management.edit-page', ['::USERKEYWORD::']) }}";
-                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.username));
+                            route = route.replace('::USERKEYWORD::', encodeURIComponent(user.id));
 
                             let row = `
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

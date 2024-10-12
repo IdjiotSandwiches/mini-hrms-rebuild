@@ -2,20 +2,31 @@
 
 namespace App\Services\Attendance;
 
+use App\Interfaces\AttendanceInterface;
+use App\Interfaces\StatusInterface;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
-class TakeAttendanceService extends BaseService
+class TakeAttendanceService extends BaseService implements
+    AttendanceInterface,
+    StatusInterface
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function getTodayAttendance()
     {
         return $this->getAttendance()
-            ->whereDate('date', $this->convertTime(Carbon::now())
+            ->whereDate(self::DATE_COLUMN, $this->convertTime(Carbon::now())
                 ->toDateString());
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isLate($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -25,6 +36,10 @@ class TakeAttendanceService extends BaseService
         return $currentTime->gt($startTime);
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isEarly($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -34,6 +49,10 @@ class TakeAttendanceService extends BaseService
         return $currentTime->lt($endTime);
     }
 
+    /**
+     * @param \Carbon\Carbon
+     * @return bool
+     */
     public function isWork($currentTime)
     {
         $schedule = $this->getSchedule()->get();
@@ -42,6 +61,9 @@ class TakeAttendanceService extends BaseService
         return $schedule[$currentTimeDay]->work_time;
     }
 
+    /**
+     * @return bool
+     */
     public function isCheckedIn()
     {
         $attendance = $this->getTodayAttendance();
@@ -54,27 +76,19 @@ class TakeAttendanceService extends BaseService
         }
     }
 
-    public function checkInValidation()
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function attendanceValidation()
     {
         try {
             DB::beginTransaction();
-
-            if ($this->getTodayAttendance()
-                ->exists()) {
-                    DB::rollBack();
-                    $response = [
-                        'status' => 'warning',
-                        'message' => 'You have already checked in today.'
-                    ];
-
-                    return back()->with($response);
-            }
 
             if (!$this->getSchedule()
                 ->exists()) {
                     DB::rollBack();
                     $response = [
-                        'status' => 'error',
+                        'status' => self::STATUS_WARNING,
                         'message' => 'Input schedule first',
                     ];
 
@@ -82,91 +96,80 @@ class TakeAttendanceService extends BaseService
             }
 
             $currentTime = $this->convertTime(Carbon::now());
-
             if (!$this->isWork($currentTime)) {
                 DB::rollBack();
                 $response = [
-                    'status' => 'error',
+                    'status' => self::STATUS_ERROR,
                     'message' => 'You do not have work schedule today.'
                 ];
 
                 return back()->with($response);
             }
 
-            $isLate = $this->isLate($currentTime);
+            $todayAttendance = $this->getTodayAttendance();
+            if (!$todayAttendance->exists()) {
+                $isLate = $this->isLate($currentTime);
 
-            $attendance = new Attendance();
-            $attendance->user_id = $this->getUser()->id;
-            $attendance->check_in = $this->convertTime(Carbon::now());
-            $attendance->date = $this->convertTime(Carbon::now())
-                ->toDateString();
-            $attendance->late = $isLate;
-            $attendance->save();
+                $attendance = new Attendance();
+                $attendance->user_id = $this->getUser()->id;
+                $attendance->check_in = $this->convertTime(Carbon::now());
+                $attendance->date = $this->convertTime(Carbon::now())
+                    ->toDateString();
+                $attendance->late = $isLate;
+                $attendance->save();
+
+                $response = [
+                    'status' => self::STATUS_SUCCESS,
+                    'message' => 'Checked In.',
+                ];
+            }
+            else {
+                $todayAttendance = $todayAttendance->first();
+
+                if ($todayAttendance->check_out) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => self::STATUS_WARNING,
+                        'message' => 'You have already checked in today.',
+                    ];
+
+                    return back()->with($response);
+                }
+
+                $checkInTime = $todayAttendance->check_in;
+                $diffTime = $currentTime->diffInMinutes($checkInTime);
+
+                if ($diffTime < 60) {
+                    DB::rollBack();
+                    $response = [
+                        'status' => self::STATUS_WARNING,
+                        'message' => 'You need at least 1 hour to check out.',
+                    ];
+
+                    return back()->with($response);
+                }
+
+                $isEarly = $this->isEarly($currentTime);
+
+                $todayAttendance->check_out = $currentTime;
+                $todayAttendance->early = $isEarly;
+                $todayAttendance->save();
+
+                $response = [
+                    'status' => self::STATUS_SUCCESS,
+                    'message' => 'Checked Out',
+                ];
+            }
 
             DB::commit();
-            $response = [
-                'status' => 'success',
-                'message' => 'Checked In.',
-            ];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = [
-                'status' => 'error',
+                'status' => self::STATUS_ERROR,
                 'message' => 'Invalid operation.',
             ];
 
             return back()->with($response);
-        }
-
-        return back()->with($response);
-    }
-
-    public function checkOutValidation()
-    {
-        try {
-            DB::beginTransaction();
-
-            $checkInTime = $this->getTodayAttendance()
-                ->first()
-                ->check_in;
-
-            $currentTime = $this->convertTime(Carbon::now());
-            $diffTime = $currentTime->diffInMinutes($checkInTime);
-
-            if ($diffTime < 60) {
-                DB::rollBack();
-                $response = [
-                    'status' => 'warning',
-                    'message' => 'You need at least 1 hour to check out.',
-                ];
-                return back()->with($response);
-            }
-
-            $isEarly = $this->isEarly($currentTime);
-
-            Attendance::updateOrCreate(
-                [
-                    'user_id' => $this->getUser()
-                        ->id,
-                    'date' => $currentTime->toDateString(),
-                ],
-                [
-                    'check_out' => $currentTime,
-                    'early' => $isEarly,
-                ]
-            );
-
-            DB::commit();
-            $response = [
-                'status' => 'success',
-                'message' => 'Checked Out',
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                'status' => 'error',
-                'message' => 'Invalid operation.',
-            ];
         }
 
         return back()->with($response);

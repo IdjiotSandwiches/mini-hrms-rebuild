@@ -75,5 +75,24 @@
                 }
             }
         });
+
+        $('form').on('submit', function() {
+            $('button[type="submit"]').prop('disabled', true);
+            $('#loading-overlay').show();
+        });
+
+        $('#nav-profile').click(function(event) {
+            $('.nav-dropdown').slideToggle('hidden');
+            event.stopPropagation();
+        });
+
+        $(document).on('click', function(event) {
+            let trigger = $('.nav-dropdown');
+            let navItem = $(event.target).closest('nav-item');
+
+            if(trigger[0] !== navItem[0]){
+                trigger.slideUp('fast');
+            }
+        });
     });
 </script>

@@ -3,41 +3,21 @@
 
 @section('content')
     <attendance-section class="py-10 flex flex-col gap-6 justify-center items-center select-none">
-        <p id="current-day" class="
-            md:text-4xl
-            lg:text-5xl
-            text-3xl text-center font-semibold
-        "></p>
-        <div class="
-            sm:grid sm:grid-cols-2
-            lg:grid-cols-3
-            flex flex-col gap-2
-        ">
-            <div class="
-                flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
-                dark:bg-gray-600
-            " id="current-hours"></div>
-            <div class="
-                flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
-                dark:bg-gray-600
-            " id="current-minutes"></div>
-            <div class="
-                hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md
-                dark:bg-gray-600
-            " id="current-seconds"></div>
+        <p id="current-day" class="md:text-4xl lg:text-5xl text-3xl text-center font-semibold"></p>
+        <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 flex flex-col gap-2">
+            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md dark:bg-gray-600" id="current-hours"></div>
+            <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md dark:bg-gray-600" id="current-minutes"></div>
+            <div class="hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md dark:bg-gray-600" id="current-seconds"></div>
         </div>
-        @if ($isCheckedIn)
-            <form action="{{ route('attendance.check-out') }}" method="POST">
-                @method('PUT')
-                @csrf
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check Out</button>
-            </form>
-        @else
-            <form action="{{ route('attendance.check-in') }}" method="POST">
-                @csrf
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check In</button>
-            </form>
-        @endif
+        <form action="{{ route('attendance.take-attendance') }}" method="POST">
+            @csrf
+            <button type="submit" class="disabled:bg-blue-400 disabled:dark:bg-blue-500 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                @if($isCheckedIn)
+                    Check Out
+                @else
+                    Check In
+                @endif
+            </button>
+        </form>
     </attendance-section>
 @endsection
-
