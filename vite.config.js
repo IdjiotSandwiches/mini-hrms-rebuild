@@ -15,4 +15,7 @@ export default defineConfig({
             '$': 'node_modules/jquery/dist/jquery.min.js',
         },
     },
+    build: {
+        outDir: 'public',
+    }
 });
