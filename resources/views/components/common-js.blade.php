@@ -67,7 +67,7 @@
                 }
             }
             else {
-                if($(document.documentElement).contains('dark')) {
+                if($(document.documentElement).has('dark').length > 0) {
                     toggleLightTheme();
                 }
                 else {
