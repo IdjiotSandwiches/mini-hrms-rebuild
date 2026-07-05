@@ -1,4 +1,4 @@
-@extends('attendance.layouts.attendance-layout', with(['title' => 'Report', 'desc' => 'This is where your weekly and monthly work report will be displayed.']))
+@extends('attendance.attendance-layout', with(['title' => 'Report', 'desc' => 'This is where your weekly and monthly work report will be displayed.']))
 @section('title', 'Attendance - Report')
 
 @section('content')
@@ -24,7 +24,13 @@
                     View
                 </button>
             </div>
-            @include('attendance.report.components.report-table', with(['id' => 'custom-report']))
+            @include('attendance.report.components.report-table', with(['attendances' => $rangedAttendances]))
+            <p class="font-medium">Total Work Hours:
+                <span @class([
+                    'text-blue-500',
+                    'text-red-500' => $rangedWorkHours < 20,
+                ])>{{ $rangedWorkHours }} Hours</span>
+            </p>
         </custom-report>
         <weekly-table class="gap-4 flex flex-col">
             <div>
@@ -59,64 +65,6 @@
 
 @section('extra-js')
     <script>
-        function ajaxRequest(start, end) {
-            const url = '{{ route('attendance.get-range-report') }}';
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    start_time: start,
-                    end_time: end,
-                },
-                beforeSend: function() {
-                    $('#loading-overlay').show();
-                    $('button').prop('disabled', true);
-                },
-                complete: function() {
-                    $('#loading-overlay').hide();
-                    $('button').prop('disabled', false);
-                },
-                success: function(response, textStatus, xhr) {
-                    const table = $('#custom-report').find('tbody');
-                    table.children().remove();
-                    if(response.length === 0) {
-                        let row = `
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td colspan="8" class="px-6 py-3 text-center">
-                                    You do not have work attendance
-                                </td>
-                            </tr>
-                        `;
-                        table.append(row);
-                    }
-                    else {
-                        $.each(response, function(index, report) {
-                            let row = `
-                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">${index + 1}</th>
-                                    <td class="px-6 py-4">${report.date}</td>
-                                    <td class="px-6 py-4">${report.checkIn}</td>
-                                    <td class="px-6 py-4">${report.checkOut}</td>
-                                    <td class="px-6 py-4">${report.early}</td>
-                                    <td class="px-6 py-4">${report.late}</td>
-                                    <td class="px-6 py-4">${report.absence}</td>
-                                    <td class="px-6 py-4">${report.workTime}</td>
-                                </tr>
-                            `;
-                            table.append(row);
-                        });
-                    }
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    Swal.fire({
-                        text: 'Invalid operation.',
-                        icon: 'error',
-                        confirmButtonColor: 'blue',
-                    });
-                }
-            });
-        }
-
         $(document).ready(function() {
             $('#view-report').click(function() {
                 const start = $('#datepicker-start').val();
@@ -128,11 +76,10 @@
                         icon: 'error',
                         confirmButtonColor: 'blue',
                     });
-
                     return;
                 }
 
-                ajaxRequest(start, end);
+                window.location.href = `?start_time=${start}&end_time=${end}`;
             });
         });
     </script>

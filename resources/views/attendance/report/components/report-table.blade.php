@@ -23,13 +23,13 @@
             @foreach ($attendances as $key => $value)
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $key + $attendances->firstItem() }}</th>
-                    <td class="px-6 py-4">{{ $value->date }}</td>
-                    <td class="px-6 py-4">{{ $value->checkIn }}</td>
-                    <td class="px-6 py-4">{{ $value->checkOut }}</td>
-                    <td class="px-6 py-4">{{ $value->early }}</td>
-                    <td class="px-6 py-4">{{ $value->late }}</td>
-                    <td class="px-6 py-4">{{ $value->absence }}</td>
-                    <td class="px-6 py-4">{{ $value->workTime }}</td>
+                    <td class="px-6 py-4">{{ \Carbon\Carbon::parse($value->check_in)->format('l, d F Y') }}</td>
+                    <td class="px-6 py-4">{{ $value->check_in ? \Carbon\Carbon::parse($value->check_in)->format('H:i:s') : '-' }}</td>
+                    <td class="px-6 py-4">{{ $value->check_out ? \Carbon\Carbon::parse($value->check_out)->format('H:i:s') : '-' }}</td>
+                    <td class="px-6 py-4">{{ $value->early === null ? '-' : ($value->early ? 'Yes' : 'No') }}</td>
+                    <td class="px-6 py-4">{{ $value->late === null ? '-' : ($value->late ? 'Yes' : 'No') }}</td>
+                    <td class="px-6 py-4">{{ $value->absence === null ? '-' : ($value->absence ? 'Yes' : 'No') }}</td>
+                    <td class="px-6 py-4">{{ gmdate('H:i:s', $value->duration) }}</td>
                 </tr>
             @endforeach
         </tbody>
