@@ -1,4 +1,4 @@
-@extends('attendance.layouts.attendance-layout', with(['title' => 'Input Schedule', 'desc' => 'This is where you upload and view your work schedule.']))
+@extends('attendance.attendance-layout', with(['title' => 'Input Schedule', 'desc' => 'This is where you upload and view your work schedule.']))
 @section('title', 'Attendance - Input Schedule')
 
 @php
@@ -32,11 +32,11 @@
         </div>
         <p class="text-md font-medium text-center">Work Hours: <span id="work-hours" class="text-red-500">0 Hours</span></p>
         <div @class([
-            'justify-between' => $isUpdateSchedule,
-            'flex justify-end',
+            'justify-between' => $canUpdateSchedule,
+            'flex justify-end gap-2',
         ])>
-            @if ($isUpdateSchedule)
-                <a href="{{ route('attendance.input-schedule-page') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Cancel</a>
+            @if ($canUpdateSchedule)
+                <a href="{{ route('v1.input-schedule.index') }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Cancel</a>
             @endif
             <button type="submit" id="submit" class="disabled:bg-blue-400 disabled:dark:bg-blue-500 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Schedule</button>
         </div>
@@ -50,41 +50,41 @@
         let id = null;
         let schedule = {
             Monday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Tuesday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Wednesday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Thursday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Friday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Saturday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
             Sunday: {
-                start: '00:00:00',
-                end: '00:00:00',
+                start: null,
+                end: null,
                 workTime: 0,
             },
-        }
+        };
 
         function hourInputError(text){
             $('#error').on('error', function() {
@@ -96,12 +96,21 @@
         }
 
         function ajaxRequest() {
-            const url = "{{ route('attendance.input-schedule') }}";
+            const url = "{{ route('v1.input-schedule.store') }}";
+            let format = Object.entries(schedule).map(([day, details]) => {
+                return {
+                    day: day,
+                    ...details
+                };
+            });
+
+            console.log(format);
+
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    schedule: schedule,
+                    schedules: format,
                 },
                 beforeSend: function() {
                     $('#loading-overlay').show();
@@ -118,7 +127,7 @@
                         icon: response.status,
                     }).then((result) => {
                         if(result.isConfirmed) {
-                            window.location.href = '{{ route('attendance.input-schedule-page') }}';
+                            window.location.href = '{{ route('v1.input-schedule.index') }}';
                         }
                     });
                 },

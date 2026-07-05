@@ -2,156 +2,83 @@
 
 namespace App\Services\Admin;
 
-use App\Interfaces\StatusInterface;
-use App\Interfaces\UserInterface;
 use App\Models\User;
+use App\Enums\RoleEnum;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Exceptions\ManagementException;
 
-class ManagementService extends BaseService implements
-    UserInterface,
-    StatusInterface
+class ManagementService extends BaseService
 {
     /**
-     * @param User|\Illuminate\Database\Eloquent\Builder
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @param string $keyword
+     * @return \Illuminate\Pagination\LengthAwarePaginator<int, User>
      */
-    public function getUserList($users)
+    public function getUsers(string $keyword): \Illuminate\Pagination\LengthAwarePaginator
     {
-        $users = $users->paginate(10, ['*'], 'user')
-            ->through(function ($user) {
-                return $this->convertUserData($user);
-            });
+        $users = User::when($keyword,
+                fn($q) =>  $q->whereFullText(['name', 'email'], $keyword)
+            )->paginate(10, ['*'], 'user');
 
         return $users;
     }
 
     /**
-     * @param User
-     * @return object
+     * @param string $id
+     * @return User|\stdClass|null
      */
-    public function convertUserData($user)
+    public function getUser(string $id): User|\stdClass|null
     {
-        $id = $user->uuid;
-        $firstName = $user->first_name;
-        $lastName = $user->last_name;
-        $username = $user->username;
-        $email = $user->email;
-
-        return (object) compact(
-            'id',
-            'firstName',
-            'lastName',
-            'username',
-            'email'
-        );
-    }
-
-    /**
-     * @param ?string
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    public function searchUserList($keyword)
-    {
-        $users = User::where(self::USERNAME_COLUMN, 'LIKE', "%{$keyword}%")
-            ->orWhere(self::EMAIL_COLUMN, 'LIKE', "%{$keyword}%");
-
-        $users = $this->getUserList($users);
-
-        return $users;
-    }
-
-    /**
-     * @param string
-     * @return object
-     */
-    public function getCurrentUser($id)
-    {
-        $user = User::where(self::UUID_COLUMN, $id)
+        $user = User::where('uuid', $id)
             ->first();
-        $user = $this->convertUserData($user);
+
+        if (!$user) {
+            throw ManagementException::userNotFound();
+        }
 
         return $user;
     }
 
     /**
-     * @param string
-     * @param array
-     * @return \Illuminate\Http\RedirectResponse
+     * @param string $id
+     * @param array $validated
+     * @return mixed
      */
-    public function editUser($id, $validated)
+    public function update(string $id, array $validated): mixed
     {
-        try {
-            DB::beginTransaction();
+        return DB::transaction(function () use ($id, $validated) {
+            $user = $this->getUser($id);
 
-            $user = User::where(self::UUID_COLUMN, $id)
-                ->first();
+            $user->name     = $validated['name'] ?: $user->name;
+            $user->email    = $validated['email'] ?: $user->email;
 
-            $user->email = $validated[self::EMAIL_COLUMN] ?: $user->email;
-            $user->first_name = $validated[self::FIRST_NAME_COLUMN] ?: $user->first_name;
-            $user->last_name = $validated[self::LAST_NAME_COLUMN] ?: $user->last_name;
-            $user->password = $validated[self::PASSWORD_COLUMN] ? Hash::make($validated[self::PASSWORD_COLUMN]) : $user->password;
+            if (!empty($validated['password'])) {
+                $user->password = $validated['password'];
+            }
+
             $user->save();
-
-            DB::commit();
-            $response = [
-                'status' => self::STATUS_SUCCESS,
-                'message' => 'User information has been updated successfully.',
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.'
-            ];
-
-            return back()->with($response);
-        }
-
-        return back()->with($response);
+        });
     }
 
     /**
-     * @param string
-     * @param array
-     * @return \Illuminate\Http\RedirectResponse
+     * @param string $id
+     * @param string $password
+     * @return mixed
      */
-    public function deleteUser($id, $validated)
+    public function destroy(string $id, string $password): mixed
     {
-        try {
-            DB::beginTransaction();
-
-            $currentAdmin = $this->getUser();
-            if (!Hash::check($validated['confirm_password'], $currentAdmin->getAuthPassword())) {
-                DB::rollBack();
-                $response = [
-                    'status' => self::STATUS_ERROR,
-                    'message' => 'Password confirmation not match.',
-                ];
-
-                return back()->with($response);
+        return DB::transaction(function () use ($id, $password) {
+            if (!Hash::check($password, $this->getAuthUser()->password)) {
+                throw ManagementException::adminPasswordNotMatch();
             }
 
-            $user = User::where(self::UUID_COLUMN, $id);
+            $user = $this->getUser($id);
+            if ($user->role === RoleEnum::ADMIN) {
+                throw ManagementException::cannotRemoveAdmin();
+            }
+
             $user->delete();
-
-            DB::commit();
-            $response = [
-                'status' => self::STATUS_SUCCESS,
-                'message' => 'User removed successfully',
-            ];
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                'status' => self::STATUS_ERROR,
-                'message' => 'Invalid operation.'
-            ];
-
-            return back()->with($response);
-        }
-
-        return redirect()->intended(route('admin.management.index'))
-            ->with($response);
+        });
     }
 }
