@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Heading from '@/components/Heading.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Search } from '@lucide/vue';
 import { useDebounceFn } from '@vueuse/core';
 import { Head, router } from '@inertiajs/vue3';
@@ -20,8 +20,12 @@ defineProps<{
     }
 }>();
 
-const params = new URLSearchParams(window.location.search);
-const search = ref(params.get('search') || '');
+const urlParams = ref<URLSearchParams | null>(null);
+onMounted(() => {
+    urlParams.value = new URLSearchParams(window.location.search);
+});
+
+const search = ref(urlParams.value?.get('search') || '');
 const filter = useDebounceFn(() => {
     router.reload({
         data: { search: search.value },
