@@ -15,10 +15,12 @@ defineProps<{
     monthly: ReportProps
 }>();
 
+const urlParams = ref<URLSearchParams | null>(null);
 const date = ref({ day: '', hours: '00', minutes: '00', seconds: '00' });
 let stopClock: () => void;
 
 onMounted(() => {
+    urlParams.value = new URLSearchParams(window.location.search);
     stopClock = getCurrentTime((timeData: any) => {
         date.value = timeData;
     });
@@ -28,10 +30,9 @@ onUnmounted(() => {
     if (stopClock) stopClock();
 });
 
-const urlParams = new URLSearchParams(window.location.search);
 const dateWindow = ref<JsDateRange>({
-    start: urlParams.get('start') ? new Date(urlParams.get('start')!) : undefined,
-    end: urlParams.get('end') ? new Date(urlParams.get('end')!) : undefined
+    start: urlParams.value?.get('start') ? new Date(urlParams.value?.get('start')!) : undefined,
+    end: urlParams.value?.get('end') ? new Date(urlParams.value?.get('end')!) : undefined
 });
 
 function handleFilter() {

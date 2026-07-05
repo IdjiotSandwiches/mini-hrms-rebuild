@@ -57,7 +57,7 @@ defineProps<{
                     <TableCell>{{ idx + data.attendances.from }}</TableCell>
                     <TableCell>{{ convertDate(item.check_in) }}</TableCell>
                     <TableCell>{{ convertTime(item.check_in) }}</TableCell>
-                    <TableCell>{{ convertTime(item.check_out) }}</TableCell>
+                    <TableCell>{{ item.check_out ? convertTime(item.check_out) : '-' }}</TableCell>
                     <TableCell>{{ validateBoolean(item.early) }}</TableCell>
                     <TableCell>{{ validateBoolean(item.late) }}</TableCell>
                     <TableCell>{{ validateBoolean(item.absence) }}</TableCell>
