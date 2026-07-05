@@ -2,75 +2,62 @@
 
 namespace App\Services;
 
-use App\Interfaces\CommonInterface;
-use Carbon\Factory;
-use App\Models\Schedule;
-use App\Models\Attendance;
+use App\Models\User;
+use App\Enums\DayEnum;
+use Illuminate\Support\Carbon;
 
-class BaseService implements
-    CommonInterface
+class BaseService
 {
+    protected int $hourInSeconds = 3600;
+
     /**
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return User|null
      */
-    public function getUser()
+    public function getAuthUser(): User|null
     {
         return auth()->user();
     }
 
     /**
-     * @param string
-     * @return \Carbon\Carbon|null
+     * @param ?string $start
+     * @param ?string $end
+     * @return array
      */
-    public function convertTime($time)
+    public function calculateWorkTime(?string $start, ?string $end): array
     {
-        $factoryTime = new Factory([
-            'timezone' => 'Asia/Jakarta'
-        ]);
+        if ($start == null || $end == null) {
+            return [
+                'start'     => null,
+                'end'       => null,
+                'totalTime' => 0
+            ];
+        }
 
-        return $factoryTime->make($time);
-    }
+        $today = today()->toDateString();
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function getSchedule()
-    {
-        return Schedule::with('user')
-            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
-    }
+        $start = Carbon::parse("$today $start");
+        $end = Carbon::parse("$today $end");
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function getAttendance()
-    {
-        return Attendance::with('user')
-            ->where(self::USER_ID_COLUMN, $this->getUser()->id);
-    }
+        $breakStart = Carbon::parse("$today 12:00:00");
+        $breakEnd = Carbon::parse("$today 13:00:00");
 
-    /**
-     * @param string
-     * @param string
-     * @return object
-     */
-    public function calculateWorkTime($start, $end)
-    {
-        $start = $this->convertTime($start);
-        $end = $this->convertTime($end);
-
-        $breakStart = $this->convertTime('12:00:00');
-        $breakEnd = $this->convertTime('13:00:00');
-        $totalTime = $end->diffInSeconds($start);
-
+        $totalTime = $start->diffInSeconds($end);
         if ($start->isBefore($breakEnd) && $end->isAfter($breakStart)) {
             $overtimeStart = $start->isBefore($breakStart) ? $breakStart : $start;
             $overtimeEnd = $end->isAfter($breakEnd) ? $breakEnd : $end;
-            $overtime = $overtimeEnd->diffInSeconds($overtimeStart);
+            $overtime = $overtimeStart->diffInSeconds($overtimeEnd);
             $totalTime -= $overtime;
         }
 
-        return (object) compact('start', 'end', 'totalTime');
+        return compact('start', 'end', 'totalTime');
+    }
+
+    /**
+     * @param int range(1, 7) $dayOfWeekIso
+     * @return DayEnum
+     */
+    public function convertDayIso(int $dayOfWeekIso)
+    {
+        return DayEnum::fromIso($dayOfWeekIso);
     }
 }
-

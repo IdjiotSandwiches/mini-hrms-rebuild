@@ -1,4 +1,4 @@
-@extends('attendance.layouts.attendance-layout', with(['title' => 'Take Attendance', 'desc' => 'This is where you verify your attendance.']))
+@extends('attendance.attendance-layout', with(['title' => 'Take Attendance', 'desc' => 'This is where you verify your attendance.']))
 @section('title', 'Attendance - Take Attendance')
 
 @section('content')
@@ -9,7 +9,7 @@
             <div class="flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md dark:bg-gray-600" id="current-minutes"></div>
             <div class="hidden lg:flex justify-center items-center w-48 h-32 bg-gray-300 rounded-md font-semibold text-8xl shadow-md dark:bg-gray-600" id="current-seconds"></div>
         </div>
-        <form action="{{ route('attendance.take-attendance') }}" method="POST">
+        <form action="{{ route('v1.take-attendance.store') }}" method="POST">
             @csrf
             <button type="submit" class="disabled:bg-blue-400 disabled:dark:bg-blue-500 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md w-full sm:w-auto px-20 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 @if($isCheckedIn)

@@ -1,4 +1,4 @@
-@extends('admin.layout', with(['title' => 'Dashboard', 'desc' => 'Review of registered users.']))
+@extends('admin.admin-layout', with(['title' => 'Dashboard', 'desc' => 'Review of registered users.']))
 @section('title', 'Admin - Dashboard')
 
 @section('content')
@@ -9,9 +9,9 @@
                     <div class="flex flex-col gap-4 justify-center items-center h-full">
                         <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most On Time</h5>
                         <div class="grid gap-2">
-                            @if ($mostRank->onTimeUser)
-                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->onTimeUser->userFullName }}</h5>
-                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">On Time Count: {{ $mostRank->onTimeUser->count }}</h5>
+                            @if ($mostRank['onTime'])
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank['onTime']->name }}</h5>
+                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">On Time Count: {{ $mostRank['onTime']->count }}</h5>
                             @else
                                 <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">-</h5>
                             @endif
@@ -22,9 +22,9 @@
                     <div class="flex flex-col gap-4 justify-center items-center h-full">
                         <h5 class="text-md font-medium leading-none text-gray-900 dark:text-white pe-1">Most Absence</h5>
                         <div class="grid gap-2">
-                            @if ($mostRank->absenceUser)
-                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank->absenceUser->userFullName }}</h5>
-                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">Absence Count: {{ $mostRank->absenceUser->count }}</h5>
+                            @if ($mostRank['absence'])
+                                <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">{{ $mostRank['absence']->name }}</h5>
+                                <h5 class="text-sm font-light leading-none text-gray-500 dark:text-white pe-1">Absence Count: {{ $mostRank['absence']->count }}</h5>
                             @else
                                 <h5 class="text-xl font-semibold leading-none text-gray-900 dark:text-white pe-1">-</h5>
                             @endif
@@ -119,7 +119,7 @@
         const weekly = @json($weekly);
 
         const userStatusChartOptions = {
-            series: Object.values(daily.checkInOut),
+            series: Object.values(daily.attendances),
             colors: ['#1C64F2', '#16BDCA'],
             chart: {
                 height: '320px',
@@ -195,7 +195,7 @@
         }
 
         const userAbsenceChartOptions = {
-            series: Object.values(daily.attendances),
+            series: Object.values(daily.exceptions),
             colors: ['#1C64F2', '#16BDCA', '#FDBA8C'],
             chart: {
                 height: '320px',
@@ -242,30 +242,31 @@
             }
         }
 
+        const series = () => {
+            const values = Object.values(weekly);
+            return [
+                {
+                    name: "Attendance",
+                    data: values.map((day) => day.attendance)
+                },
+                {
+                    name: "Late",
+                    data: values.map((day) => day.late)
+                },
+                {
+                    name: "Early",
+                    data: values.map((day) => day.early)
+                },
+                {
+                    name: "Absence",
+                    data: values.map((day) => day.absence)
+                }
+            ];
+        }
+
         const weeklyAttendanceChartOptions = {
             colors: ['#1C64F2', '#16BDCA', '#FDBA8C', '#F05252'],
-            series: [
-                {
-                    name: 'Attendance',
-                    color: '#1C64F2',
-                    data: weekly.attendance[0],
-                },
-                {
-                    name: 'Late',
-                    color: '#16BDCA',
-                    data: weekly.late[0],
-                },
-                {
-                    name: 'Early',
-                    color: '#FDBA8C',
-                    data: weekly.early[0],
-                },
-                {
-                    name: 'Absence',
-                    color: '#F05252',
-                    data: weekly.absence[0],
-                },
-            ],
+            series: series(),
             chart: {
                 type: 'bar',
                 height: '320px',
@@ -350,8 +351,8 @@
         }
 
         $(document).ready(function() {
-            updateChart($('#user-status-chart')[0], userStatusChartOptions, $('#check-in-out').children(), daily.checkInOut);
-            updateChart($('#user-absence-chart')[0], userAbsenceChartOptions, $('#attendance').children(), daily.attendances);
+            updateChart($('#user-status-chart')[0], userStatusChartOptions, $('#check-in-out').children(), daily.attendances);
+            updateChart($('#user-absence-chart')[0], userAbsenceChartOptions, $('#attendance').children(), daily.exceptions);
 
             const weeklyAttendanceChart = new ApexCharts($('#weekly-attendance-chart')[0], weeklyAttendanceChartOptions);
             weeklyAttendanceChart.render();
