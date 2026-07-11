@@ -41,7 +41,7 @@ jobs:
         run: npm run lint
 
       - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: https://github.com/stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: fix code style
           commit_options: '--no-verify'
