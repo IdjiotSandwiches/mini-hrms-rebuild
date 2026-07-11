@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { router } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -7,9 +9,7 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import { router } from '@inertiajs/vue3';
 import { convertDate, convertTime, formatSeconds, validateBoolean } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 export interface ReportProps {
     attendances: {
@@ -52,6 +52,7 @@ defineProps<{
                 <TableRow
                     v-else
                     v-for="(item, idx) in data.attendances.data"
+                    :key="idx"
                     class="text-center"
                 >
                     <TableCell>{{ idx + data.attendances.from }}</TableCell>

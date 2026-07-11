@@ -4,18 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\RoleEnum;
-use Illuminate\Support\Carbon;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property int $id
@@ -47,18 +47,15 @@ class User extends Authenticatable implements PasskeyUser
     protected function casts(): array
     {
         return [
-            'email_verified_at'         => 'datetime',
-            'password'                  => 'hashed',
-            'two_factor_confirmed_at'   => 'datetime',
-            'role'                      => RoleEnum::class
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'two_factor_confirmed_at' => 'datetime',
+            'role' => RoleEnum::class,
         ];
     }
 
     /**
      * Checks if user has a specific role
-     *
-     * @param RoleEnum $role
-     * @return bool
      */
     public function hasRole(RoleEnum $role): bool
     {
@@ -91,6 +88,6 @@ class User extends Authenticatable implements PasskeyUser
     public static function boot(): void
     {
         parent::boot();
-        static::creating(fn($model) => $model->uuid = Str::uuid7());
+        static::creating(fn ($model) => $model->uuid = Str::uuid7());
     }
 }

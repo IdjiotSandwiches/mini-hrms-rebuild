@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, CalendarDays, ClipboardList, ClockCheck, Folder, LayoutGrid, Menu, Search, UserRoundCog } from '@lucide/vue';
+import { CalendarDays, ClipboardList, ClockCheck, LayoutGrid, Menu, UserRoundCog } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -26,22 +25,16 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
-import { getAdminHome, toUrl } from '@/lib/utils';
-import type { BreadcrumbItem, NavItem } from '@/types';
-import { index as scheduleIndex } from '@/routes/v2/input-schedule';
-import { index as attendanceIndex } from '@/routes/v2/take-attendance';
-import { index as reportIndex } from '@/routes/v2/report';
+import { getAdminHome } from '@/lib/utils';
 import { index as dashboardIndex } from '@/routes/v2/admin/dashboard';
 import { index as managementIndex } from '@/routes/v2/admin/management';
+import { index as scheduleIndex } from '@/routes/v2/input-schedule';
+import { index as reportIndex } from '@/routes/v2/report';
+import { index as attendanceIndex } from '@/routes/v2/take-attendance';
+import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];

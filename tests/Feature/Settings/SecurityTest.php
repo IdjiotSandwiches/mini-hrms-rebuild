@@ -29,7 +29,7 @@ class SecurityTest extends TestCase
 
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
-            ->get(route('security.edit'))
+            ->get(route('v2.settings.security.edit'))
             ->assertInertia(fn (Assert $page) => $page
                 ->component('settings/Security')
                 ->where('canManagePasskeys', true)
@@ -51,7 +51,7 @@ class SecurityTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->get(route('security.edit'));
+            ->get(route('v2.settings.security.edit'));
 
         $response->assertRedirect(route('password.confirm'));
     }
@@ -66,7 +66,7 @@ class SecurityTest extends TestCase
 
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
-            ->get(route('security.edit'))
+            ->get(route('v2.settings.security.edit'))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('settings/Security')
@@ -84,8 +84,8 @@ class SecurityTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from(route('security.edit'))
-            ->put(route('user-password.update'), [
+            ->from(route('v2.settings.security.edit'))
+            ->put(route('v2.settings.user-password.update'), [
                 'current_password' => 'password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -93,7 +93,7 @@ class SecurityTest extends TestCase
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('security.edit'));
+            ->assertRedirect(route('v2.settings.security.edit'));
 
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
@@ -104,8 +104,8 @@ class SecurityTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from(route('security.edit'))
-            ->put(route('user-password.update'), [
+            ->from(route('v2.settings.security.edit'))
+            ->put(route('v2.settings.user-password.update'), [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password',
                 'password_confirmation' => 'new-password',
@@ -113,6 +113,6 @@ class SecurityTest extends TestCase
 
         $response
             ->assertSessionHasErrors('current_password')
-            ->assertRedirect(route('security.edit'));
+            ->assertRedirect(route('v2.settings.security.edit'));
     }
 }

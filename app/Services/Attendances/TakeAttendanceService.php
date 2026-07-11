@@ -2,29 +2,26 @@
 
 namespace App\Services\Attendances;
 
-use App\Models\Schedule;
+use App\Exceptions\TakeAttendanceException;
 use App\Models\Attendance;
-use Carbon\CarbonInterface;
+use App\Models\Schedule;
 use App\Services\BaseService;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\TakeAttendanceException;
 
 class TakeAttendanceService extends BaseService
 {
     private int $minimumWorkSeconds = 60;
 
-    /**
-     * @return bool
-     */
     public function isCheckedIn(): bool
     {
         $userId = $this->getAuthUser()->id;
         $attendance = Attendance::where('user_id', $userId)
             ->whereDate('check_in', now());
 
-        if (!$attendance->exists()) {
+        if (! $attendance->exists()) {
             return false;
         } else {
             $attendance = $attendance->first();
@@ -34,7 +31,7 @@ class TakeAttendanceService extends BaseService
                 ->where('day', $day)
                 ->exists();
 
-            if (!$attendance->check_out && $scheduleExists) {
+            if (! $attendance->check_out && $scheduleExists) {
                 return true;
             } else {
                 return false;
@@ -42,9 +39,6 @@ class TakeAttendanceService extends BaseService
         }
     }
 
-    /**
-     * @return bool
-     */
     public function attendance(): bool
     {
         $userId = $this->getAuthUser()->id;
@@ -62,7 +56,7 @@ class TakeAttendanceService extends BaseService
             ->whereNotNull('end_time')
             ->first();
 
-        if (!$hasWorkSchedule) {
+        if (! $hasWorkSchedule) {
             throw TakeAttendanceException::noWorkSchedule();
         }
 
@@ -70,17 +64,16 @@ class TakeAttendanceService extends BaseService
             $attendance = Attendance::where('user_id', $userId)
                 ->whereDate('check_in', now());
 
-            if (!$attendance->exists()) {
+            if (! $attendance->exists()) {
                 $isLate = $this->isLate($schedules, $current);
                 Attendance::create([
-                    'user_id'   => $userId,
-                    'check_in'  => $current,
-                    'late'      => $isLate,
+                    'user_id' => $userId,
+                    'check_in' => $current,
+                    'late' => $isLate,
                 ]);
 
                 return false;
-            }
-            else {
+            } else {
                 $attendance = $attendance->first();
                 if ($attendance->check_out) {
                     throw TakeAttendanceException::alreadyTakeAttendance();
@@ -100,8 +93,8 @@ class TakeAttendanceService extends BaseService
                 $isEarly = $this->isEarly($schedules, $current);
                 $attendance->update([
                     'check_out' => $current,
-                    'early'     => $isEarly,
-                    'duration'  => $work['totalTime']
+                    'early' => $isEarly,
+                    'duration' => $work['totalTime'],
                 ]);
 
                 return true;
@@ -109,31 +102,23 @@ class TakeAttendanceService extends BaseService
         });
     }
 
-    /**
-     * @param Collection $schedules
-     * @param Carbon|CarbonInterface $now
-     * @return bool
-     */
     private function isLate(Collection $schedules, Carbon|CarbonInterface $now): bool
     {
         $day = $this->convertDayIso($now->dayOfWeekIso);
         $schedule = $schedules->where('day', $day)
             ->first();
         $startTime = Carbon::parse($schedule->start_time);
+
         return $now->gt($startTime);
     }
 
-    /**
-     * @param Collection $schedules
-     * @param Carbon|CarbonInterface $now
-     * @return bool
-     */
     private function isEarly(Collection $schedules, Carbon|CarbonInterface $now): bool
     {
         $day = $this->convertDayIso($now->dayOfWeekIso);
         $schedule = $schedules->where('day', $day)
             ->first();
         $endTime = Carbon::parse($schedule->end_time);
+
         return $now->lt($endTime);
     }
 }

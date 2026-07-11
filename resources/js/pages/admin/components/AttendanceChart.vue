@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Item, ItemContent, ItemGroup } from '@/components/ui/item';
 
 const props = defineProps<{
     data: any
@@ -43,6 +43,7 @@ const options = ref({
                         label: 'User active',
                         formatter: function (w: any) {
                             const val = w.globals.seriesTotals;
+
                             return val[0] - val[1];
                         },
                     },
@@ -95,7 +96,8 @@ const count = computed(() => data.value.map(item => item.count)).value;
         <CardContent>
             <ItemGroup class="grid grid-cols-2 gap-2 text-center">
                 <Item
-                    v-for="d in data"
+                    v-for="(d, idx) in data"
+                    :key="idx"
                     :style="{ '--color': d.color }"
                     class="bg-(--color)/10 text-center text-(--color)"
                 >

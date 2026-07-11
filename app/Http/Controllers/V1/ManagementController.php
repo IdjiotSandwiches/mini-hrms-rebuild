@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Exceptions\ManagementException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteUserRequest;
 use App\Http\Requests\EditUserRequest;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Exceptions\ManagementException;
 use App\Services\Admin\ManagementService;
+use Illuminate\Http\Request;
 
 class ManagementController extends Controller
 {
@@ -32,6 +32,7 @@ class ManagementController extends Controller
     {
         try {
             $user = $this->service->getUser($id);
+
             return view('admin.management.edit', with([
                 'user' => $user,
             ]));

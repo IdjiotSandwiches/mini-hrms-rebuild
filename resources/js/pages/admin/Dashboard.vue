@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
 import { Head } from '@inertiajs/vue3';
+import Heading from '@/components/Heading.vue';
 import { ItemGroup } from '@/components/ui/item';
 import { AttendanceChart, ExceptionChart, RankCard, WeeklyChart } from '@/pages/admin/components';
 

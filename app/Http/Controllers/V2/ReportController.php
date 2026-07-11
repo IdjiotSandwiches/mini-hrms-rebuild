@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Attendances\ReportService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ReportController extends Controller
 {
@@ -20,13 +20,13 @@ class ReportController extends Controller
     {
         $request->validate([
             'start' => 'nullable|date_format:Y-m-d',
-            'end'   => 'nullable|date_format:Y-m-d',
+            'end' => 'nullable|date_format:Y-m-d',
         ]);
 
         return Inertia::render('attendances/Report', [
-            'weekly'    => $this->service->getWeeklyReport(),
-            'monthly'   => $this->service->getMonthlyReport(),
-            'ranged'    => $this->service->getRangedReport($request->input('start'), $request->input('end')),
+            'weekly' => $this->service->getWeeklyReport(),
+            'monthly' => $this->service->getMonthlyReport(),
+            'ranged' => $this->service->getRangedReport($request->input('start'), $request->input('end')),
         ]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
-use App\Http\Controllers\Controller;
 use App\Exceptions\TakeAttendanceException;
+use App\Http\Controllers\Controller;
 use App\Services\Attendances\TakeAttendanceService;
+use Inertia\Inertia;
 
 class TakeAttendanceController extends Controller
 {
@@ -19,7 +19,7 @@ class TakeAttendanceController extends Controller
     public function index()
     {
         return Inertia::render('attendances/TakeAttendance', [
-            'isCheckedIn' => $this->service->isCheckedIn()
+            'isCheckedIn' => $this->service->isCheckedIn(),
         ]);
     }
 

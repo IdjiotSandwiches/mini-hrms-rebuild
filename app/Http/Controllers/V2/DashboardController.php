@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\DashboardService;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -18,9 +18,9 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('admin/Dashboard', [
-            'daily'     => $this->service->getDailyAttendance(),
-            'weekly'    => $this->service->getWeeklyAttendance(),
-            'rank'      => $this->service->getMostOnTimeAndAbsence()
+            'daily' => $this->service->getDailyAttendance(),
+            'weekly' => $this->service->getWeeklyAttendance(),
+            'rank' => $this->service->getMostOnTimeAndAbsence(),
         ]);
     }
 }

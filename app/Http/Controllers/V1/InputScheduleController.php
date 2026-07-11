@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
 use App\Exceptions\InputScheduleException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\InputScheduleRequest;
 use App\Services\Attendances\InputScheduleService;
 
@@ -32,7 +32,9 @@ class InputScheduleController extends Controller
 
     public function store(InputScheduleRequest $request)
     {
-        if (!$request->ajax()) abort(404);
+        if (! $request->ajax()) {
+            abort(404);
+        }
 
         try {
             $data = $request->validated();
@@ -59,7 +61,9 @@ class InputScheduleController extends Controller
     {
         $canUpdateSchedule = $this->service->canUpdateSchedule();
 
-        if ($canUpdateSchedule) return view('attendance.input-schedule.update', compact('canUpdateSchedule'));
+        if ($canUpdateSchedule) {
+            return view('attendance.input-schedule.update', compact('canUpdateSchedule'));
+        }
 
         return redirect()->route('v1.input-schedule.index')
             ->with([
