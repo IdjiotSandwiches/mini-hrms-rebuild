@@ -2,6 +2,7 @@
 
 namespace App\Services\Attendances;
 
+use App\Enums\DayEnum;
 use App\Exceptions\InputScheduleException;
 use App\Models\Schedule;
 use App\Services\BaseService;
@@ -67,7 +68,7 @@ class InputScheduleService extends BaseService
 
                 $schedule = new Schedule;
                 $schedule->user_id = $userId;
-                $schedule->day = $day;
+                $schedule->day = DayEnum::from((string) $day);
                 $schedule->start_time = $time['start'];
                 $schedule->end_time = $time['end'];
                 $schedule->work_time = $time['totalTime'];
