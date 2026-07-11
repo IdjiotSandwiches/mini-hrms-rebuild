@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\V1\ReportController;
-use App\Http\Controllers\V1\ProfileController;
 use App\Http\Controllers\V1\DashboardController;
-use App\Http\Controllers\V1\ManagementController;
 use App\Http\Controllers\V1\InputScheduleController;
+use App\Http\Controllers\V1\ManagementController;
+use App\Http\Controllers\V1\ProfileController;
+use App\Http\Controllers\V1\ReportController;
 use App\Http\Controllers\V1\TakeAttendanceController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])
     ->prefix('v1')

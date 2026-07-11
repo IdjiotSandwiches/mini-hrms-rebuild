@@ -26,9 +26,9 @@ class EditUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'      => 'nullable|string|max:255',
-            'email'     => 'nullable|string|email|max:255|unique:users,email,' . $this->route('id') . ',uuid',
-            'password'  => ['nullable', 'string', Password::default()]
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,'.$this->route('id').',uuid',
+            'password' => ['nullable', 'string', Password::default()],
         ];
     }
 }

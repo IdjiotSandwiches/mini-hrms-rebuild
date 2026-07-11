@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EditUserRequest;
 use App\Exceptions\ManagementException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\DeleteUserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Services\Admin\ManagementService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ManagementController extends Controller
 {
@@ -24,7 +24,7 @@ class ManagementController extends Controller
         $keyword = $request->string('search');
 
         return Inertia::render('admin/UserManagement/Index', [
-            'users' => $this->service->getUsers($keyword)
+            'users' => $this->service->getUsers($keyword),
         ]);
     }
 
@@ -32,14 +32,17 @@ class ManagementController extends Controller
     {
         try {
             $user = $this->service->getUser($id);
+
             return Inertia::render('admin/UserManagement/Edit', [
-                'user' => $user
+                'user' => $user,
             ]);
         } catch (ManagementException $e) {
             Inertia::flash('toast', ['type' => 'warning', 'message' => __($e->getMessage())]);
+
             return to_route('v2.admin.management.index');
         } catch (\Exception $e) {
             Inertia::flash('toast', ['type' => 'error', 'message' => __('An error has occurred while saving the data. Please try again.')]);
+
             return to_route('v2.admin.management.index');
         }
     }

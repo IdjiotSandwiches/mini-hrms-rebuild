@@ -2,19 +2,20 @@
 
 namespace App\Services\Attendances;
 
+use App\Exceptions\InputScheduleException;
 use App\Models\Schedule;
 use App\Services\BaseService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\InputScheduleException;
 
 class InputScheduleService extends BaseService
 {
     private int $requiredTime = 20;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, Schedule>|\Illuminate\Support\Collection<int, \stdClass>
+     * @return \Illuminate\Database\Eloquent\Collection<int, Schedule>|Collection<int, \stdClass>
      */
-    public function getSchedules(): \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
+    public function getSchedules(): \Illuminate\Database\Eloquent\Collection|Collection
     {
         $schedules = Schedule::where('user_id', $this->getAuthUser()->id)
             ->get();
@@ -22,37 +23,34 @@ class InputScheduleService extends BaseService
         return $schedules;
     }
 
-    /**
-     * @return float
-     */
     public function calculateTotalWorkHour(): float
     {
         $totalWorkHour = Schedule::where('user_id', $this->getAuthUser()->id)
             ->sum('work_time');
 
         $totalWorkHour = floor($totalWorkHour / $this->hourInSeconds);
+
         return $totalWorkHour;
     }
 
-    /**
-     * @return bool
-     */
     public function canUpdateSchedule(): bool
     {
         $schedules = Schedule::where('user_id', $this->getAuthUser()->id)
             ->get();
-        if ($schedules->count() == 0) return true;
+        if ($schedules->count() == 0) {
+            return true;
+        }
 
         $schedule = $schedules->first();
-        if (now()->diffInMonths($schedule->updated_at) >= 3) return true;
+        if (now()->diffInMonths($schedule->updated_at) >= 3) {
+            return true;
+        }
 
         return false;
     }
 
     /**
-     * @param array $validated
      * @throws \Exception
-     * @return void
      */
     public function processSchedule(array $validated): void
     {
@@ -67,7 +65,7 @@ class InputScheduleService extends BaseService
                 $time = $this->calculateWorkTime($val['start'], $val['end']);
                 $totalWorkTime += $time['totalTime'];
 
-                $schedule = new Schedule();
+                $schedule = new Schedule;
                 $schedule->user_id = $userId;
                 $schedule->day = $day;
                 $schedule->start_time = $time['start'];

@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Enums\DayEnum;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -29,7 +29,7 @@ class Schedule extends Model
     protected function casts(): array
     {
         return [
-            'day' => DayEnum::class
+            'day' => DayEnum::class,
         ];
     }
 

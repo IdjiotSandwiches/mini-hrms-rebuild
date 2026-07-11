@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { Form, Head } from '@inertiajs/vue3';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
-import { Form, Head } from '@inertiajs/vue3';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { destroy, update } from '@/routes/v2/admin/management';
 
 defineProps<{

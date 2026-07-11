@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
-import { toast } from 'vue-sonner';
-import { Search } from '@lucide/vue';
-import { getCurrentTime } from '@/lib/utils';
 import { Head, router } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
+import { Search } from '@lucide/vue';
 import { onMounted, onUnmounted, ref } from 'vue';
-import { DatePicker, JsDateRange } from '@/components/ui/date-picker';
-import { ReportTable, ReportProps } from '@/pages/attendances/components';
+import { toast } from 'vue-sonner';
+import Heading from '@/components/Heading.vue';
+import { Button } from '@/components/ui/button';
+import type { JsDateRange } from '@/components/ui/date-picker';
+import { DatePicker } from '@/components/ui/date-picker';
+import { getCurrentTime } from '@/lib/utils';
+import type { ReportProps } from '@/pages/attendances/components';
+import { ReportTable } from '@/pages/attendances/components';
 
 defineProps<{
     ranged?: ReportProps,
@@ -27,17 +29,20 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    if (stopClock) stopClock();
+    if (stopClock) {
+stopClock();
+}
 });
 
 const dateWindow = ref<JsDateRange>({
-    start: urlParams.value?.get('start') ? new Date(urlParams.value?.get('start')!) : undefined,
-    end: urlParams.value?.get('end') ? new Date(urlParams.value?.get('end')!) : undefined
+    start: urlParams.value?.get('start') ? new Date(urlParams.value.get('start')!) : undefined,
+    end: urlParams.value?.get('end') ? new Date(urlParams.value.get('end')!) : undefined
 });
 
 function handleFilter() {
     if (!dateWindow.value.start || !dateWindow.value.end) {
         toast.warning('Please select both a start and end date.');
+
         return;
     }
 
@@ -45,6 +50,7 @@ function handleFilter() {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
+
         return `${year}-${month}-${day}`;
     }
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AppContent from '@/components/AppContent.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import AppShell from '@/components/AppShell.vue';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
-import type { BreadcrumbItem } from '@/types';
-import { usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
-import { index as attendanceIndex } from '@/routes/v1/take-attendance';
 import { index as dashboardIndex } from '@/routes/v1/admin/dashboard';
+import { index as attendanceIndex } from '@/routes/v1/take-attendance';
+import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];

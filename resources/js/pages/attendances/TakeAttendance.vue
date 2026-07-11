@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
 import { Form, Head } from '@inertiajs/vue3';
-import { getCurrentTime } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { onMounted, onUnmounted, ref } from 'vue';
+import Heading from '@/components/Heading.vue';
+import { Button } from '@/components/ui/button';
+import { getCurrentTime } from '@/lib/utils';
 import { store } from '@/routes/v2/take-attendance';
 
 defineProps<{
@@ -20,7 +20,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    if (stopClock) stopClock();
+    if (stopClock) {
+stopClock();
+}
 });
 
 </script>

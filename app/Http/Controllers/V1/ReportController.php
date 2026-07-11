@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\V1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Attendances\ReportService;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {

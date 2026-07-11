@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
@@ -19,9 +20,11 @@ class AuthenticationTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_users_can_authenticate_admin_using_the_login_screen()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'role' => RoleEnum::ADMIN,
+        ]);
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,
@@ -29,7 +32,22 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('v2.admin.dashboard.index', absolute: false));
+    }
+
+    public function test_users_can_authenticate_auth_using_the_login_screen()
+    {
+        $user = User::factory()->create([
+            'role' => RoleEnum::AUTH,
+        ]);
+
+        $response = $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('v2.take-attendance.index', absolute: false));
     }
 
     public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge()
@@ -71,7 +89,7 @@ class AuthenticationTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('logout'));
 
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('login'));
 
         $this->assertGuest();
     }

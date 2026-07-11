@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Gate::define('attendance', fn(User $user) => $user->hasRole(RoleEnum::AUTH));
-        Gate::define('admin', fn(User $user) => $user->hasRole(RoleEnum::ADMIN));
+        Gate::define('attendance', fn (User $user) => $user->hasRole(RoleEnum::AUTH));
+        Gate::define('admin', fn (User $user) => $user->hasRole(RoleEnum::ADMIN));
     }
 
     /**

@@ -11,11 +11,6 @@ class ReportService extends BaseService
 {
     private int $paginate = 10;
 
-    /**
-     * @param ?string $start
-     * @param ?string $end
-     * @return array
-     */
     public function getRangedReport(?string $start, ?string $end): array
     {
         $start = Carbon::parse($start);
@@ -25,12 +20,10 @@ class ReportService extends BaseService
             ->whereBetween('check_in', [$start, $end]);
 
         $report = $this->getReport($attendances, 'ranged');
+
         return $report;
     }
 
-    /**
-     * @return array
-     */
     public function getWeeklyReport(): array
     {
         $startOfWeek = now()->startOfWeek();
@@ -38,26 +31,20 @@ class ReportService extends BaseService
             ->whereDate('check_in', '>=', $startOfWeek);
 
         $report = $this->getReport($attendances, 'weekly');
+
         return $report;
     }
 
-    /**
-     * @return array
-     */
     public function getMonthlyReport(): array
     {
         $attendances = Attendance::where('user_id', $this->getAuthUser()->id)
             ->whereMonth('check_in', now()->month);
 
         $report = $this->getReport($attendances, 'monthly');
+
         return $report;
     }
 
-    /**
-     * @param Attendance|Builder $attendances
-     * @param string $paginationName
-     * @return array
-     */
     private function getReport(Attendance|Builder $attendances, string $paginationName): array
     {
         $hours = floor($attendances->sum('duration') / $this->hourInSeconds);

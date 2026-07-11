@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\ProfileDeleteRequest;
+use App\Http\Requests\Settings\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\Settings\ProfileUpdateRequest;
-use App\Http\Requests\Settings\ProfileDeleteRequest;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ProfileController extends Controller
 {
@@ -38,6 +38,7 @@ class ProfileController extends Controller
         $request->user()->save();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
+
         return to_route('v2.settings.profile.edit');
     }
 

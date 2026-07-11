@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const series = computed(() => {
     const values = Object.values(props.data);
+
     return [
         {
             name: "Attendance",

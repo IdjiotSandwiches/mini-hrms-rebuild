@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -30,9 +30,9 @@ class Attendance extends Model
     protected function casts(): array
     {
         return [
-            'check_in'  => 'datetime',
+            'check_in' => 'datetime',
             'check_out' => 'datetime',
-            'duration'  => 'float'
+            'duration' => 'float',
         ];
     }
 
