@@ -29,7 +29,6 @@ jobs:
           docker build \
             -f docker/Dockerfile \
             --target php-fpm \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest \
             .
 
@@ -38,16 +37,12 @@ jobs:
           docker build \
             -f docker/Dockerfile \
             --target web \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:${{ github.sha }} \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest \
             .
 
       - name: Push images
         run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:${{ github.sha }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
-
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:${{ github.sha }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
 
   deploy:
