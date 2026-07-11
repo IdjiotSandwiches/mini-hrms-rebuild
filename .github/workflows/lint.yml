@@ -19,7 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4 # v7.0.0
         with:
-          persist-credentials: false
+          token: ${{ secrets.COMMIT_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: https://github.com/shivammathur/setup-php@v2 # v2
@@ -45,3 +46,4 @@ jobs:
         with:
           commit_message: fix code style
           commit_options: '--no-verify'
+
