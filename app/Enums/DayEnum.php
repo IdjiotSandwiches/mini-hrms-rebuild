@@ -10,7 +10,7 @@ enum DayEnum: string
     case THURSDAY = 'Thursday';
     case FRIDAY = 'Friday';
     case SATURDAY = 'Saturday';
-    case SUNDAY =  'Sunday';
+    case SUNDAY = 'Sunday';
 
     public static function columns(): array
     {
@@ -19,7 +19,7 @@ enum DayEnum: string
 
     public static function fromIso(int $isoDay): self
     {
-        return match($isoDay) {
+        return match ($isoDay) {
             1 => self::MONDAY,
             2 => self::TUESDAY,
             3 => self::WEDNESDAY,

@@ -27,8 +27,9 @@ class VerificationNotificationTest extends TestCase
         $user = User::factory()->unverified()->create();
 
         $this->actingAs($user)
+            ->from(route('v2.take-attendance.index'))
             ->post(route('verification.send'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('v2.take-attendance.index'));
 
         Notification::assertSentTo($user, VerifyEmail::class);
     }
@@ -41,7 +42,7 @@ class VerificationNotificationTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('verification.send'))
-            ->assertRedirect(route('dashboard', absolute: false));
+            ->assertRedirect(route('v2.take-attendance.index', absolute: false));
 
         Notification::assertNothingSent();
     }

@@ -2,8 +2,8 @@ import type { InertiaLinkProps } from '@inertiajs/vue3';
 import { clsx } from 'clsx';
 import type { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { index as attendanceIndex } from '@/routes/v2/take-attendance';
 import { index as dashboardIndex } from '@/routes/v2/admin/dashboard';
+import { index as attendanceIndex } from '@/routes/v2/take-attendance';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -32,7 +32,9 @@ export function getCurrentTime(onTimeUpdate: any) {
     getCurrentTime();
 
     return () => {
-        if (timerId) clearTimeout(timerId);
+        if (timerId) {
+clearTimeout(timerId);
+}
     };
 }
 
@@ -66,8 +68,7 @@ export function validateBoolean(bool: boolean|number|null) {
     }
 }
 
-export function getAdminHome(bool: boolean|number|null)
-{
+export function getAdminHome(bool: boolean|number|null) {
     if (bool == true) {
         return dashboardIndex();
     } else if (bool == false) {

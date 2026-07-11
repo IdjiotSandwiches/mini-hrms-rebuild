@@ -33,12 +33,12 @@ class InputScheduleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'schedules.*.start.after_or_equal'  => 'Minimum :attribute at 08:00.',
-            'schedules.*.start.date_format'     => 'The :attribute field must match the format hh:mm.',
-            'schedules.*.end.after'             => 'The :attribute must be a time after the start time.',
-            'schedules.*.end.date_format'       => 'The :attribute field must match the format hh:mm.',
-            'schedules.*.end.required_unless'   => 'The :attribute field is required.',
-            'schedules.*.end.before_or_equal'   => 'Maximum :attribute at 19:00.',
+            'schedules.*.start.after_or_equal' => 'Minimum :attribute at 08:00.',
+            'schedules.*.start.date_format' => 'The :attribute field must match the format hh:mm.',
+            'schedules.*.end.after' => 'The :attribute must be a time after the start time.',
+            'schedules.*.end.date_format' => 'The :attribute field must match the format hh:mm.',
+            'schedules.*.end.required_unless' => 'The :attribute field is required.',
+            'schedules.*.end.before_or_equal' => 'Maximum :attribute at 19:00.',
         ];
     }
 
@@ -50,10 +50,10 @@ class InputScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'schedules'         => 'required|array',
-            'schedules.*.day'   => 'required|string',
+            'schedules' => 'required|array',
+            'schedules.*.day' => 'required|string',
             'schedules.*.start' => 'nullable|date_format:H:i:s|after_or_equal:08:00:00',
-            'schedules.*.end'   => 'nullable|required_unless:schedules.*.start,null|date_format:H:i:s|after:schedules.*.start|before_or_equal:19:00:00',
+            'schedules.*.end' => 'nullable|required_unless:schedules.*.start,null|date_format:H:i:s|after:schedules.*.start|before_or_equal:19:00:00',
         ];
     }
 }

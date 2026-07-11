@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\V2;
 
-use Inertia\Inertia;
 use App\Enums\DayEnum;
-use App\Http\Controllers\Controller;
 use App\Exceptions\InputScheduleException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\InputScheduleRequest;
 use App\Services\Attendances\InputScheduleService;
+use Inertia\Inertia;
 
 class InputScheduleController extends Controller
 {
@@ -23,7 +23,7 @@ class InputScheduleController extends Controller
         return Inertia::render('attendances/InputSchedule', [
             'schedules' => $this->service->getSchedules(),
             'canUpdate' => $this->service->canUpdateSchedule(),
-            'dayWeek'   => DayEnum::columns()
+            'dayWeek' => DayEnum::columns(),
         ]);
     }
 

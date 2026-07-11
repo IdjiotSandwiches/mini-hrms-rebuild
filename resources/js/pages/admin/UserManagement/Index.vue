@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
-import { onMounted, ref } from 'vue';
+import { Head, router } from '@inertiajs/vue3';
 import { Search } from '@lucide/vue';
 import { useDebounceFn } from '@vueuse/core';
-import { Head, router } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
+import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { edit } from '@/routes/v2/admin/management';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { edit } from '@/routes/v2/admin/management';
 
 defineProps<{
     users: {
@@ -72,7 +72,10 @@ const filter = useDebounceFn(() => {
                         </TableCell>
                     </TableRow>
 
-                    <TableRow v-for="(user, idx) in users.data">
+                    <TableRow
+                        v-for="(user, idx) in users.data"
+                        :key="idx"
+                    >
                         <TableCell>{{ idx + users.from }}</TableCell>
                         <TableCell class="text-muted-foreground">{{ user.name }}</TableCell>
                         <TableCell class="text-muted-foreground">{{ user.email }}</TableCell>

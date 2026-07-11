@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
 use App\Exceptions\TakeAttendanceException;
+use App\Http\Controllers\Controller;
 use App\Services\Attendances\TakeAttendanceService;
 
 class TakeAttendanceController extends Controller
@@ -18,7 +18,7 @@ class TakeAttendanceController extends Controller
     public function index()
     {
         return view('attendance.take-attendance.index', [
-            'isCheckedIn' => $this->service->isCheckedIn()
+            'isCheckedIn' => $this->service->isCheckedIn(),
         ]);
     }
 

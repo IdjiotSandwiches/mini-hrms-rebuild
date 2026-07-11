@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { Form, Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -9,11 +12,8 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
-import { ref } from 'vue';
-import { Form, Head } from '@inertiajs/vue3';
-import { Button } from '@/components/ui/button';
-import { store } from '@/routes/v2/input-schedule';
 import { TimePicker } from '@/components/ui/time-picker';
+import { store } from '@/routes/v2/input-schedule';
 
 const props = defineProps<{
     schedules: any,
@@ -23,8 +23,10 @@ const props = defineProps<{
 
 const getInitialSchedules = () => {
     const schedule = props.schedules;
+
     return props.dayWeek.map((day: any) => {
         const s = schedule.find((x: any) => x.day == day);
+
         return {
             day: day,
             start_time: s?.start_time || null,
@@ -33,7 +35,7 @@ const getInitialSchedules = () => {
     });
 };
 
-const schedules = ref(getInitialSchedules());
+const initSchedules = ref(getInitialSchedules());
 
 </script>
 
@@ -61,7 +63,10 @@ const schedules = ref(getInitialSchedules());
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(day, idx) in dayWeek">
+                        <TableRow
+                            v-for="(day, idx) in dayWeek"
+                            :key="idx"
+                        >
                             <TableCell class="w-1/3 font-medium text-center">
                                 {{ day }}
                                 <input
@@ -73,7 +78,7 @@ const schedules = ref(getInitialSchedules());
                             <TableCell class="w-1/3 align-top">
                                 <TimePicker
                                     :name="`schedules.${idx}.start`"
-                                    v-model="schedules[idx].start_time"
+                                    v-model="initSchedules[idx].start_time"
                                 />
                                 <InputError
                                     :message="errors[`schedules.${idx}.start`]"
@@ -83,7 +88,7 @@ const schedules = ref(getInitialSchedules());
                             <TableCell class="w-1/3 align-top">
                                 <TimePicker
                                     :name="`schedules.${idx}.end`"
-                                    v-model="schedules[idx].end_time"
+                                    v-model="initSchedules[idx].end_time"
                                 />
                                 <InputError
                                     :message="errors[`schedules.${idx}.end`]"

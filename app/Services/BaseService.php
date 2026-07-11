@@ -2,34 +2,26 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Enums\DayEnum;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
 class BaseService
 {
     protected int $hourInSeconds = 3600;
 
-    /**
-     * @return User|null
-     */
-    public function getAuthUser(): User|null
+    public function getAuthUser(): ?User
     {
         return auth()->user();
     }
 
-    /**
-     * @param ?string $start
-     * @param ?string $end
-     * @return array
-     */
     public function calculateWorkTime(?string $start, ?string $end): array
     {
         if ($start == null || $end == null) {
             return [
-                'start'     => null,
-                'end'       => null,
-                'totalTime' => 0
+                'start' => null,
+                'end' => null,
+                'totalTime' => 0,
             ];
         }
 

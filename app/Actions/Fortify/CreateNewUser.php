@@ -2,10 +2,10 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\User;
-use App\Enums\RoleEnum;
-use App\Concerns\ProfileValidationRules;
 use App\Concerns\PasswordValidationRules;
+use App\Concerns\ProfileValidationRules;
+use App\Enums\RoleEnum;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 

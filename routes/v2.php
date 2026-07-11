@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Auth\Middleware\RequirePassword;
-use App\Http\Controllers\V2\ReportController;
-use App\Http\Controllers\V2\ProfileController;
-use App\Http\Controllers\V2\SecurityController;
 use App\Http\Controllers\V2\DashboardController;
-use App\Http\Controllers\V2\ManagementController;
 use App\Http\Controllers\V2\InputScheduleController;
+use App\Http\Controllers\V2\ManagementController;
+use App\Http\Controllers\V2\ProfileController;
+use App\Http\Controllers\V2\ReportController;
+use App\Http\Controllers\V2\SecurityController;
 use App\Http\Controllers\V2\TakeAttendanceController;
+use Illuminate\Auth\Middleware\RequirePassword;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])
     ->prefix('v2')
