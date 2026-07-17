@@ -39,6 +39,9 @@ WORKDIR /var/www
 
 COPY . .
 
+ARG VITE_APP_NAME="Mini HRMS Rebuild"
+ENV VITE_APP_NAME=$VITE_APP_NAME
+
 # Needed so artisan can boot during build
 RUN if [ ! -f .env ] && [ -f .env.example ]; then \
         cp .env.example .env; \

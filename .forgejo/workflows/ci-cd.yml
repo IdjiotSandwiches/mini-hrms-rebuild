@@ -29,6 +29,7 @@ jobs:
           docker build \
             -f docker/Dockerfile \
             --target php-fpm \
+            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest \
             .
 
@@ -37,6 +38,7 @@ jobs:
           docker build \
             -f docker/Dockerfile \
             --target web \
+            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest \
             .
 
