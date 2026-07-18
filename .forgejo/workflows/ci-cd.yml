@@ -15,14 +15,14 @@ jobs:
       - name: Login Container Registry
         run: |
           echo "${{ secrets.REGISTRY_PASSWORD }}" \
-          | docker login git.100.86.124.3.sslip.io \
+          | docker login zot.idjiot-sandwiches.my.id \
           -u "${{ secrets.REGISTRY_USERNAME }}" \
           --password-stdin
 
       - name: Set Env Variable
         run: |
           echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          echo "REGISTRY=git.100.86.124.3.sslip.io" >> $GITHUB_ENV
+          echo "REGISTRY=zot.idjiot-sandwiches.my.id" >> $GITHUB_ENV
 
       - name: Build PHP image
         run: |
