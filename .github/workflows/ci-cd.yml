@@ -27,7 +27,6 @@ jobs:
       - name: Build PHP image
         run: |
           docker build \
-            --provenance=false \
             -f docker/Dockerfile \
             --target php-fpm \
             --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
@@ -37,7 +36,6 @@ jobs:
       - name: Build Nginx image
         run: |
           docker build \
-            --provenance=false \
             -f docker/Dockerfile \
             --target web \
             --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
