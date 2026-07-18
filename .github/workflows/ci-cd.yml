@@ -47,6 +47,27 @@ jobs:
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign PHP image
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+        run: |
+          cosign sign \
+            --key env://COSIGN_KEY \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
+
+      - name: Sign Web image
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+        run: |
+          cosign sign \
+            --key env://COSIGN_KEY \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
+
   deploy:
     needs: build
     runs-on: self-hosted
