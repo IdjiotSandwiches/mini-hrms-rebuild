@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('attendance', fn (User $user) => $user->hasRole(RoleEnum::AUTH));
         Gate::define('admin', fn (User $user) => $user->hasRole(RoleEnum::ADMIN));
 
-        // if ($this->app->environment('production') || env('APP_ENV') === 'production') {
-        //     URL::forceScheme('https');
-        // }
+        if ($this->app->environment('production') || env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 
     /**
