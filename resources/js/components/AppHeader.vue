@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { CalendarDays, ClipboardList, ClockCheck, LayoutGrid, Menu, UserRoundCog } from '@lucide/vue';
+import {
+    CalendarDays,
+    ClipboardList,
+    ClockCheck,
+    LayoutGrid,
+    Menu,
+    UserRoundCog,
+} from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
@@ -29,12 +36,12 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { getAdminHome } from '@/lib/utils';
+import type { BreadcrumbItem, NavItem } from '@/types';
 import { index as dashboardIndex } from '@/routes/v2/admin/dashboard';
 import { index as managementIndex } from '@/routes/v2/admin/management';
 import { index as scheduleIndex } from '@/routes/v2/input-schedule';
 import { index as reportIndex } from '@/routes/v2/report';
 import { index as attendanceIndex } from '@/routes/v2/take-attendance';
-import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
@@ -65,7 +72,7 @@ const mainNavItems: NavItem[] = (() => {
                 title: 'Management',
                 href: managementIndex(),
                 icon: UserRoundCog,
-            }
+            },
         );
     }
 
@@ -85,7 +92,7 @@ const mainNavItems: NavItem[] = (() => {
                 title: 'Report',
                 href: reportIndex(),
                 icon: ClipboardList,
-            }
+            },
         );
     }
 
@@ -177,7 +184,10 @@ const mainNavItems: NavItem[] = (() => {
                     </Sheet>
                 </div>
 
-                <Link :href="getAdminHome(auth.can.admin)" class="flex items-center gap-x-2">
+                <Link
+                    :href="getAdminHome(auth.can.admin)"
+                    class="flex items-center gap-x-2"
+                >
                     <AppLogo />
                 </Link>
 

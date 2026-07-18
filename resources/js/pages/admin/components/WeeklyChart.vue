@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 
 const props = defineProps<{
-    data: any
+    data: any;
 }>();
 
 const series = computed(() => {
@@ -11,28 +17,27 @@ const series = computed(() => {
 
     return [
         {
-            name: "Attendance",
-            data: values.map((day: any) => day.attendance)
+            name: 'Attendance',
+            data: values.map((day: any) => day.attendance),
         },
         {
-            name: "Late",
-            data: values.map((day: any) => day.late)
+            name: 'Late',
+            data: values.map((day: any) => day.late),
         },
         {
-            name: "Early",
-            data: values.map((day: any) => day.early)
+            name: 'Early',
+            data: values.map((day: any) => day.early),
         },
         {
-            name: "Absence",
-            data: values.map((day: any) => day.absence)
-        }
+            name: 'Absence',
+            data: values.map((day: any) => day.absence),
+        },
     ];
 });
 
-
 const options = ref({
     chart: {
-        type: 'area'
+        type: 'area',
     },
     tooltip: {
         enabled: true,
@@ -64,29 +69,34 @@ const options = ref({
         show: true,
     },
     fill: {
-        type: "gradient",
+        type: 'gradient',
         gradient: {
             shadeIntensity: 1,
             opacityFrom: 0.5,
             opacityTo: 0.6,
-            stops: [0, 90, 100]
-        }
+            stops: [0, 90, 100],
+        },
     },
     stroke: {
-        width: 2
+        width: 2,
     },
 });
-
 </script>
 
 <template>
     <Card>
         <CardHeader>
             <CardTitle>Weekly Attendance</CardTitle>
-            <CardDescription>Weekly chart of users performance.</CardDescription>
+            <CardDescription
+                >Weekly chart of users performance.</CardDescription
+            >
         </CardHeader>
         <CardContent>
-            <apexchart height="400" :options="options" :series="series"></apexchart>
+            <apexchart
+                height="400"
+                :options="options"
+                :series="series"
+            ></apexchart>
         </CardContent>
     </Card>
 </template>

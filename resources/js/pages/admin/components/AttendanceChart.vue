@@ -1,27 +1,33 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item';
 
 const props = defineProps<{
-    data: any
+    data: any;
 }>();
 
 const data = ref([
     {
         count: props.data.check_in,
         color: '#1C64F2',
-        label: 'Checked In'
+        label: 'Checked In',
     },
     {
         count: props.data.check_out,
         color: '#16BDCA',
-        label: 'Checked Out'
-    }
+        label: 'Checked Out',
+    },
 ]);
 
 const options = ref({
-    colors: computed(() => data.value.map(item => item.color)).value,
+    colors: computed(() => data.value.map((item) => item.color)).value,
     chart: {
         type: 'donut',
     },
@@ -62,7 +68,7 @@ const options = ref({
             top: -2,
         },
     },
-    labels: computed(() => data.value.map(item => item.label)).value,
+    labels: computed(() => data.value.map((item) => item.label)).value,
     dataLabels: {
         enabled: false,
     },
@@ -83,15 +89,16 @@ const options = ref({
     },
 });
 
-const count = computed(() => data.value.map(item => item.count)).value;
-
+const count = computed(() => data.value.map((item) => item.count)).value;
 </script>
 
 <template>
     <Card>
         <CardHeader>
             <CardTitle>Daily checked in & out</CardTitle>
-            <CardDescription>Daily count of user check in & out.</CardDescription>
+            <CardDescription
+                >Daily count of user check in & out.</CardDescription
+            >
         </CardHeader>
         <CardContent>
             <ItemGroup class="grid grid-cols-2 gap-2 text-center">

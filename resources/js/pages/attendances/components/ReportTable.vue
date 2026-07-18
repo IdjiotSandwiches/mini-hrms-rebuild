@@ -7,24 +7,28 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
+    TableRow,
 } from '@/components/ui/table';
-import { convertDate, convertTime, formatSeconds, validateBoolean } from '@/lib/utils';
+import {
+    convertDate,
+    convertTime,
+    formatSeconds,
+    validateBoolean,
+} from '@/lib/utils';
 
 export interface ReportProps {
     attendances: {
-        data: any[],
-        from: number,
-        next_page_url: string,
-        prev_page_url: string,
+        data: any[];
+        from: number;
+        next_page_url: string;
+        prev_page_url: string;
     };
     hours: number;
 }
 
 defineProps<{
-    data?: ReportProps
+    data?: ReportProps;
 }>();
-
 </script>
 
 <template>
@@ -44,7 +48,10 @@ defineProps<{
             </TableHeader>
             <TableBody>
                 <TableRow v-if="!data || data.attendances.data.length == 0">
-                    <TableCell :colspan="8" class="text-center text-sm text-muted-foreground">
+                    <TableCell
+                        :colspan="8"
+                        class="text-center text-sm text-muted-foreground"
+                    >
                         You do not have work attendance
                     </TableCell>
                 </TableRow>
@@ -58,7 +65,9 @@ defineProps<{
                     <TableCell>{{ idx + data.attendances.from }}</TableCell>
                     <TableCell>{{ convertDate(item.check_in) }}</TableCell>
                     <TableCell>{{ convertTime(item.check_in) }}</TableCell>
-                    <TableCell>{{ item.check_out ? convertTime(item.check_out) : '-' }}</TableCell>
+                    <TableCell>{{
+                        item.check_out ? convertTime(item.check_out) : '-'
+                    }}</TableCell>
                     <TableCell>{{ validateBoolean(item.early) }}</TableCell>
                     <TableCell>{{ validateBoolean(item.late) }}</TableCell>
                     <TableCell>{{ validateBoolean(item.absence) }}</TableCell>
@@ -67,13 +76,18 @@ defineProps<{
             </TableBody>
         </Table>
         <div class="flex items-center justify-end space-x-2">
-            <p class="text-sm text-muted-foreground antialiased flex-1">Total work hours: {{ data?.hours || 0 }} Hours</p>
+            <p class="flex-1 text-sm text-muted-foreground antialiased">
+                Total work hours: {{ data?.hours || 0 }} Hours
+            </p>
             <div class="space-x-2">
                 <Button
                     size="sm"
                     variant="outline"
                     :disabled="!data?.attendances.prev_page_url"
-                    @click="() => router.visit(data?.attendances.prev_page_url || '')"
+                    @click="
+                        () =>
+                            router.visit(data?.attendances.prev_page_url || '')
+                    "
                 >
                     Previous
                 </Button>
@@ -81,7 +95,10 @@ defineProps<{
                     size="sm"
                     variant="outline"
                     :disabled="!data?.attendances.next_page_url"
-                    @click="() => router.visit(data?.attendances.next_page_url || '')"
+                    @click="
+                        () =>
+                            router.visit(data?.attendances.next_page_url || '')
+                    "
                 >
                     Next
                 </Button>

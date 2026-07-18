@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { login } from '@/routes';
-import { index as dashboard } from '@/routes/v2/admin/dashboard';
 import { register } from '@/routes';
+import { index as dashboard } from '@/routes/v2/admin/dashboard';
 </script>
 
 <template>

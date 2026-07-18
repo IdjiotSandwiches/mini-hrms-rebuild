@@ -13,7 +13,6 @@ defineOptions({
         ],
     },
 });
-
 </script>
 
 <template>

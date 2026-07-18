@@ -1,32 +1,38 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item';
 
 const props = defineProps<{
-    data: any
+    data: any;
 }>();
 
 const data = ref([
     {
         count: props.data.late,
         color: '#1C64F2',
-        label: 'Late'
+        label: 'Late',
     },
     {
         count: props.data.early,
         color: '#16BDCA',
-        label: 'Early'
+        label: 'Early',
     },
     {
         count: props.data.absence,
         color: '#FDBA8C',
-        label: 'Absence'
-    }
+        label: 'Absence',
+    },
 ]);
 
 const options = ref({
-    colors: computed(() => data.value.map(item => item.color)).value,
+    colors: computed(() => data.value.map((item) => item.color)).value,
     chart: {
         type: 'radialBar',
         sparkline: {
@@ -41,7 +47,7 @@ const options = ref({
             hollow: {
                 margin: 0,
                 size: '40%',
-            }
+            },
         },
     },
     grid: {
@@ -54,7 +60,7 @@ const options = ref({
             bottom: -20,
         },
     },
-    labels: computed(() => data.value.map(item => item.label)).value,
+    labels: computed(() => data.value.map((item) => item.label)).value,
     legend: {
         show: true,
         position: 'bottom',
@@ -67,18 +73,19 @@ const options = ref({
     },
     yaxis: {
         show: false,
-    }
+    },
 });
 
-const count = computed(() => data.value.map(item => item.count)).value;
-
+const count = computed(() => data.value.map((item) => item.count)).value;
 </script>
 
 <template>
     <Card>
         <CardHeader>
             <CardTitle>Late, early, and absence</CardTitle>
-            <CardDescription>Daily count of user late, early, and absence.</CardDescription>
+            <CardDescription
+                >Daily count of user late, early, and absence.</CardDescription
+            >
         </CardHeader>
         <CardContent>
             <ItemGroup class="grid grid-cols-3 gap-2 text-center">
