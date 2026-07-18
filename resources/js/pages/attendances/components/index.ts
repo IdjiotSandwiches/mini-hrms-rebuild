@@ -1,1 +1,1 @@
-export { default as ReportTable, type ReportProps } from "./ReportTable.vue"
+export { default as ReportTable, type ReportProps } from './ReportTable.vue';

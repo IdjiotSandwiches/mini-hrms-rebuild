@@ -5,19 +5,30 @@ import { useDebounceFn } from '@vueuse/core';
 import { onMounted, ref } from 'vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+} from '@/components/ui/input-group';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import { edit } from '@/routes/v2/admin/management';
 
 defineProps<{
     users: {
-        data: any[],
-        from: number,
-        to: number,
-        total: number,
-        next_page_url: string,
-        prev_page_url: string,
-    }
+        data: any[];
+        from: number;
+        to: number;
+        total: number;
+        next_page_url: string;
+        prev_page_url: string;
+    };
 }>();
 
 const urlParams = ref<URLSearchParams | null>(null);
@@ -32,13 +43,14 @@ const filter = useDebounceFn(() => {
         except: ['search'],
     });
 }, 200);
-
 </script>
 
 <template>
     <Head title="User Management" />
 
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6">
+    <div
+        class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6"
+    >
         <Heading
             title="User Management"
             description="Manage registered users"
@@ -67,18 +79,22 @@ const filter = useDebounceFn(() => {
                 </TableHeader>
                 <TableBody>
                     <TableRow v-if="!users || users.data.length == 0">
-                        <TableCell :colspan="4" class="text-center text-sm text-muted-foreground">
+                        <TableCell
+                            :colspan="4"
+                            class="text-center text-sm text-muted-foreground"
+                        >
                             No users
                         </TableCell>
                     </TableRow>
 
-                    <TableRow
-                        v-for="(user, idx) in users.data"
-                        :key="idx"
-                    >
+                    <TableRow v-for="(user, idx) in users.data" :key="idx">
                         <TableCell>{{ idx + users.from }}</TableCell>
-                        <TableCell class="text-muted-foreground">{{ user.name }}</TableCell>
-                        <TableCell class="text-muted-foreground">{{ user.email }}</TableCell>
+                        <TableCell class="text-muted-foreground">{{
+                            user.name
+                        }}</TableCell>
+                        <TableCell class="text-muted-foreground">{{
+                            user.email
+                        }}</TableCell>
                         <TableCell class="text-center">
                             <Button
                                 variant="link"
@@ -93,8 +109,7 @@ const filter = useDebounceFn(() => {
             <div class="flex items-center justify-end space-x-2">
                 <div class="flex-1 text-sm text-muted-foreground">
                     Showing
-                    {{ users?.from }} to
-                    {{ users?.to }} of
+                    {{ users?.from }} to {{ users?.to }} of
                     {{ users?.total }} results
                 </div>
                 <div class="space-x-2">

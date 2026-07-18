@@ -33,17 +33,26 @@ export function getCurrentTime(onTimeUpdate: any) {
 
     return () => {
         if (timerId) {
-clearTimeout(timerId);
-}
+            clearTimeout(timerId);
+        }
     };
 }
 
 export function convertDate(date: string) {
-    return new Date(date).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(date).toLocaleDateString('en-GB', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 }
 
 export function convertTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return new Date(time).toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    });
 }
 
 export function formatSeconds(secs: number) {
@@ -58,7 +67,7 @@ export function formatSeconds(secs: number) {
     return `${hh}:${mm}:${ss}`;
 }
 
-export function validateBoolean(bool: boolean|number|null) {
+export function validateBoolean(bool: boolean | number | null) {
     if (bool == true) {
         return 'Yes';
     } else if (bool == false) {
@@ -68,7 +77,7 @@ export function validateBoolean(bool: boolean|number|null) {
     }
 }
 
-export function getAdminHome(bool: boolean|number|null) {
+export function getAdminHome(bool: boolean | number | null) {
     if (bool == true) {
         return dashboardIndex();
     } else if (bool == false) {

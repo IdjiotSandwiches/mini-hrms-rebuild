@@ -11,7 +11,6 @@ defineProps<{
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
-
 </script>
 
 <template>

@@ -10,15 +10,15 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
+    TableRow,
 } from '@/components/ui/table';
 import { TimePicker } from '@/components/ui/time-picker';
 import { store } from '@/routes/v2/input-schedule';
 
 const props = defineProps<{
-    schedules: any,
-    canUpdate: boolean,
-    dayWeek: any
+    schedules: any;
+    canUpdate: boolean;
+    dayWeek: any;
 }>();
 
 const getInitialSchedules = () => {
@@ -36,13 +36,14 @@ const getInitialSchedules = () => {
 };
 
 const initSchedules = ref(getInitialSchedules());
-
 </script>
 
 <template>
     <Head title="Schedule Management" />
 
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6">
+    <div
+        class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6"
+    >
         <Heading
             title="Schedule Management"
             description="View and manage your work schedules"
@@ -58,22 +59,21 @@ const initSchedules = ref(getInitialSchedules());
                     <TableHeader>
                         <TableRow>
                             <TableHead class="text-center">Day</TableHead>
-                            <TableHead class="text-center">Start Time</TableHead>
+                            <TableHead class="text-center"
+                                >Start Time</TableHead
+                            >
                             <TableHead class="text-center">End Time</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow
-                            v-for="(day, idx) in dayWeek"
-                            :key="idx"
-                        >
-                            <TableCell class="w-1/3 font-medium text-center">
+                        <TableRow v-for="(day, idx) in dayWeek" :key="idx">
+                            <TableCell class="w-1/3 text-center font-medium">
                                 {{ day }}
                                 <input
                                     type="hidden"
                                     :name="`schedules.${idx}.day`"
                                     :value="day"
-                                >
+                                />
                             </TableCell>
                             <TableCell class="w-1/3 align-top">
                                 <TimePicker
@@ -99,10 +99,7 @@ const initSchedules = ref(getInitialSchedules());
                     </TableBody>
                 </Table>
 
-                <div
-                    v-if="canUpdate"
-                    class="text-end"
-                >
+                <div v-if="canUpdate" class="text-end">
                     <Button>Save Schedules</Button>
                 </div>
             </fieldset>

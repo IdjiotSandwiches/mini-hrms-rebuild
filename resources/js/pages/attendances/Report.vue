@@ -12,9 +12,9 @@ import type { ReportProps } from '@/pages/attendances/components';
 import { ReportTable } from '@/pages/attendances/components';
 
 defineProps<{
-    ranged?: ReportProps,
-    weekly: ReportProps,
-    monthly: ReportProps
+    ranged?: ReportProps;
+    weekly: ReportProps;
+    monthly: ReportProps;
 }>();
 
 const urlParams = ref<URLSearchParams | null>(null);
@@ -30,13 +30,17 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (stopClock) {
-stopClock();
-}
+        stopClock();
+    }
 });
 
 const dateWindow = ref<JsDateRange>({
-    start: urlParams.value?.get('start') ? new Date(urlParams.value.get('start')!) : undefined,
-    end: urlParams.value?.get('end') ? new Date(urlParams.value.get('end')!) : undefined
+    start: urlParams.value?.get('start')
+        ? new Date(urlParams.value.get('start')!)
+        : undefined,
+    end: urlParams.value?.get('end')
+        ? new Date(urlParams.value.get('end')!)
+        : undefined,
 });
 
 function handleFilter() {
@@ -52,7 +56,7 @@ function handleFilter() {
         const day = String(date.getDate()).padStart(2, '0');
 
         return `${year}-${month}-${day}`;
-    }
+    };
 
     const startStr = toLocalYYYYMMDD(dateWindow.value.start);
     const endStr = toLocalYYYYMMDD(dateWindow.value.end);
@@ -60,19 +64,20 @@ function handleFilter() {
     router.reload({
         data: {
             start: startStr,
-            end: endStr
+            end: endStr,
         },
         only: ['ranged'],
-        except: ['start', 'end']
+        except: ['start', 'end'],
     });
 }
-
 </script>
 
 <template>
     <Head title="Attendance Report" />
 
-    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6">
+    <div
+        class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-6"
+    >
         <Heading
             title="Report"
             description="This is where your weekly and monthly work report will be displayed"
