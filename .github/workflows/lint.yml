@@ -13,10 +13,10 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7 # v7.0.0
+      - name: Checkout code
+        uses: actions/checkout@v7 # v7.0.0
         with:
-          token: ${{ secrets.COMMIT_TOKEN }}
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2 # v2
