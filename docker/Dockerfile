@@ -60,6 +60,13 @@ RUN npm run build
 # Stage 2: Production environment
 FROM php:8.5-fpm AS php-fpm
 
+LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
+LABEL org.opencontainers.image.description="Laravel PHP-FPM production image"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
+
 # Install only runtime libraries needed in production
 # libfcgi-bin and procps are required for the php-fpm-healthcheck script
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -122,6 +129,13 @@ CMD ["php-fpm"]
 
 # Stage 2: Nginx production image
 FROM nginx:alpine AS web
+
+LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.title="Mini HRMS Rebuild Web"
+LABEL org.opencontainers.image.description="Nginx frontend image for Mini HRMS Rebuild"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 # Copy custom Nginx configuration
 # -----------------------------------------------------------
