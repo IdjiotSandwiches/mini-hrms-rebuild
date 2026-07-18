@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup PHP
-        uses: https://github.com/shivammathur/setup-php@v2 # v2
+        uses: shivammathur/setup-php@v2 # v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
