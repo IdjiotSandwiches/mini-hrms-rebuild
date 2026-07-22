@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: self-hosted
@@ -12,66 +17,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7 # v7.0.0
 
-      - name: Login Container Registry
-        run: |
-          echo "${{ secrets.REGISTRY_PASSWORD }}" \
-          | docker login zot.idjiot-sandwiches.my.id \
-          -u "${{ secrets.REGISTRY_USERNAME }}" \
-          --password-stdin
-
       - name: Set Env Variable
         run: |
           echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
           echo "REGISTRY=zot.idjiot-sandwiches.my.id" >> $GITHUB_ENV
 
-      - name: Build image
-        run: |
-          docker build \
-            -f docker/Dockerfile \
-            --target php-fpm \
-            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest \
-            .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-          docker build \
-            -f docker/Dockerfile \
-            --target scheduler \
-            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest \
-            .
+      - name: Login Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
-          docker build \
-            -f docker/Dockerfile \
-            --target web \
-            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest \
-            .
-
-      - name: Push images
-        run: |
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
+      - name: Build and push all targets
+        uses: docker/bake-action@v5
+        with:
+          files: bake/docker.hcl
+          push: true
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_OWNER: ${{ env.IMAGE_OWNER }}
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3
 
-      - name: Sign image
-        env:
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+      - name: Sign images (Keyless OIDC)
         run: |
-          cosign sign \
-            --key env://COSIGN_KEY \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
+          IMAGES=(
+            "${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest"
+            "${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest"
+            "${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest"
+          )
 
-          cosign sign \
-            --key env://COSIGN_KEY \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest
-
-          cosign sign \
-            --key env://COSIGN_KEY \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
+          for IMAGE in "${IMAGES[@]}"; do
+            cosign sign --yes "$IMAGE"
+          done
 
   deploy:
     needs: build
@@ -92,6 +78,20 @@ jobs:
             echo "Aborting deployment to protect application state."
             exit 1
           fi
+
+      - name: Deploy server
+        run: |
+          mkdir -p /home/idjiot/apps/mini-hrms-rebuild
+          cd /home/idjiot/apps/mini-hrms-rebuild
+
+          docker compose pull
+          docker compose up -d
+
+          docker compose exec -T php-fpm php artisan migrate --force
+          docker compose exec -T php-fpm php artisan optimize
+
+          docker image prune -a -f
+          docker builder prune -f
 
       - name: Deploy server
         run: |
