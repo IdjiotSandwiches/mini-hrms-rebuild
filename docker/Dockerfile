@@ -39,7 +39,7 @@ ARG APP_NAME="Mini HRMS Rebuild"
 ENV APP_NAME=$APP_NAME
 ENV VITE_APP_NAME=$APP_NAME
 
-RUN composer install
+RUN composer install \
     --no-dev \
     --prefer-dist \
     --optimize-autoloader \
