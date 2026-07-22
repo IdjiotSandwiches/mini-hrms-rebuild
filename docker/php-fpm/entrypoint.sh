@@ -15,5 +15,5 @@ mkdir -p /var/www/storage/framework/cache/data \
     /var/www/storage/logs \
     /var/www/bootstrap/cache
 
-# Run the default command
+# 5. Execute main process
 exec "$@"
