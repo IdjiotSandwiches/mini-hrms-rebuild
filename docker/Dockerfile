@@ -3,7 +3,6 @@
 # ==========================================
 FROM php:8.5-fpm-alpine AS composer-builder
 
-# Install helper and extensions needed for composer scripts / autoload
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
     pdo_mysql \
@@ -18,10 +17,8 @@ RUN install-php-extensions \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
-# Layer Cache Trick: Copy composer descriptors first
 COPY composer.json composer.lock ./
 
-# Install vendor packages without app code present
 RUN composer install \
     --no-dev \
     --prefer-dist \
@@ -29,7 +26,6 @@ RUN composer install \
     --no-scripts \
     --no-interaction
 
-# Copy full application source code to generate autoloader
 COPY . .
 RUN composer dump-autoload --optimize --classmap-authoritative
 
@@ -39,22 +35,27 @@ RUN composer dump-autoload --optimize --classmap-authoritative
 FROM node:24-alpine AS frontend-builder
 WORKDIR /var/www
 
-# Install PHP CLI so Wayfinder plugin can execute `php artisan`
-RUN apk add --no-cache php-cli php-tokenizer php-xml
+# Install PHP CLI + extension packages so Laravel CLI commands can boot
+RUN apk add --no-cache \
+    php-cli \
+    php-tokenizer \
+    php-xml \
+    php-iconv \
+    php-mbstring \
+    php-dom \
+    php-fileinfo \
+    php-pdo \
+    php-session
 
-# Cache NPM packages first
 COPY package*.json ./
 RUN npm ci
 
-# Copy application source code
 COPY . .
-# Copy vendor directory from composer-builder so 'php artisan' works during Vite build
 COPY --from=composer-builder /var/www/vendor ./vendor
 
 ARG APP_NAME="Mini HRMS Rebuild"
 ENV VITE_APP_NAME=$APP_NAME
 
-# Run Vite build (outputs to /var/www/public/build)
 RUN npm run build
 
 # ==========================================
@@ -69,7 +70,6 @@ LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini
       org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
       org.opencontainers.image.vendor="Idjiot Sandwiches"
 
-# Install PHP extensions required for production runtime
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
     pdo_mysql \
@@ -83,7 +83,6 @@ RUN install-php-extensions \
 
 RUN apk add --no-cache fcgi procps curl
 
-# Download and set up php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
     https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck
@@ -91,16 +90,13 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
 COPY ./docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Use standard production php.ini
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 COPY ./docker/php-fpm/conf.d/*.conf /usr/local/etc/php-fpm.d/
 
 WORKDIR /var/www
 
-# Copy PHP source & vendor files from composer-builder stage
 COPY --from=composer-builder /var/www /var/www
-# Copy compiled frontend assets from frontend-builder stage
 COPY --from=frontend-builder /var/www/public/build /var/www/public/build
 
 COPY ./storage /var/www/storage-init
@@ -140,7 +136,6 @@ LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini
       org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
-# Copy public directory from php-fpm stage (includes Vite assets and public static files)
 COPY --from=php-fpm /var/www/public /var/www/public
 
 WORKDIR /var/www/public
