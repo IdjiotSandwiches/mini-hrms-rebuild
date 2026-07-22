@@ -4,6 +4,8 @@
 FROM node:24-alpine AS frontend-builder
 WORKDIR /var/www
 
+RUN apk add --no-cache php-cli php-tokenizer php-xml
+
 # Cache package files first
 COPY package*.json ./
 RUN npm ci
