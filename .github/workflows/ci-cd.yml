@@ -95,17 +95,3 @@ jobs:
 
           docker image prune -a -f
           docker builder prune -f
-
-      - name: Deploy server
-        run: |
-          mkdir -p /home/idjiot/apps/mini-hrms-rebuild
-          cd /home/idjiot/apps/mini-hrms-rebuild
-
-          docker compose pull
-          docker compose up -d
-
-          docker compose exec -T php-fpm php artisan migrate --force
-          docker compose exec -T php-fpm php artisan optimize
-
-          docker image prune -a -f
-          docker builder prune -f
