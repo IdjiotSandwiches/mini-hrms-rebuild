@@ -101,6 +101,9 @@ jobs:
           docker compose pull
           docker compose up -d
 
+          docker compose exec -u 0 -T php-fpm chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+          docker compose exec -u 0 -T php-fpm chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
           docker compose exec -T php-fpm php artisan migrate --force
           docker compose exec -T php-fpm php artisan optimize
 
