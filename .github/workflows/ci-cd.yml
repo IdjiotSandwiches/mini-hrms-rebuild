@@ -4,12 +4,7 @@ on:
   push:
     branches:
       - main
-
-permissions:
-  contents: read
-  packages: write
-  id-token: write
-
+      
 jobs:
   build:
     runs-on: self-hosted
@@ -50,7 +45,10 @@ jobs:
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3
 
-      - name: Sign images (Keyless OIDC)
+      - name: Sign images by Digest
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
         run: |
           IMAGES=(
             "${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest"
@@ -59,7 +57,12 @@ jobs:
           )
 
           for IMAGE in "${IMAGES[@]}"; do
-            cosign sign --yes "$IMAGE"
+            # Fetch the exact immutable digest from the registry
+            DIGEST=$(crane digest "$IMAGE" || docker manifest inspect "$IMAGE" -v | jq -r '.Descriptor.digest // .[0].Descriptor.digest')
+            BASE_REF="${IMAGE%%:*}"
+            
+            echo "Signing $BASE_REF@$DIGEST"
+            cosign sign --yes --key env://COSIGN_KEY "$BASE_REF@$DIGEST"
           done
 
   deploy:
