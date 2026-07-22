@@ -24,7 +24,7 @@ jobs:
           echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
           echo "REGISTRY=zot.idjiot-sandwiches.my.id" >> $GITHUB_ENV
 
-      - name: Build PHP image
+      - name: Build image
         run: |
           docker build \
             -f docker/Dockerfile \
@@ -33,8 +33,13 @@ jobs:
             -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest \
             .
 
-      - name: Build Nginx image
-        run: |
+          docker build \
+            -f docker/Dockerfile \
+            --target scheduler \
+            --build-arg VITE_APP_NAME="Mini HRMS Rebuild" \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest \
+            .
+
           docker build \
             -f docker/Dockerfile \
             --target web \
@@ -45,12 +50,13 @@ jobs:
       - name: Push images
         run: |
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3
 
-      - name: Sign PHP image
+      - name: Sign image
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
@@ -59,11 +65,10 @@ jobs:
             --key env://COSIGN_KEY \
             ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-php:latest
 
-      - name: Sign Web image
-        env:
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
-        run: |
+          cosign sign \
+            --key env://COSIGN_KEY \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-scheduler:latest
+
           cosign sign \
             --key env://COSIGN_KEY \
             ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/mini-hrms-web:latest
