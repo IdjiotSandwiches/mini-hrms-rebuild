@@ -27,7 +27,7 @@ class MarkAsAbsence extends Command
                 $this->info("Successfully mark {$rows} status.");
             });
         } catch (\Exception $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
         }
     }
 }
