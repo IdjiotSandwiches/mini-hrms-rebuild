@@ -39,25 +39,20 @@ ARG APP_NAME="Mini HRMS Rebuild"
 ENV APP_NAME=$APP_NAME
 ENV VITE_APP_NAME=$APP_NAME
 
-RUN composer install \
+RUN composer install
     --no-dev \
     --prefer-dist \
     --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --no-scripts \
+    && npm ci
 
-RUN npm ci
-
-RUN npm run build
+RUN composer dump-autoload --optimize \
+    && npm run build \
+    && npm cache clean --force
 
 # Stage 2: Production environment
 FROM php:8.5-fpm-alpine AS php-fpm
-
-LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
-LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
-LABEL org.opencontainers.image.description="Laravel PHP-FPM production image"
-LABEL org.opencontainers.image.licenses="MIT"
-LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
-LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
 LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
