@@ -59,6 +59,13 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
 LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
 
+LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
+LABEL org.opencontainers.image.description="Laravel PHP-FPM production image"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
+
 # Install only runtime libraries needed in production
 # libfcgi-bin and procps are required for the php-fpm-healthcheck script
 RUN apk add --no-cache \
