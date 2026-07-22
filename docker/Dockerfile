@@ -1,51 +1,43 @@
 # Stage 1: Build environment and Composer dependencies
-FROM php:8.5-fpm AS builder
-
-# Copy Composer from official image
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Copy Node & npm from official image
-COPY --from=node:22-bookworm /usr/local/bin /usr/local/bin
-COPY --from=node:22-bookworm /usr/local/lib/node_modules /usr/local/lib/node_modules
-
-# Create npm/node symlinks
-RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
- && ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+FROM php:8.5-fpm-alpine AS builder
 
 # Install PHP libraries
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk add --no-cache \
     git \
     unzip \
-    libpq-dev \
-    libonig-dev \
-    libssl-dev \
+    postgresql-dev \
     libxml2-dev \
-    libcurl4-openssl-dev \
-    libicu-dev \
+    icu-dev \
     libzip-dev \
+    autoconf \
+    g++ \
+    make \
+    nodejs \
+    npm \
     && docker-php-ext-install -j$(nproc) \
         pdo_mysql \
         pdo_pgsql \
-        pgsql \
         intl \
         zip \
         bcmath \
         soap \
     && pecl install redis \
-    && docker-php-ext-enable redis \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-enable redis
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
 COPY . .
 
-ARG VITE_APP_NAME="Mini HRMS Rebuild"
-ENV VITE_APP_NAME=$VITE_APP_NAME
-
 # Needed so artisan can boot during build
 RUN if [ ! -f .env ] && [ -f .env.example ]; then \
-        cp .env.example .env; \
-    fi
+    cp .env.example .env; \
+fi
+
+ARG APP_NAME="Mini HRMS Rebuild"
+ENV APP_NAME=$APP_NAME
+ENV VITE_APP_NAME=$APP_NAME
 
 RUN composer install \
     --no-dev \
@@ -58,7 +50,14 @@ RUN npm ci
 RUN npm run build
 
 # Stage 2: Production environment
-FROM php:8.5-fpm AS php-fpm
+FROM php:8.5-fpm-alpine AS php-fpm
+
+LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
+LABEL org.opencontainers.image.description="Laravel PHP-FPM production image"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
 LABEL org.opencontainers.image.title="Mini HRMS Rebuild PHP"
@@ -69,13 +68,13 @@ LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 # Install only runtime libraries needed in production
 # libfcgi-bin and procps are required for the php-fpm-healthcheck script
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
-    libicu-dev \
-    libzip-dev \
-    libfcgi-bin \
+RUN apk add --no-cache \
+    libpq \
+    icu-libs \
+    libzip \
+    fcgi \
     procps \
-    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    curl
 
 # Download and install php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
@@ -127,7 +126,21 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 EXPOSE 9000
 CMD ["php-fpm"]
 
-# Stage 2: Nginx production image
+# Stage 3: Dedicated Scheduler Service
+FROM php-fpm AS scheduler
+
+LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.title="Mini HRMS Rebuild Scheduler"
+LABEL org.opencontainers.image.description="Scheduler for Mini HRMS Rebuild"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"
+LABEL org.opencontainers.image.vendor="Idjiot Sandwiches"
+
+# Run Laravel's built-in scheduler loop
+ENTRYPOINT []
+CMD ["php", "artisan", "schedule:work"]
+
+# Stage 4: Nginx production image
 FROM nginx:alpine AS web
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild"

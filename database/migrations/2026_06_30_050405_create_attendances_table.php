@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('duration')->default(0);
             $table->boolean('early')->nullable();
             $table->boolean('late')->nullable();
-            $table->boolean('absence')->nullable();
+            $table->boolean('absence')->default(0);
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete()
