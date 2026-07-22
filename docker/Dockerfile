@@ -8,8 +8,6 @@ WORKDIR /var/www
 COPY package*.json ./
 RUN npm ci
 
-# Copy source needed for asset compilation
-COPY vite.config.ts resources ./
 # Optional: Pass APP_NAME to Vite build if configured
 ARG APP_NAME="Mini HRMS Rebuild"
 ENV VITE_APP_NAME=$APP_NAME
