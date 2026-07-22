@@ -1,31 +1,10 @@
 # ==========================================
-# Stage 1: Build Frontend Assets (Node.js)
+# Stage 1: Install Composer Dependencies
 # ==========================================
-FROM node:24-alpine AS frontend-builder
-WORKDIR /var/www
+FROM php:8.5-fpm-alpine AS composer-builder
 
-RUN apk add --no-cache php-cli php-tokenizer php-xml
-
-# Cache package files first
-COPY package*.json ./
-RUN npm ci
-
-# Optional: Pass APP_NAME to Vite build if configured
-ARG APP_NAME="Mini HRMS Rebuild"
-ENV VITE_APP_NAME=$APP_NAME
-
-COPY . .
-RUN npm run build
-
-# ==========================================
-# Stage 2: Install PHP / Composer Dependencies
-# ==========================================
-FROM php:8.5-fpm-alpine AS php-builder
-
-# Install docker-php-extension-installer helper
+# Install helper and extensions needed for composer scripts / autoload
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-
-# Install PHP runtime & build extensions
 RUN install-php-extensions \
     pdo_mysql \
     pdo_pgsql \
@@ -39,7 +18,7 @@ RUN install-php-extensions \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
-# Layer Cache Trick: Copy dependency descriptors first
+# Layer Cache Trick: Copy composer descriptors first
 COPY composer.json composer.lock ./
 
 # Install vendor packages without app code present
@@ -50,12 +29,33 @@ RUN composer install \
     --no-scripts \
     --no-interaction
 
-# Copy full application code & dumped assets from frontend stage
+# Copy full application source code to generate autoloader
 COPY . .
-COPY --from=frontend-builder /var/www/public/build ./public/build
-
-# Generate final optimized autoloader
 RUN composer dump-autoload --optimize --classmap-authoritative
+
+# ==========================================
+# Stage 2: Build Frontend Assets (Node.js)
+# ==========================================
+FROM node:24-alpine AS frontend-builder
+WORKDIR /var/www
+
+# Install PHP CLI so Wayfinder plugin can execute `php artisan`
+RUN apk add --no-cache php-cli php-tokenizer php-xml
+
+# Cache NPM packages first
+COPY package*.json ./
+RUN npm ci
+
+# Copy application source code
+COPY . .
+# Copy vendor directory from composer-builder so 'php artisan' works during Vite build
+COPY --from=composer-builder /var/www/vendor ./vendor
+
+ARG APP_NAME="Mini HRMS Rebuild"
+ENV VITE_APP_NAME=$APP_NAME
+
+# Run Vite build (outputs to /var/www/public/build)
+RUN npm run build
 
 # ==========================================
 # Stage 3: Production PHP-FPM Image
@@ -63,16 +63,14 @@ RUN composer dump-autoload --optimize --classmap-authoritative
 FROM php:8.5-fpm-alpine AS php-fpm
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.title="Mini HRMS Rebuild PHP" \
-    org.opencontainers.image.description="Laravel PHP-FPM production image" \
-    org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.vendor="Idjiot Sandwiches"
+      org.opencontainers.image.title="Mini HRMS Rebuild PHP" \
+      org.opencontainers.image.description="Laravel PHP-FPM production image" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
+      org.opencontainers.image.vendor="Idjiot Sandwiches"
 
-# Install helper again for clean runtime dependency installation
+# Install PHP extensions required for production runtime
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-
-# Installing extensions in runtime stage copies compiled binaries & required shared libs (.so)
 RUN install-php-extensions \
     pdo_mysql \
     pdo_pgsql \
@@ -85,7 +83,7 @@ RUN install-php-extensions \
 
 RUN apk add --no-cache fcgi procps curl
 
-# Healthcheck & scripts setup
+# Download and set up php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
     https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck
@@ -100,8 +98,11 @@ COPY ./docker/php-fpm/conf.d/*.conf /usr/local/etc/php-fpm.d/
 
 WORKDIR /var/www
 
-# Copy application artifacts from php-builder stage
-COPY --from=php-builder /var/www /var/www
+# Copy PHP source & vendor files from composer-builder stage
+COPY --from=composer-builder /var/www /var/www
+# Copy compiled frontend assets from frontend-builder stage
+COPY --from=frontend-builder /var/www/public/build /var/www/public/build
+
 COPY ./storage /var/www/storage-init
 
 RUN chown -R www-data:www-data /var/www
@@ -117,11 +118,11 @@ CMD ["php-fpm"]
 FROM php-fpm AS scheduler
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.title="Mini HRMS Rebuild Scheduler" \
-    org.opencontainers.image.description="Scheduler for Mini HRMS Rebuild" \
-    org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.vendor="Idjiot Sandwiches"
+      org.opencontainers.image.title="Mini HRMS Rebuild Scheduler" \
+      org.opencontainers.image.description="Scheduler for Mini HRMS Rebuild" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
+      org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 ENTRYPOINT []
 CMD ["php", "artisan", "schedule:work"]
@@ -132,15 +133,15 @@ CMD ["php", "artisan", "schedule:work"]
 FROM nginx:alpine AS web
 
 LABEL org.opencontainers.image.source="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.title="Mini HRMS Rebuild Web" \
-    org.opencontainers.image.description="Nginx frontend image for Mini HRMS Rebuild" \
-    org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
-    org.opencontainers.image.vendor="Idjiot Sandwiches"
+      org.opencontainers.image.title="Mini HRMS Rebuild Web" \
+      org.opencontainers.image.description="Nginx frontend image for Mini HRMS Rebuild" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.url="https://github.com/idjiot-sandwiches/mini-hrms-rebuild" \
+      org.opencontainers.image.vendor="Idjiot Sandwiches"
 
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
-# Copy public directory from the php-builder stage (includes Vite assets)
-COPY --from=php-builder /var/www/public /var/www/public
+# Copy public directory from php-fpm stage (includes Vite assets and public static files)
+COPY --from=php-fpm /var/www/public /var/www/public
 
 WORKDIR /var/www/public
 EXPOSE 80
